@@ -1308,6 +1308,12 @@ textarea.input-with-feedback:focus {
 
 
 
+.new-timeline,
+.new-timeline * {
+  color: #4F00BC !important;
+  fill: #4F00BC !important;
+  font-weight: normal !important;
+}
 
 
 

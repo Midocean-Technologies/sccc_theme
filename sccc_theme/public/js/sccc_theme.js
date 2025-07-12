@@ -10,10 +10,11 @@ $( document ).ready(function() {
     improve_my_erp();
   }, 300);
 });
+
 let improve_my_erp = () => {
   let user_info = frappe.user_info(frappe.session.user);
 
-  // Create a container div instead of a button
+  // Create the welcome banner
   let improveDiv = document.createElement('div');
   improveDiv.classList = "improve-my-erp-banner";
   improveDiv.textContent = `👋 Welcome Back, ${user_info.fullname} !`;
@@ -31,7 +32,7 @@ let improve_my_erp = () => {
     cursor: "pointer",
   });
 
-  // Hover scale effect
+  // Hover effects
   improveDiv.addEventListener("mouseenter", () => {
     improveDiv.style.transform = "scale(1.05)";
   });
@@ -39,7 +40,7 @@ let improve_my_erp = () => {
     improveDiv.style.transform = "scale(1)";
   });
 
-  // Generate random dark color
+  // Random dark color background on click
   const getRandomDarkColor = () => {
     const r = Math.floor(Math.random() * 100);
     const g = Math.floor(Math.random() * 100);
@@ -47,16 +48,40 @@ let improve_my_erp = () => {
     return `rgb(${r}, ${g}, ${b})`;
   };
 
-  // Change background on click
   improveDiv.addEventListener("click", () => {
-    const darkColor = getRandomDarkColor();
-    improveDiv.style.background = darkColor;
+    improveDiv.style.background = getRandomDarkColor();
   });
+
+  // Create the time display div
+  let timeDiv = document.createElement("div");
+  timeDiv.classList = "current-time-banner";
+
+  Object.assign(timeDiv.style, {
+    background: "#343a40",
+    color: "#fff",
+    padding: "8px 16px",
+    borderRadius: "8px",
+    fontWeight: "bold",
+    fontSize: "14px",
+    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
+    marginRight: "10px",
+    marginTop: "5px",
+  });
+
+  const updateTime = () => {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('en-GB'); // HH:MM:SS
+    timeDiv.textContent = `${timeString}`;
+  };
+
+  updateTime(); // initial
+  setInterval(updateTime, 1000); // update every second
 
   // Inject to DOM
   const target = document.querySelector(".form-inline.fill-width.justify-content-end");
   if (target) {
     target.prepend(improveDiv);
+    target.insertBefore(timeDiv, improveDiv.nextSibling);
   }
 };
 
