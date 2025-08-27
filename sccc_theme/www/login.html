@@ -1,0 +1,210 @@
+{% extends "templates/web.html" %}
+{% macro email_login_body() -%}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SCCC Login</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #2C003E;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .header-text {
+      text-align: center;
+    }
+    .header-text h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+    }
+    .header-text p {
+      font-size: 14px;
+      color: #bbb;
+      margin-top: 6px;
+    }
+
+    .login-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 450px;
+      box-shadow: 0px 6px 20px rgba(0,0,0,0.2);
+      text-align: left;
+    }
+
+    .login-container h2 {
+      margin-bottom: 20px;
+      font-size: 20px;
+      font-weight: 600;
+      color: #222;
+    }
+
+    .login-container label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      color: #333;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 14px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .btn-sign-in {
+      background-color: palevioletred;
+      width: 30%;
+      color: white;
+    }
+
+    .btn-outline {
+      background: #fff;
+      border: 1px solid palevioletred; /* Purple */
+      color: palevioletred;
+    }
+
+    .footer-text a {
+      color: #6A0DAD;  /* Purple links */
+      text-decoration: none;
+      font-weight: 400;
+    }
+    .footer-text a:hover {
+      text-decoration: underline;
+    }
+
+
+    .actions {
+      display: flex;
+      align-items: center; /* ensures vertical centering */
+      gap: 8px; /* spacing between items */
+      margin-top: 15px;
+    }
+
+    .actions .or-separator {
+      font-size: 14px;
+      color: #555;
+      font-weight: 500;
+    }
+
+
+    .login-container a {
+      font-size: 13px;
+      color: #4A90E2;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+    .login-container a:hover {
+      text-decoration: underline;
+    }
+    
+    .footer-text {
+      text-align: left;
+      font-size: 12px;
+      color: #666;
+      /* max-width: 340px; */
+      margin-top: 20px;
+    }
+    .footer-text a {
+      /* color: #ed1651; */
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .footer-text a:hover {
+      text-decoration: underline;
+    }
+
+    .brand-footer {
+      margin-top: 20px;
+      text-align: center;
+      color: #bbb;
+      font-size: 12px;
+    }
+    .brand-footer img {
+      max-width: 70px;
+      display: block;
+      margin: 0 auto 6px;
+    }
+    .or-text {
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="header-text">
+    <h1>Welcome back</h1>
+    <p>Sign in to your SCCC ERP</p>
+  </div>
+
+  <div class="login-container">
+    <h2>Sign in</h2>
+    <form class="form-login" role="form">
+      <label for="login_email">Email</label>
+      <input type="text" id="login_email" placeholder="Email">
+
+      <label for="login_password">Password</label>
+      <input type="password" id="login_password" placeholder="Password">
+
+      <a href="#forgot">{{ _("Forgot your password?") }}</a>
+
+      <div class="actions">
+        <button type="submit" class="btn btn-sign-in">{{ _("Sign In") }}</button>
+        <span class="or-separator">or</span>
+        <button type="button" class="btn btn-outline">{{ _("Login with Email link") }}</button>
+      </div>
+
+    </form>
+
+    <div class="footer-text">
+      By continuing, you acknowledge that you understand and agree to the 
+      <a href="#" style="color: palevioletred;">Terms & Conditions</a> and <a href="#" style="color: palevioletred;" >Privacy Policy</a>
+    </div>
+  </div>
+
+  <div class="brand-footer">
+    <img src="/assets/sccc_theme/images/SCCC Logo - white.png" alt="SCCC">
+    <p>sccc by sllc</p>
+  </div>
+
+</body>
+</html>
+{% endblock %}
+{% endmacro %}
+
+{% block script %}
+<script>
+{% include "templates/includes/login/login.js"  %}
+$(document).ready(function() {
+    $(".web-footer").hide();
+    $(".navbar").hide();
+});
+</script>
+{% endblock %}
