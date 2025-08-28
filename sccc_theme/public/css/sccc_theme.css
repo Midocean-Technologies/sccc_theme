@@ -1,13 +1,43 @@
 /* custom_fonts.css */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
-
+/* 
 html, body, * {
   font-family: 'Inter', Georgia, 'Times New Roman', Times, serif !important;
   letter-spacing: 0.01em;
   font-smooth: always;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+} */
+
+body, * {
+      font-family: 'Inter', sans-serif !important;
+
+}  
+.layout-side-section, 
+.desk-sidebar, 
+.list-sidebar {
+  background: #250b35 !important;
+  color: #cf9dd1 !important;
+}
+.standard-sidebar-item.selected{
+  border: 1px solid #cf9dd1 !important;
+  background-color: transparent !important;
+  border-radius: 2px !important;
+}
+
+.sidebar-item-label, .sidebar-item-icon{
+  color: #cf9dd1 !important;
+  /* font-family: 'Inter', sans-serif !important; */
+}
+/* Buttons */
+.btn-default {
+  border-radius: 2px !important;
+  padding: 8px 16px !important;
+  font-weight: 600 !important;
+  background: #ec0552 !important;   /* purple primary */
+  color: #fff !important;
+  border: none !important;
 }
 
 
@@ -473,12 +503,12 @@ symbol#icon-small-down{
 
 
 /* Sidebar CSS */
-.standard-sidebar .standard-sidebar-item.selected, .desk-sidebar .standard-sidebar-item.selected, .search-dialog .search-results .search-sidebar .standard-sidebar-item.selected {
+/* .standard-sidebar .standard-sidebar-item.selected, .desk-sidebar .standard-sidebar-item.selected, .search-dialog .search-results .search-sidebar .standard-sidebar-item.selected {
   color: #fff !important;
     background-color: var(--primary-color) !important;
     border-radius: 50 !important;
     
-}
+} */
 
 .container {
     margin: 0px !important;
@@ -552,7 +582,7 @@ color: #fff !important;
 }
 
 /* Selected: standout glass look with color glow */
-.desk-sidebar-item.standard-sidebar-item.selected {
+/* .desk-sidebar-item.standard-sidebar-item.selected {
     background: rgba(255, 255, 255, 0.1);
     color: #ffffff;
     fill: #ffffff;
@@ -560,14 +590,14 @@ color: #fff !important;
     box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(8px);
     transform: scale(1.02);
-}
+} */
 
-/* Force icon and label to white on selected */
+/* Force icon and label to white on selected
 .desk-sidebar-item.standard-sidebar-item.selected .sidebar-item-label,
 .desk-sidebar-item.standard-sidebar-item.selected .sidebar-item-icon {
     color: #ffffff !important;
     fill: #ffffff !important;
-}
+} */
 
 /* Optional: Add subtle underline animation on hover */
 /* .desk-sidebar-item.standard-sidebar-item .sidebar-item-label::after {

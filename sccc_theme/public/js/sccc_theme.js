@@ -7,7 +7,7 @@
 
 $( document ).ready(function() {
   setTimeout(()=>{
-    improve_my_erp();
+    // improve_my_erp();
   }, 300);
 });
 
