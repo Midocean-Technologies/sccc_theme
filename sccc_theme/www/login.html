@@ -32,8 +32,14 @@
     .header-text p {
       font-size: 14px;
       color: #bbb;
-      margin-top: 6px;
+      /* margin-top: 6px; */
     }
+    @media (min-width: 1200px) {
+    h2 {
+        font-size: 3rem;
+        margin-top: 1rem;
+    }
+}
 
     .login-container {
       background: #fff;
@@ -105,7 +111,7 @@
       display: flex;
       align-items: center; /* ensures vertical centering */
       gap: 8px; /* spacing between items */
-      margin-top: 15px;
+      /* margin-top: 15px; */
     }
 
     .actions .or-separator {
@@ -173,7 +179,7 @@
       <label for="login_password">Password</label>
       <input type="password" id="login_password" placeholder="Password">
 
-      <a href="#forgot">{{ _("Forgot your password?") }}</a>
+      <a href="#forgot"><u>{{ _("Forgot your password?") }}</u></a>
 
       <div class="actions">
         <button type="submit" class="btn btn-sign-in">{{ _("Sign In") }}</button>
@@ -191,7 +197,6 @@
 
   <div class="brand-footer">
     <img src="/assets/sccc_theme/images/SCCC Logo - white.png" alt="SCCC">
-    <p>sccc by sllc</p>
   </div>
 
 </body>
