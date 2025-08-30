@@ -1,0 +1,36 @@
+[
+ {
+  "charts": [],
+  "content": "[{\"id\":\"XMnWsF6low\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Home</span>\",\"col\":12}},{\"id\":\"iWEojwtiuB\",\"type\":\"custom_block\",\"data\":{\"custom_block_name\":\"Shortcuts\",\"col\":12}}]",
+  "custom_blocks": [
+   {
+    "custom_block_name": "Shortcuts",
+    "label": "Shortcuts",
+    "parent": "Home",
+    "parentfield": "custom_blocks",
+    "parenttype": "Workspace"
+   }
+  ],
+  "docstatus": 0,
+  "doctype": "Workspace",
+  "for_user": "",
+  "hide_custom": 0,
+  "icon": null,
+  "indicator_color": "green",
+  "is_hidden": 0,
+  "label": "Home",
+  "links": [],
+  "modified": "2025-08-30 17:09:40.706693",
+  "module": null,
+  "name": "Home",
+  "number_cards": [],
+  "parent_page": "",
+  "public": 1,
+  "quick_lists": [],
+  "restrict_to_domain": null,
+  "roles": [],
+  "sequence_id": 28.0,
+  "shortcuts": [],
+  "title": "Home"
+ }
+]
