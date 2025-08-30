@@ -43,10 +43,10 @@
 
     .login-container {
       background: #fff;
-      padding: 30px;
+      padding: 25px;
       border-radius: 10px;
       width: 100%;
-      max-width: 450px;
+      max-width: 400px;
       box-shadow: 0px 6px 20px rgba(0,0,0,0.2);
       text-align: left;
     }
@@ -63,6 +63,9 @@
       margin-bottom: 6px;
       font-size: 13px;
       color: #333;
+    }
+    .web-footer, .navbar {
+      display: none !important;
     }
 
     .login-container input {
@@ -131,14 +134,15 @@
     .login-container a:hover {
       text-decoration: underline;
     }
-    
     .footer-text {
       text-align: left;
       font-size: 12px;
       color: #666;
       /* max-width: 340px; */
       margin-top: 20px;
-    }
+      margin-bottom: -20px;
+  }
+
     .footer-text a {
       /* color: #ed1651; */
       text-decoration: none;
@@ -170,8 +174,10 @@
     <p>Sign in to your SCCC ERP</p>
   </div>
 
+  
+
   <div class="login-container">
-    <h2>Sign in</h2>
+    <h2 style="margin-top: 0px;">Sign in</h2>
     <form class="form-login" role="form">
       <label for="login_email">Email</label>
       <input type="text" id="login_email" placeholder="Email">
@@ -179,7 +185,7 @@
       <label for="login_password">Password</label>
       <input type="password" id="login_password" placeholder="Password">
 
-      <a href="#forgot"><u>{{ _("Forgot your password?") }}</u></a>
+      <a style="color: rgb(131, 131, 131);" href="#forgot"><u>{{ _("Forgot your password?") }}</u></a>
 
       <div class="actions">
         <button type="submit" class="btn btn-sign-in">{{ _("Sign In") }}</button>
@@ -205,11 +211,11 @@
 {% endmacro %}
 
 {% block script %}
-<script>
+<!-- <script>
 {% include "templates/includes/login/login.js"  %}
 $(document).ready(function() {
     $(".web-footer").hide();
     $(".navbar").hide();
 });
-</script>
+</script> -->
 {% endblock %}
