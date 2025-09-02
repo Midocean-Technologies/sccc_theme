@@ -1,14 +1,23 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap'); */
 
-
-
-body, * {
-       font-family: "HelveticaNowMTText", "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", sans-serif;
+/* body, * { */
+       /* font-family: "HelveticaNowMTText", "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", sans-serif; */
        /* font-weight: 400; */
-       font-style: normal;
-}  
-.layout-side-section, 
+       /* font-style: normal; */
+/* }   */
+
+@media (min-width: 992px) {
+  [data-page-route="Workspaces"] .layout-main .layout-main-section {
+    border: 1px solid var(--border-color);
+    padding: var(--padding-md);
+    margin-bottom: var(--margin-sm);
+    margin-top: 50px;
+
+  }
+}
+
+/* .layout-side-section, 
 .desk-sidebar, 
 .list-sidebar{
   background: #340746 !important;
@@ -21,7 +30,6 @@ body, * {
   color: violet !important;
 }
 .widget.shortcut-widget-box {
-  /* border: 1px solid rgb(235, 159, 238) !important; */
   border-radius: 2px !important;
   padding: 10% !important;
   box-shadow: 10px 10px 10px 10px rgba(235, 92, 235, 0.1) !important;
@@ -33,6 +41,8 @@ body, * {
   font-weight: 800 !important;
  
 }
+
+
 
 
 .standard-sidebar-item:hover{
@@ -61,14 +71,12 @@ body, * {
 }
 .sidebar-item-label, .sidebar-item-icon, .standard-sidebar-label{
   color: white !important;
-  /* font-family: 'Inter', sans-serif !important; */
 }
-/* Buttons */
 .btn-primary {
   border-radius: 2px !important;
   padding: 8px 16px !important;
   font-weight: 600 !important;
-  background: #ec0552 !important;   /* purple primary */
+  background: #ec0552 !important;   
   color: #fff !important;
   border: none !important;
-}
+} */

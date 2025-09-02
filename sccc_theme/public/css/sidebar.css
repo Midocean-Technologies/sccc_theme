@@ -141,3 +141,59 @@ body.sccc-rail-padding .container.page-container{
 .layout-side-section {
   display: none;
 }
+
+.sccc-user {
+  position: relative;
+}
+
+.sccc-user-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  bottom: 100%;  /* 👈 appear above */
+  margin-bottom: 10px; /* gap between menu and user card */
+  background: #1e1e2d; /* dark background to match sidebar */
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  padding: 6px 0;
+  min-width: 160px;
+  z-index: 999;
+  animation: fadeInUp 0.2s ease;
+}
+
+.sccc-user-menu button {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 500;
+  color: #f5f5f5;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.sccc-user-menu button:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+/* little arrow effect */
+.sccc-user-menu::before {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  right: 14px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: #1e1e2d transparent transparent transparent;
+}
+
+/* smooth animation */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
