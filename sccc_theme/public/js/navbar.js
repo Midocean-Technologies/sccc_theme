@@ -109,7 +109,7 @@ body {
       <span class="sccc-search-icn">
         <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M10 4a6 6 0 014.58 9.83l4.3 4.3-1.42 1.41-4.3-4.29A6 6 0 1110 4zm0 2a4 4 0 100 8 4 4 0 000-8z"></path></svg>
       </span>
-      <input id="sccc-search-input" type="text" placeholder="Search or type a command (⌘ + G)" autocomplete="off" />
+      <input id="sccc-search-input" type="text" placeholder="Search" autocomplete="off" />
     </div>
   </div>
 
@@ -270,23 +270,30 @@ body {
     }
 
     // search: proxy to existing awesomebar if present
-    const input = $root.querySelector("#sccc-search-input");
-    if (input) {
-      // if the user presses Enter, mirror the value into #navbar-search and trigger its handlers
-      input.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-          const native = document.getElementById("navbar-search");
-          if (native) {
-            native.value = input.value;
-            native.dispatchEvent(new Event("input", { bubbles: true }));
-            native.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
-          } else if (window.frappe && frappe.search && frappe.search.utils && frappe.search.utils.search) {
-            // fallback: use frappe.search API if available
-            frappe.search.utils.search(input.value);
-          }
+    const searchInput = $root.querySelector("#sccc-search-input");
+    if (searchInput) {
+      function initAwesomeBar() {
+        if (frappe.search && frappe.search.AwesomeBar) {
+          const bar = new frappe.search.AwesomeBar();
+          bar.setup(searchInput);
+          console.log("✅ SCCC AwesomeBar initialized");
+          return true;
         }
-      });
+        return false;
+      }
+
+      // Retry until frappe.search.AwesomeBar is ready
+      let tries = 0;
+      const maxTries = 20;
+      const interval = setInterval(() => {
+        if (initAwesomeBar() || tries >= maxTries) {
+          clearInterval(interval);
+        }
+        tries++;
+      }, 300);
     }
+
+
   }
 
   function insertBarOnce() {
