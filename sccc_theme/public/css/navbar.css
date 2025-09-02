@@ -53,7 +53,7 @@ body { padding-top: var(--sccc-globalbar-h); }
   background: var(--control-bg, #fff);
 }
 .sccc-search-icn{position:absolute; left:10px; opacity:.6}
-#sccc-search-input{margin-left:20px; border:0; outline:none; background:transparent}
+#sccc-search-input{width: 120%; margin-left:20px; border:0; outline:none; background:transparent}
 
 /* compact on small screens */
 @media (max-width: 991px){
