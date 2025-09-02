@@ -55,7 +55,7 @@ body {
   padding: 6px 10px;
   background: var(--control-bg, #f6f7f9);
   border: 1px solid var(--border-color, #e5e7eb);
-  border-radius: 999px;
+  border-radius: 0px;
   max-width: 40vw;
   white-space: nowrap;
   overflow: hidden;
@@ -81,16 +81,13 @@ body {
 .sccc-icon {
   display: inline-flex; align-items: center; justify-content: center;
   width: 34px; height: 34px;
-  border: 1px solid var(--border-color, #e5e7eb);
-  border-radius: 8px;
-  background: var(--control-bg, #f6f7f9);
   color: var(--text-color, #111827);
   cursor: pointer;
 }
 .sccc-icon:hover { background: #eef0f3; }
 
 /* avatar look */
-.sccc-avatar { border-radius: 999px; }
+.sccc-avatar { border-radius: 0px; }
 
 /* ensure page-head comes AFTER the bar in visual flow */
 .page-head { margin-top: 0; } /* body padding already shifts everything */
@@ -102,7 +99,7 @@ body {
 <div id="${IDS.BAR}" class="sccc-topbar" role="region" aria-label="SCCC Top Bar">
   <div class="sccc-left">
     <button class="sccc-icon sccc-panes" title="Toggle Navigation" aria-label="Toggle Navigation">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+      <i class="fa fa-columns"></i>
     </button>
     <span class="sccc-pill" id="sccc-title-pill">Home</span>
   </div>
@@ -118,19 +115,19 @@ body {
 
   <div class="sccc-right">
     <button class="sccc-icon" data-route="integrations" title="Integrations" aria-label="Integrations">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M7 2h2v6h6V2h2v6h2v2h-2v4a5 5 0 11-10 0V10H5V8h2V2z"></path></svg>
+      <i class="fa fa-bolt"></i>
     </button>
     <button class="sccc-icon" data-route="list:Event" title="Calendar" aria-label="Calendar">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h3v18H4V4h3V2zm12 8H5v10h14V10z"></path></svg>
+      <i class="fa fa-calendar"></i>
     </button>
     <button class="sccc-icon" data-act="clear" title="Clear Filters / Reload" aria-label="Clear Filters / Reload">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M6 7h12l-1 14H7L6 7zm3-4h6l1 2H8l1-2z"></path></svg>
+      <i class="fa fa-trash"></i>
     </button>
     <button class="sccc-icon" data-route="notifications" title="Notifications" aria-label="Notifications">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M12 22a2 2 0 002-2H10a2 2 0 002 2zm6-6V11a6 6 0 10-12 0v5L4 18v2h16v-2l-2-2z"></path></svg>
+      <i class="fa fa-bell"></i>
     </button>
-    <button class="sccc-icon sccc-avatar" data-route="me" title="Profile" aria-label="Profile">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a5 5 0 110 10 5 5 0 010-10zm0 12c-5 0-9 2.5-9 5.5V22h18v-2.5c0-3-4-5.5-9-5.5z"></path></svg>
+    <button class="sccc-icon sccc-avatar" data-route="me" title="Profile" aria-label="Profile" style="background: var(--avatar-bg, #f0f0f0ff); color: #000000ff;">
+      <i class="fa fa-adjust" aria-hidden="true"></i>
     </button>
   </div>
 </div>`;
