@@ -7,7 +7,7 @@
        /* font-style: normal; */
 /* }   */
 
-@media (min-width: 992px) {
+/* @media (min-width: 992px) {
   [data-page-route="Workspaces"] .layout-main .layout-main-section {
     border: 1px solid var(--border-color);
     padding: var(--padding-md);
@@ -15,6 +15,11 @@
     margin-top: 50px;
 
   }
+} */
+
+.page-head {
+  margin-top: 0;
+  margin-bottom: 55px;
 }
 
 /* .layout-side-section, 
