@@ -1,0 +1,62 @@
+/* Keep original navbar logic in DOM, but hide visually */
+header.navbar.navbar-expand.sccc-hidden { display: none !important; }
+
+/* Reserve space below our fixed bar so page content doesn't hide behind it */
+:root {
+  --sccc-globalbar-h: 56px;
+  --sccc-left: 0px;             /* dynamic: set by JS based on sidebar */
+  --sccc-rightwidth: 100%;
+}
+body { padding-top: var(--sccc-globalbar-h); }
+
+/* The new bar sticks to top, but starts AFTER the sidebar width */
+.sccc-globalbar{
+  position: fixed;
+  top: 0;
+  left: var(--sccc-left);
+  width: calc(100% - var(--sccc-left));
+  z-index: 1050;
+
+  display: flex; align-items: center; gap: 16px;
+  padding: 10px 16px;
+  background: var(--surface-color, #fff);
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+}
+
+/* zones */
+.sccc-gb-left{display:flex; align-items:center; gap:10px}
+.sccc-gb-center{flex:1; display:flex; justify-content:center}
+.sccc-gb-right{display:flex; align-items:center; gap:12px}
+
+/* brand */
+.sccc-brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit;}
+.sccc-logo{height:22px; width:auto; display:block}
+.sccc-home{font-weight:700}
+
+/* title */
+.sccc-title{font-weight:600; white-space:nowrap; max-width:40vw; overflow:hidden; text-overflow:ellipsis}
+.sccc-divider{width:1px; height:18px; background: var(--border-color, #e5e7eb); margin:0 6px}
+
+/* icons */
+.sccc-icon{
+  appearance:none; border:0; background:transparent;
+  padding:6px; border-radius:8px; cursor:pointer;
+}
+.sccc-icon:hover{background:rgba(0,0,0,.05)}
+
+/* search */
+.sccc-search{
+  min-width:420px; max-width:680px; width:50%;
+  position:relative; display:flex; align-items:center;
+  border:1px solid var(--border-color, #e5e7eb);
+  border-radius:10px; padding:8px 12px 8px 34px;
+  background: var(--control-bg, #fff);
+}
+.sccc-search-icn{position:absolute; left:10px; opacity:.6}
+#sccc-search-input{width:100%; border:0; outline:none; background:transparent}
+
+/* compact on small screens */
+@media (max-width: 991px){
+  .sccc-gb-center{display:none}
+  .sccc-title{max-width:50vw}
+}

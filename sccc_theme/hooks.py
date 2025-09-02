@@ -25,14 +25,23 @@ app_license = "mit"
 # ------------------
 
 # include js, css files in header of desk.html
-app_include_css = "/assets/sccc_theme/css/sccc_theme.css"
-app_include_js = "/assets/sccc_theme/js/sccc_theme.js"
+# app_include_css = "/assets/sccc_theme/css/sccc_theme.css"
+# app_include_js = "/assets/sccc_theme/js/sccc_theme.js"
+
+app_include_css = [
+    "/assets/sccc_theme/css/sidebar.css",
+    "/assets/sccc_theme/css/navbar.css"
+]
+app_include_js = [
+    "/assets/sccc_theme/js/sidebar.js",
+    "/assets/sccc_theme/js/navbar.js"
+]
 
 # fixtures
-fixtures = [
-    {"dt":"Workspace","filters":[["name", "in",["Home"]]]}, 
-    {"dt":"Custom HTML Block","filters":[["name", "in",["Shortcuts"]]]}
-]
+# fixtures = [
+#     {"dt":"Workspace","filters":[["name", "in",["Home"]]]}, 
+#     {"dt":"Custom HTML Block","filters":[["name", "in",["Shortcuts"]]]}
+# ]
 # include js, css files in header of web template
 # web_include_css = "/assets/sccc_theme/css/sccc_theme.css"
 # web_include_js = "/assets/sccc_theme/js/sccc_theme.js"
