@@ -25,12 +25,13 @@ app_license = "mit"
 # ------------------
 
 # include js, css files in header of desk.html
-# app_include_css = "/assets/sccc_theme/css/sccc_theme.css"
+# app_include_css = ""
 # app_include_js = "/assets/sccc_theme/js/sccc_theme.js"
 
 app_include_css = [
     "/assets/sccc_theme/css/sidebar.css",
-    "/assets/sccc_theme/css/navbar.css"
+    "/assets/sccc_theme/css/navbar.css",
+    "/assets/sccc_theme/css/sccc_theme.css"
 ]
 app_include_js = [
     "/assets/sccc_theme/js/sidebar.js",

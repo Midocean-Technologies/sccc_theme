@@ -4,10 +4,13 @@
 
   // SVGs (swap with your brand icons if you like)
   const ICON = {
-    logo: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M12 2l7 4v6l-7 4-7-4V6l7-4z" fill="currentColor" opacity=".75"/>
-      <path d="M5 13l7 4 7-4" stroke="currentColor" stroke-width="2" opacity=".35"/>
-    </svg>`,
+//    <-- logo: `<svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" style="width: 40px; height: 40px;">
+//     <path d="M72 56H32C32 78.09 49.91 96 72 96V56Z" fill="#9163A9"/>
+//     <rect x="72" y="32" width="24" height="24" fill="#A18CAD"/>
+//   </svg>`,
+// -->
+
+    chevUp: `<svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M7 14l5-5 5 5z"/></svg>`,
     chevDown: `<svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>`,
     gear: `<svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M12 8a4 4 0 100 8 4 4 0 000-8zm9 4l-2.1 1.2.2 2.4-2.4.2L15.6 18 14.4 20l-2.4-.2L11 22H9l-.9-2.2L5.7 20 4.4 18l-1.9-.2.2-2.4L.9 12 2.7 10l-.2-2.4L4.9 7 6.2 5l2.4.2L11 3h2l.9 2.2 2.4-.2L18.3 7l2.4.6-.2 2.4L21 12z"/></svg>`,
     cmd: `<svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M7 3a4 4 0 100 8h2V9H7a2 2 0 110-4 2 2 0 012 2v2h6V7a4 4 0 10-4 4h2v2h-2a4 4 0 104 4v-2h-6v2a2 2 0 11-2-2h2v-2H7z"/></svg>`,
@@ -26,8 +29,10 @@
         <div class="sccc-rail-panel">
           <!-- Brand -->
           <div class="sccc-brand">
-            <div class="sccc-logo">${ICON.logo}</div>
-            <div class="sccc-brand-text">
+            <div class="sccc-logo">
+               <img src="/assets/sccc_theme/images/sidebar-logo.png" alt="SCCC Logo" style="height:38px; margin-top:-6px;">
+            </div>
+               <div class="sccc-brand-text">
               <div class="sccc-brand-title">SCCC</div>
               <div class="sccc-brand-sub">By SCCC</div>
             </div>
@@ -44,10 +49,10 @@
           <div class="sccc-hr"></div>
 
           <!-- Settings -->
-          <div class="sccc-link" data-route="settings">
-            <span class="sccc-link-icn">${ICON.gear}</span>
+          <!--- <div class="sccc-link" data-route="settings">
+            <span class="fa fa-cog"></span>
             <span class="sccc-link-txt">Settings</span>
-          </div>
+          </div> --->
 
           <div class="sccc-spacer"></div>
 
@@ -58,11 +63,12 @@
               <span class="sccc-tools-caret">${ICON.chevDown}</span>
             </summary>
             <div class="sccc-tool" data-route="list:ToDo">
-              <span class="sccc-tool-icn">${ICON.todo}</span>
+              <!-- <span class="fa fa-bar-chart"></span> -->
+              <span>📊</span>
               <span class="sccc-tool-txt">Todo</span>
             </div>
             <div class="sccc-tool" data-route="list:Note">
-              <span class="sccc-tool-icn">${ICON.note}</span>
+              <span>💪</span>
               <span class="sccc-tool-txt">Note</span>
             </div>
             <div class="sccc-tool" data-route="modules">
@@ -73,16 +79,21 @@
 
           <div class="sccc-hr"></div>
 
-          <!-- User card -->
+          
           <div class="sccc-user">
             <div class="sccc-avatar">${initials}</div>
             <div class="sccc-user-meta">
               <div class="sccc-user-name">${frappe.utils.escape_html(user)}</div>
               <div class="sccc-user-mail">${frappe.utils.escape_html(email)}</div>
             </div>
-            <button class="sccc-user-caret" title="Account">${ICON.chevDown}</button>
+            <button class="sccc-user-caret" title="Account">${ICON.chevUp}</button>
+            <div class="sccc-user-menu">
+              <button class="sccc-logout-btn"><i class="fa fa-sign-out"></i> Logout</button>
+            </div>
+
           </div>
-        </div>
+
+
       </aside>
     `;
   }
@@ -98,6 +109,23 @@
   }
 
   function wireRail($root) {
+
+    // User menu toggle
+    $root.on("click", ".sccc-user-caret", function() {
+      const menu = $root.find(".sccc-user-menu");
+      menu.toggle();
+    });
+
+    // Logout
+    $root.on("click", ".sccc-logout-btn", function() {
+      frappe.call({
+        method: "logout",
+        callback: function () {
+          window.location.href = "/login";
+        }
+      });
+    });
+
     // Settings & tools
     $root.on("click", ".sccc-link", function(){ routeGo(this.getAttribute("data-route")); });
     $root.on("click", ".sccc-tool", function(){ routeGo(this.getAttribute("data-route")); });
