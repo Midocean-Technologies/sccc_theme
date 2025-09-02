@@ -53,15 +53,21 @@
     .header-text p {
       font-size: 14px;
       color: #bbb;
-      margin-top: 6px;
+      /* margin-top: 6px; */
     }
+    @media (min-width: 1200px) {
+    h2 {
+        font-size: 3rem;
+        margin-top: 1rem;
+    }
+}
 
     .login-container {
       background: #fff;
       padding: 25px;
       /* border-radius: 10px; */
       width: 100%;
-      max-width: 450px;
+      max-width: 400px;
       box-shadow: 0px 6px 20px rgba(0,0,0,0.2);
       text-align: left;
     }
@@ -78,6 +84,9 @@
       margin-bottom: 6px;
       font-size: 13px;
       color: #333;
+    }
+    .web-footer, .navbar {
+      display: none !important;
     }
 
     .login-container input {
@@ -129,7 +138,7 @@
       display: flex;
       align-items: center; /* ensures vertical centering */
       gap: 8px; /* spacing between items */
-      margin-top: 15px;
+      /* margin-top: 15px; */
     }
 
     .actions .or-separator {
@@ -149,14 +158,15 @@
     .login-container a:hover {
       text-decoration: underline;
     }
-    
     .footer-text {
       text-align: left;
       font-size: 12px;
       color: #666;
       /* max-width: 340px; */
       margin-top: 20px;
-    }
+      margin-bottom: -20px;
+  }
+
     .footer-text a {
       /* color: #ed1651; */
       text-decoration: none;
@@ -188,8 +198,10 @@
     <p>Sign in to your SCCC ERP</p>
   </div>
 
+  
+
   <div class="login-container">
-    <h2>Sign in</h2>
+    <h2 style="margin-top: 0px;">Sign in</h2>
     <form class="form-login" role="form">
       <label for="login_email">Email</label>
       <input type="text" id="login_email" placeholder="Email">
@@ -200,7 +212,7 @@
         <span id="toggleIcon" class="toggle-btn" onclick="togglePassword()">Show</span>
       </div>
 
-      <a href="#forgot">{{ _("Forgot your password?") }}</a>
+      <a style="color: rgb(131, 131, 131);" href="#forgot"><u>{{ _("Forgot your password?") }}</u></a>
 
       <div class="actions">
         <button type="submit" class="btn btn-sign-in">{{ _("Sign In") }}</button>
@@ -218,7 +230,6 @@
 
   <div class="brand-footer">
     <img src="/assets/sccc_theme/images/SCCC Logo - white.png" alt="SCCC">
-    <p>sccc by sllc</p>
   </div>
 
 </body>
