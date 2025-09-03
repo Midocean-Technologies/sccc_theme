@@ -69,10 +69,7 @@
               <span>💪</span>
               <span class="sccc-tool-txt">Note</span>
             </div>
-            <div class="sccc-tool" data-route="modules">
-              <span class="sccc-tool-icn">${ICON.more}</span>
-              <span class="sccc-tool-txt">More</span>
-            </div>
+            
           </details>
 
           <div class="sccc-hr"></div>
@@ -107,9 +104,12 @@
   }
 
   function wireRail($root) {
-
+    // route home
+    $root.on("click", ".sccc-brand", function () {
+      frappe.set_route("home");
+    });
     // User menu toggle
-    $root.on("click", ".sccc-user-caret", function() {
+    $root.on("click", ".sccc-user", function() {
       const menu = $root.find(".sccc-user-menu");
       menu.toggle();
     });
