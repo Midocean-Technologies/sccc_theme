@@ -39,13 +39,11 @@
           </div>
 
           <!-- Module selector -->
+          
           <div class="sccc-section-label">Module</div>
-          <button class="sccc-select" id="sccc-module-select">
-            <span class="sccc-select-icon">${ICON.cmd}</span>
-            <span class="sccc-select-label">Home</span>
-            <span class="sccc-select-caret">${ICON.chevDown}</span>
-          </button>
-
+          <select class="sccc-select" id="sccc-module-select_">
+            <option value="home">Home</option>
+          </select>
           <div class="sccc-hr"></div>
 
           <!-- Settings -->
@@ -129,7 +127,10 @@
     // Settings & tools
     $root.on("click", ".sccc-link", function(){ routeGo(this.getAttribute("data-route")); });
     $root.on("click", ".sccc-tool", function(){ routeGo(this.getAttribute("data-route")); });
-
+    $root.on("change", "#sccc-module-select_", function () {
+      const route = this.value;
+      frappe.set_route(route);
+    });
     // Module selector dialog
     $root.find("#sccc-module-select").on("click", async () => {
       const r = await frappe.xcall("frappe.desk.desktop.get_workspace_sidebar_items");
@@ -148,17 +149,101 @@
         __("Go")
       );
     });
+    $root.on("change", "#sccc-module-select_", async function () {
+    const route = this.value;
+    frappe.set_route(route);
+    const label = $(this).find("option:selected").text();
+    $root.find(".sccc-select-label").text(label);
 
+    // clear old collapsibles
+    $root.find(".sccc-collapsible").remove();
+    let page = this.value;
+    // fetch workspace details
+    const ws = await frappe.call("frappe.desk.desktop.get_desktop_page", { page: JSON.stringify({ name: page }) });
+    const data = ws.message || {};
+    LOG("Workspace data:", data);
+    const collapsibles = [
+    {
+      title: "Shortcuts",
+      items: Array.isArray(data.shortcuts?.items)
+        ? data.shortcuts.items.map(s => ({ label: s.label, route: s.link_to ? slugify(s.link_to) : slugify(s.label) }))
+        : [],
+    },
+    {
+      title: "Reports",
+      items: Array.isArray(data.cards?.items)
+        ? data.cards.items.map(r => ({ label: r.label, route: r.link_to ? slugify(r.link_to) : slugify(r.label) }))
+        : [],
+    },
+    {
+      title: "Settings",
+      items: Array.isArray(data.onboardings?.items)
+        ? data.onboardings.items.map(s => ({ label: s.label, route: s.link_to ? slugify(s.link_to) : slugify(s.label) }))
+        : [],
+    },
+  ];
+
+  collapsibles.forEach(col => {
+    if (!col.items.length) return;
+
+    const details = $(`
+      <details class="sccc-tools sccc-collapsible">
+      <summary class="sccc-tools-head">
+              <span>${col.title}</span>
+              <span class="sccc-tools-caret">${ICON.chevDown}</span>
+            </summary>
+           
+        ${col.items
+          .map(i => `<div class="sccc-tool sccc-collapsible-item" data-route="${i.route}">  <span class="sccc-tool-icn">${ICON.todo}</span>
+              <span class="sccc-tool-txt">${i.label} </span></div>`)
+          .join("")}
+      </details>
+    `);
+
+    $root.find("#sccc-module-select_").after(details);
+  });
+});
+
+$root.on("click", ".sccc-collapsible-item", function () {
+  const route = $(this).data("route");
+  if (route) frappe.set_route(route);
+});
     // Keep module label synced with current workspace title
-    const syncTitle = () => {
-      const r = frappe.get_route();
-      const isPriv = r[1] === "private";
-      const page = (isPriv ? r[2] : r[1]) || "Home";
-      const pretty = frappe.utils.to_title_case(String(page).replace(/-/g, " "));
-      $root.find(".sccc-select-label").text(pretty);
-    };
-    syncTitle();
-    frappe.router.on("change", syncTitle);
+    // const syncTitle = () => {
+    //   const r = frappe.get_route();
+    //   const isPriv = r[1] === "private";
+    //   const page = (isPriv ? r[2] : r[1]) || "Home";
+    //   const pretty = frappe.utils.to_title_case(String(page).replace(/-/g, " "));
+    //   $root.find(".sccc-select-label").text(pretty);
+    // };
+    // syncTitle();
+    // frappe.router.on("change", syncTitle);
+  }
+  async function loadModules($root) {
+    const r = await frappe.xcall("frappe.desk.desktop.get_workspace_sidebar_items");
+    const pages = (r && r.pages) || [];
+    const $sel = $root.find("#sccc-module-select_");
+
+    $sel.empty();
+    $sel.append(`<option value="home">Home</option>`);
+
+    pages.forEach(p => {
+      const slug = p.public ? frappe.router.slug(p.title) : `private/${frappe.router.slug(p.title)}`;
+      $sel.append(`<option value="${slug}">${p.title}</option>`);
+    });
+
+    // Sync with current route
+    const rroute = frappe.get_route();
+    const currentSlug = (rroute[1] === "private") ? `private/${rroute[2]}` : rroute[1] || "home";
+    $sel.val(currentSlug);
+  }
+   
+  function slugify(text) {
+    return (text || "")
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "-")       // spaces → dash
+      .replace(/[^a-z0-9\-]/g, ""); // remove special chars
   }
 
   function mount() {
@@ -173,6 +258,7 @@
     document.body.appendChild(rail);
 
     wireRail($(rail));
+    loadModules($(rail));
     LOG("✅ SCCC fixed rail (full-bleed top) mounted");
   }
 
