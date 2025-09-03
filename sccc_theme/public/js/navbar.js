@@ -55,7 +55,7 @@ body {
   padding: 6px 10px;
   background: var(--control-bg, #f6f7f9);
   border: 1px solid var(--border-color, #e5e7eb);
-  border-radius: 999px;
+  border-radius: 0px;
   max-width: 40vw;
   white-space: nowrap;
   overflow: hidden;
@@ -65,11 +65,12 @@ body {
 /* search */
 .sccc-search {
   display: flex; align-items: center; gap: 8px;
-  width: min(520px, 60vw);
+  // width: min(520px, 60vw);
   padding: 6px 10px;
   background: var(--control-bg, #f6f7f9);
   border: 1px solid var(--border-color, #e5e7eb);
   border-radius: 10px;
+  margin-left:450px;
 }
 .sccc-search input {
   width: 100%;
@@ -81,16 +82,13 @@ body {
 .sccc-icon {
   display: inline-flex; align-items: center; justify-content: center;
   width: 34px; height: 34px;
-  border: 1px solid var(--border-color, #e5e7eb);
-  border-radius: 8px;
-  background: var(--control-bg, #f6f7f9);
   color: var(--text-color, #111827);
   cursor: pointer;
 }
 .sccc-icon:hover { background: #eef0f3; }
 
 /* avatar look */
-.sccc-avatar { border-radius: 999px; }
+.sccc-avatar { border-radius: 0px; }
 
 /* ensure page-head comes AFTER the bar in visual flow */
 .page-head { margin-top: 0; } /* body padding already shifts everything */
@@ -102,7 +100,7 @@ body {
 <div id="${IDS.BAR}" class="sccc-topbar" role="region" aria-label="SCCC Top Bar">
   <div class="sccc-left">
     <button class="sccc-icon sccc-panes" title="Toggle Navigation" aria-label="Toggle Navigation">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+      <img src ="/assets/sccc_theme/images/Header.svg" alt="Header" style="width:100px; height:100px;"/>
     </button>
     <span class="sccc-pill" id="sccc-title-pill">Home</span>
   </div>
@@ -112,29 +110,34 @@ body {
       <span class="sccc-search-icn">
         <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M10 4a6 6 0 014.58 9.83l4.3 4.3-1.42 1.41-4.3-4.29A6 6 0 1110 4zm0 2a4 4 0 100 8 4 4 0 000-8z"></path></svg>
       </span>
-      <input id="sccc-search-input" type="text" placeholder="Search or type a command (⌘ + G)" autocomplete="off" />
+      <input id="sccc-search-input" type="text" placeholder="Search" autocomplete="off" />
     </div>
   </div>
 
   <div class="sccc-right">
     <button class="sccc-icon" data-route="integrations" title="Integrations" aria-label="Integrations">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M7 2h2v6h6V2h2v6h2v2h-2v4a5 5 0 11-10 0V10H5V8h2V2z"></path></svg>
+      <img src ="/assets/sccc_theme/images/integration.svg" alt="Integrations" style="width:100px; height:100px;"/>
     </button>
-    <button class="sccc-icon" data-route="list:Event" title="Calendar" aria-label="Calendar">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h3v18H4V4h3V2zm12 8H5v10h14V10z"></path></svg>
+    <button class="sccc-icon" data-route="calendar-view" title="Calendar" aria-label="Calendar">
+      <img src ="/assets/sccc_theme/images/calender.svg" alt="Calender" style="width:100px; height:100px;"/>
     </button>
-    <button class="sccc-icon" data-act="clear" title="Clear Filters / Reload" aria-label="Clear Filters / Reload">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M6 7h12l-1 14H7L6 7zm3-4h6l1 2H8l1-2z"></path></svg>
+    <button class="sccc-icon" data-route="deleted-document" title="Clear Filters / Reload" aria-label="Clear Filters / Reload">
+      <img src ="/assets/sccc_theme/images/delete.svg" alt="Clear" style="width:100px; height:100px;"/>
     </button>
-    <button class="sccc-icon" data-route="notifications" title="Notifications" aria-label="Notifications">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M12 22a2 2 0 002-2H10a2 2 0 002 2zm6-6V11a6 6 0 10-12 0v5L4 18v2h16v-2l-2-2z"></path></svg>
+    <button class="sccc-icon" data-route="notification" title="Notifications" aria-label="Notifications">
+      <img src ="/assets/sccc_theme/images/notification.svg" alt="Notification" style="width:100px; height:100px;"/>
     </button>
-    <button class="sccc-icon sccc-avatar" data-route="me" title="Profile" aria-label="Profile">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a5 5 0 110 10 5 5 0 010-10zm0 12c-5 0-9 2.5-9 5.5V22h18v-2.5c0-3-4-5.5-9-5.5z"></path></svg>
+    <button class="sccc-icon sccc-avatar" data-route="app" title="Profile" aria-label="Profile" style="background: var(--avatar-bg, #f0f0f0ff); color: #000000ff;">
+      <img src ="/assets/sccc_theme/images/Vector.svg" alt="Profile" />
     </button>
   </div>
 </div>`;
   }
+
+/* <i class="fa fa-calendar"></i>
+<i class="fa fa-trash"></i>
+<i class="fa fa-bell"></i>
+<i class="fa fa-adjust" aria-hidden="true"></i> */
 
   // --- rail / offset helpers ------------------------------------------------
   function measureLeftSidebar() {
@@ -273,23 +276,30 @@ body {
     }
 
     // search: proxy to existing awesomebar if present
-    const input = $root.querySelector("#sccc-search-input");
-    if (input) {
-      // if the user presses Enter, mirror the value into #navbar-search and trigger its handlers
-      input.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-          const native = document.getElementById("navbar-search");
-          if (native) {
-            native.value = input.value;
-            native.dispatchEvent(new Event("input", { bubbles: true }));
-            native.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
-          } else if (window.frappe && frappe.search && frappe.search.utils && frappe.search.utils.search) {
-            // fallback: use frappe.search API if available
-            frappe.search.utils.search(input.value);
-          }
+    const searchInput = $root.querySelector("#sccc-search-input");
+    if (searchInput) {
+      function initAwesomeBar() {
+        if (frappe.search && frappe.search.AwesomeBar) {
+          const bar = new frappe.search.AwesomeBar();
+          bar.setup(searchInput);
+          console.log("✅ SCCC AwesomeBar initialized");
+          return true;
         }
-      });
+        return false;
+      }
+
+      // Retry until frappe.search.AwesomeBar is ready
+      let tries = 0;
+      const maxTries = 20;
+      const interval = setInterval(() => {
+        if (initAwesomeBar() || tries >= maxTries) {
+          clearInterval(interval);
+        }
+        tries++;
+      }, 300);
     }
+
+
   }
 
   function insertBarOnce() {
