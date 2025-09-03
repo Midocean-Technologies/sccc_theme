@@ -65,11 +65,12 @@ body {
 /* search */
 .sccc-search {
   display: flex; align-items: center; gap: 8px;
-  width: min(520px, 60vw);
+  // width: min(520px, 60vw);
   padding: 6px 10px;
   background: var(--control-bg, #f6f7f9);
   border: 1px solid var(--border-color, #e5e7eb);
   border-radius: 10px;
+  margin-left:450px;
 }
 .sccc-search input {
   width: 100%;
@@ -99,7 +100,7 @@ body {
 <div id="${IDS.BAR}" class="sccc-topbar" role="region" aria-label="SCCC Top Bar">
   <div class="sccc-left">
     <button class="sccc-icon sccc-panes" title="Toggle Navigation" aria-label="Toggle Navigation">
-      <i class="fa fa-columns"></i>
+      <img src ="/assets/sccc_theme/images/Header.svg" alt="Header" style="width:100px; height:100px;"/>
     </button>
     <span class="sccc-pill" id="sccc-title-pill">Home</span>
   </div>
@@ -115,23 +116,28 @@ body {
 
   <div class="sccc-right">
     <button class="sccc-icon" data-route="integrations" title="Integrations" aria-label="Integrations">
-      <i class="fa fa-bolt"></i>
+      <img src ="/assets/sccc_theme/images/integration.svg" alt="Integrations" style="width:100px; height:100px;"/>
     </button>
-    <button class="sccc-icon" data-route="list:Event" title="Calendar" aria-label="Calendar">
-      <i class="fa fa-calendar"></i>
+    <button class="sccc-icon" data-route="calendar-view" title="Calendar" aria-label="Calendar">
+      <img src ="/assets/sccc_theme/images/calender.svg" alt="Calender" style="width:100px; height:100px;"/>
     </button>
-    <button class="sccc-icon" data-act="clear" title="Clear Filters / Reload" aria-label="Clear Filters / Reload">
-      <i class="fa fa-trash"></i>
+    <button class="sccc-icon" data-route="deleted-document" title="Clear Filters / Reload" aria-label="Clear Filters / Reload">
+      <img src ="/assets/sccc_theme/images/delete.svg" alt="Clear" style="width:100px; height:100px;"/>
     </button>
-    <button class="sccc-icon" data-route="notifications" title="Notifications" aria-label="Notifications">
-      <i class="fa fa-bell"></i>
+    <button class="sccc-icon" data-route="notification" title="Notifications" aria-label="Notifications">
+      <img src ="/assets/sccc_theme/images/notification.svg" alt="Notification" style="width:100px; height:100px;"/>
     </button>
-    <button class="sccc-icon sccc-avatar" data-route="me" title="Profile" aria-label="Profile" style="background: var(--avatar-bg, #f0f0f0ff); color: #000000ff;">
-      <i class="fa fa-adjust" aria-hidden="true"></i>
+    <button class="sccc-icon sccc-avatar" data-route="app" title="Profile" aria-label="Profile" style="background: var(--avatar-bg, #f0f0f0ff); color: #000000ff;">
+      <img src ="/assets/sccc_theme/images/Vector.svg" alt="Profile" />
     </button>
   </div>
 </div>`;
   }
+
+/* <i class="fa fa-calendar"></i>
+<i class="fa fa-trash"></i>
+<i class="fa fa-bell"></i>
+<i class="fa fa-adjust" aria-hidden="true"></i> */
 
   // --- rail / offset helpers ------------------------------------------------
   function measureLeftSidebar() {
