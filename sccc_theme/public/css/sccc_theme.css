@@ -1,11 +1,16 @@
 
 /* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap'); */
 
-/* body, * { */
-       /* font-family: "HelveticaNowMTText", "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", sans-serif; */
-       /* font-weight: 400; */
-       /* font-style: normal; */
-/* }   */
+ @font-face {
+    font-family: 'STCForward';
+    src: local('STCForward'), local('STCForward-Regular'),
+         url('{{frappe.utils.get_url()}}/assets/sccc_theme/font/STCForward-Regular.otf') format('opentype');
+    }
+body, * {
+      font-family: 'STCForward' !important;
+       /* font-weight: 400;
+       font-style: normal; */
+}  
 
 /* @media (min-width: 992px) {
   [data-page-route="Workspaces"] .layout-main .layout-main-section {
