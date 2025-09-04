@@ -22,6 +22,17 @@ body, * {
   }
 } */
 
+.page-body .container{
+  margin: 0;
+  max-width: 1610px !important;
+}
+.page-body,
+.layout-main-section,
+.page-content,
+.container {
+  max-width: 100% !important;  
+  width: 100% !important;
+}
 .page-head {
   margin-top: 0;
   margin-bottom: 55px;
