@@ -19,8 +19,15 @@
   border-right: 1px solid var(--sccc-border);
   z-index: 20;
   padding: 0; margin: 0;           /* zero outer spacing */
+  transition: padding-left 0.3s ease-in-out;
 }
-
+.sccc-rail-fixed.closed {
+  transform: translateX(-100%);
+}
+#sccc-topbar.expanded {
+  position: initial !important;
+  width: 100% !important;
+}
 /* push desk to the right so content is never covered */
 body.sccc-rail-padding .desk-container,
 body.sccc-rail-padding .page-container,
