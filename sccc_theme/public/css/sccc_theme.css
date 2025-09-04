@@ -4,7 +4,7 @@
  @font-face {
     font-family: 'STCForward';
     src: local('STCForward'), local('STCForward-Regular'),
-         url('{{frappe.utils.get_url()}}/assets/sccc_theme/font/STCForward-Regular.otf') format('opentype');
+         url('/assets/sccc_theme/font/STCForward-Regular.otf') format('opentype');
     }
 body, * {
       font-family: 'STCForward' !important;
@@ -81,12 +81,21 @@ body, * {
 }
 .sidebar-item-label, .sidebar-item-icon, .standard-sidebar-label{
   color: white !important;
+}*/
+.btn{
+  border-radius: 0px !important;
+}
+input{
+  border-radius: 0px !important;
+}
+select{
+  border-radius: 0px !important;
 }
 .btn-primary {
-  border-radius: 2px !important;
+  border-radius: 0px !important;
   padding: 8px 16px !important;
   font-weight: 600 !important;
   background: #ec0552 !important;   
   color: #fff !important;
   border: none !important;
-} */
+} 
