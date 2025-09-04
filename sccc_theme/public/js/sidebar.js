@@ -30,7 +30,7 @@
           <!-- Brand -->
           <div class="sccc-brand">
             <div class="sccc-logo">
-               <img src="/assets/sccc_theme/images/sidebar-logo.png" alt="SCCC Logo" style="height:38px; margin-top:-6px;">
+               <img src="/assets/sccc_theme/images/SCCC_Sidebar_Logo.png" alt="SCCC Logo" style="height:38px; margin-top:-6px;">
             </div>
                <div class="sccc-brand-text">
               <div class="sccc-brand-title">SCCC</div>

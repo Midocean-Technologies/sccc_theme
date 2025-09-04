@@ -127,9 +127,7 @@ body {
     <button class="sccc-icon" data-route="notification" title="Notifications" aria-label="Notifications">
       <img src ="/assets/sccc_theme/images/notification.svg" alt="Notification" style="width:100px; height:100px;"/>
     </button>
-    <button class="sccc-icon sccc-avatar" data-route="app" title="Profile" aria-label="Profile" style="background: var(--avatar-bg, #f0f0f0ff); color: #000000ff;">
-      <img src ="/assets/sccc_theme/images/Vector.svg" alt="Profile" />
-    </button>
+    
   </div>
 </div>`;
   }
