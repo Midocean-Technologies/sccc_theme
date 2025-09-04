@@ -1,6 +1,9 @@
 import frappe
 # from frappe.desk.utils import get_link_to
 
+def slugify_doctype(name: str) -> str:
+    return name.strip().lower().replace(" ", "-")
+
 @frappe.whitelist(allow_guest=True)
 def get_sidebar_items(page=None):
     """Get sidebar items"""
@@ -15,7 +18,7 @@ def get_sidebar_items(page=None):
             if sc.type == "Page":
                 route = f"/app/{sc.link_to}"
             elif sc.type == "DocType":
-                route = f"/app/{frappe.scrub(sc.link_to)}"
+                route = f"/app/{slugify_doctype(sc.link_to)}"
             elif sc.type == "Report":
                 route = f"/app/query-report/{sc.link_to}"
             elif sc.type == "Dashboard":

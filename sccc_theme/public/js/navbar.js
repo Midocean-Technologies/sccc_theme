@@ -204,6 +204,17 @@ body {
         ensureLeftOffset();              // now
         setTimeout(ensureLeftOffset, 16);  // next frame
         setTimeout(ensureLeftOffset, 260); // typical transition end
+        const sidebar = document.getElementById("sccc-rail-fixed");
+        const topbar = document.getElementById("sccc-topbar");
+        sidebar.classList.toggle("closed");
+        if(sidebar.classList.contains("closed")){
+          document.body.classList.remove("sccc-rail-padding");
+          topbar.classList.add("expanded");
+        }
+        else {
+           document.body.classList.add("sccc-rail-padding");
+           topbar.classList.remove("expanded");
+        }
       });
     });
   }
