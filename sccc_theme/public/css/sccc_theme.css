@@ -4,7 +4,7 @@
  @font-face {
     font-family: 'STCForward';
     src: local('STCForward'), local('STCForward-Regular'),
-         url('{{frappe.utils.get_url()}}/assets/sccc_theme/font/STCForward-Regular.otf') format('opentype');
+         url('/assets/sccc_theme/font/STCForward-Regular.otf') format('opentype');
     }
 body, * {
       font-family: 'STCForward' !important;
