@@ -70,7 +70,6 @@ body {
   background: var(--control-bg, #f6f7f9);
   border: 1px solid var(--border-color, #e5e7eb);
   border-radius: 10px;
-  margin-left:450px;
 }
 .sccc-search input {
   width: 100%;
@@ -98,11 +97,12 @@ body {
   function buildTopbarHTML() {
     return `
 <div id="${IDS.BAR}" class="sccc-topbar" role="region" aria-label="SCCC Top Bar">
-  <div class="sccc-left">
+  <div class="sccc-left" style="width:700px;">
     <button class="sccc-icon sccc-panes" title="Toggle Navigation" aria-label="Toggle Navigation">
       <img src ="/assets/sccc_theme/images/Header.svg" alt="Header" style="width:100px; height:100px;"/>
     </button>
     <span class="sccc-pill" id="sccc-title-pill">Home</span>
+    <nav class="sccc-breadcrumbs" id="sccc-breadcrumbs"></nav>
   </div>
 
   <div class="sccc-center">
@@ -234,29 +234,151 @@ body {
   }
 
   function syncTitle() {
-    const pill = document.getElementById("sccc-title-pill");
-    if (!pill) return;
-    // Prefer page title text when available (List/Doc pages)
-    const t = document.querySelector(".page-head .title-text");
-    if (t && t.textContent.trim()) {
-      pill.textContent = t.textContent.trim();
-      return;
-    }
-    // Fall back to route-derived workspace/list names
-    if (window.frappe && frappe.get_route) {
-      const r = frappe.get_route(); // e.g., ["List","Customer","List"], or ["app","private","My-WS"]
-      if (Array.isArray(r) && r.length) {
-        let label = r[r.length - 1];
-        if (r[0] === "List" && r[1]) label = r[1];
-        try {
-          label = label.replace(/-/g, " ");
-          pill.textContent = frappe.utils.to_title_case ? frappe.utils.to_title_case(label) : (label.charAt(0).toUpperCase() + label.slice(1));
-        } catch {
-          pill.textContent = label;
+  const pill = document.getElementById("sccc-title-pill");
+  const crumbs = document.getElementById("sccc-breadcrumbs");
+  if (!pill || !crumbs) return;
+
+  function slugify(s) {
+    return String(s || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9\-\/]/g, "-")
+      .replace(/\-+/g, "-")
+      .replace(/(^-|-$)/g, "");
+  }
+
+  let label = "Home";
+  let breadcrumbParts = [];
+
+  if (window.frappe && typeof frappe.get_route === "function") {
+    const r = frappe.get_route();
+
+    if (Array.isArray(r) && r.length) {
+      // remove list/form and empty parts
+      let cleanRoute = r.filter((part) => {
+        if (!part) return false;
+        const p = String(part).toLowerCase();
+        return p !== "list" && p !== "form";
+      });
+
+      breadcrumbParts = cleanRoute.map((part, idx, arr) => {
+        const raw = String(part);
+        let txt;
+
+        // last part is usually docname -> keep as-is (don’t prettify)
+        if (idx === arr.length - 1 && arr.length > 1) {
+          txt = raw;
+        } else {
+          // prettify workspace / doctype names
+          let pretty = raw.replace(/-/g, " ");
+          txt =
+            frappe && frappe.utils && frappe.utils.to_title_case
+              ? frappe.utils.to_title_case(pretty)
+              : pretty.charAt(0).toUpperCase() + pretty.slice(1);
         }
+
+        // handle "New" documents (e.g. ["lead", "new"])
+        if (/^new\b/i.test(raw) && arr[0]) {
+          txt = "New " + (arr[0].replace(/-/g, " "));
+        }
+
+        // build slug array and remove any empty slugs
+        const routeSlug = arr
+          .slice(0, idx + 1)
+          .map(slugify)
+          .filter(Boolean);
+
+        return {
+          text: txt,
+          routeSlug: routeSlug,
+        };
+      });
+
+      if (breadcrumbParts.length) {
+        label = breadcrumbParts[0].text;
       }
     }
   }
+
+  // set title pill to workspace name
+  pill.textContent = label;
+
+  // render breadcrumbs
+  crumbs.innerHTML = "";
+
+  // helper to get the current route (slugified)
+  function getCurrentRouteSlug() {
+    if (window.frappe && typeof frappe.get_route === "function") {
+      return frappe
+        .get_route()
+        .filter(Boolean)
+        .map(slugify)
+        .filter(Boolean);
+    }
+    // fallback to hash if needed
+    if (window.location && window.location.hash) {
+      return window.location.hash.replace(/^#/, "").split("/").filter(Boolean);
+    }
+    return [];
+  }
+
+  breadcrumbParts.forEach((part, i) => {
+    // skip if no useful slug (render as plain text)
+    const isLast = i === breadcrumbParts.length - 1;
+
+    if (!part.routeSlug || part.routeSlug.length === 0) {
+      const span = document.createElement("span");
+      span.textContent = part.text;
+      if (isLast) span.setAttribute("aria-current", "page");
+      crumbs.appendChild(span);
+    } else {
+      if (isLast) {
+        // last crumb = current page -> non-clickable
+        const span = document.createElement("span");
+        span.textContent = part.text;
+        span.setAttribute("aria-current", "page");
+        crumbs.appendChild(span);
+      } else {
+        const link = document.createElement("a");
+        link.textContent = part.text;
+        link.href = "#" + part.routeSlug.join("/");
+        link.style.cursor = "pointer";
+
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+
+          // recompute current route at click time for accuracy
+          const current = getCurrentRouteSlug();
+          const target = part.routeSlug;
+
+          // if target === current, do nothing (prevents changing to "#")
+          if (JSON.stringify(current) === JSON.stringify(target)) {
+            return;
+          }
+
+          if (window.frappe && typeof frappe.set_route === "function") {
+            // call frappe navigation with spread args
+            frappe.set_route(...target);
+          } else {
+            // fallback: update hash
+            window.location.hash = target.join("/");
+          }
+        });
+
+        crumbs.appendChild(link);
+      }
+    }
+
+    if (i < breadcrumbParts.length - 1) {
+      const sep = document.createElement("span");
+      sep.textContent = " › ";
+      sep.classList.add("sep");
+      crumbs.appendChild(sep);
+    }
+  });
+}
+
 
   function wireActions($root) {
     // route buttons
