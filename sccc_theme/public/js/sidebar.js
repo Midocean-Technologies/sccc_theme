@@ -159,46 +159,67 @@
     $root.find(".sccc-collapsible").remove();
     let page = this.value;
     // fetch workspace details
-    const ws = await frappe.call("frappe.desk.desktop.get_desktop_page", { page: JSON.stringify({ name: page }) });
-    const data = ws.message || {};
-    LOG("Workspace data:", data);
-    const collapsibles = [
-    {
-      title: "Shortcuts",
-      items: Array.isArray(data.shortcuts?.items)
-        ? data.shortcuts.items.map(s => ({ label: s.label, route: s.link_to ? slugify(s.link_to) : slugify(s.label) }))
-        : [],
-    },
-    {
-      title: "Reports",
-      items: Array.isArray(data.cards?.items)
-        ? data.cards.items.map(r => ({ label: r.label, route: r.link_to ? slugify(r.link_to) : slugify(r.label) }))
-        : [],
-    },
-    {
-      title: "Settings",
-      items: Array.isArray(data.onboardings?.items)
-        ? data.onboardings.items.map(s => ({ label: s.label, route: s.link_to ? slugify(s.link_to) : slugify(s.label) }))
-        : [],
-    },
-  ];
+    const ws = await frappe.call("sccc_theme.utils.utils.get_sidebar_items", { page: page });
+    const items = ws.message || [];
+        LOG("Workspace data:", items);
+        const grouped = items.reduce((acc, item) => {
+        if (!acc[item.type]) acc[item.type] = [];
+        acc[item.type].push(item);
+        return acc;
+      }, {});
 
-  collapsibles.forEach(col => {
-    if (!col.items.length) return;
-
-    const details = $(`
-      <details class="sccc-tools sccc-collapsible">
-      <summary class="sccc-tools-head">
-              <span>${col.title}</span>
+      // build collapsibles dynamically
+      Object.entries(grouped).forEach(([type, list]) => {
+        const details = $(`
+          <details class="sccc-tools sccc-collapsible">
+            <summary class="sccc-tools-head">
+              <span>${type}</span>
               <span class="sccc-tools-caret">${ICON.chevDown}</span>
             </summary>
+            ${list.map(i => `
+              <div class="sccc-tool sccc-collapsible-item" data-route="${i.route}">
+                <span class="sccc-tool-icn">${ICON.todo}</span>
+                <span class="sccc-tool-txt">${i.label}</span>
+              </div>`).join("")}
+          </details>
+        `);
+  //   const collapsibles = [
+  //   {
+  //     title: "Shortcuts",
+  //     items: Array.isArray(data.shortcuts?.items)
+  //       ? data.shortcuts.items.map(s => ({ label: s.label, route: s.link_to ? slugify(s.link_to) : slugify(s.label) }))
+  //       : [],
+  //   },
+  //   {
+  //     title: "Reports",
+  //     items: Array.isArray(data.cards?.items)
+  //       ? data.cards.items.map(r => ({ label: r.label, route: r.link_to ? slugify(r.link_to) : slugify(r.label) }))
+  //       : [],
+  //   },
+  //   {
+  //     title: "Settings",
+  //     items: Array.isArray(data.onboardings?.items)
+  //       ? data.onboardings.items.map(s => ({ label: s.label, route: s.link_to ? slugify(s.link_to) : slugify(s.label) }))
+  //       : [],
+  //   },
+  // ];
+
+  // collapsibles.forEach(col => {
+  //   if (!col.items.length) return;
+
+  //   const details = $(`
+  //     <details class="sccc-tools sccc-collapsible">
+  //     <summary class="sccc-tools-head">
+  //             <span>${col.title}</span>
+  //             <span class="sccc-tools-caret">${ICON.chevDown}</span>
+  //           </summary>
            
-        ${col.items
-          .map(i => `<div class="sccc-tool sccc-collapsible-item" data-route="${i.route}">  <span class="sccc-tool-icn">${ICON.todo}</span>
-              <span class="sccc-tool-txt">${i.label} </span></div>`)
-          .join("")}
-      </details>
-    `);
+  //       ${col.items
+  //         .map(i => `<div class="sccc-tool sccc-collapsible-item" data-route="${i.route}">  <span class="sccc-tool-icn">${ICON.todo}</span>
+  //             <span class="sccc-tool-txt">${i.label} </span></div>`)
+  //         .join("")}
+  //     </details>
+  //   `);
 
     $root.find("#sccc-module-select_").after(details);
   });
