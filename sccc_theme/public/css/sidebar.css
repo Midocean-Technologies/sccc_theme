@@ -163,9 +163,9 @@ body.sccc-rail-padding .container.page-container{
   display: none;
   position: absolute;
   right: 0;
-  bottom: 100%;  /* 👈 appear above */
-  margin-bottom: 10px; /* gap between menu and user card */
-  background: #1e1e2d; /* dark background to match sidebar */
+  bottom: 100%;  
+  margin-bottom: 10px; 
+  background: linear-gradient(180deg, var(--sccc-bg), #1a0630 70%);
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 10px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.4);

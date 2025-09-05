@@ -115,7 +115,7 @@
     });
 
     // Logout
-    $root.on("click", ".sccc-logout-btn", function() {
+    $root.on("click", ".sccc-user-menu", function() {
       frappe.call({
         method: "logout",
         callback: function () {
