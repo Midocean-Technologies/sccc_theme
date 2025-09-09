@@ -3,14 +3,14 @@
 {% macro email_login_body() -%}
 {% if not disable_user_pass_login or (ldap_settings and ldap_settings.enabled) %}
 <div class="page-card-body">
-	<h2 style="margin-top: 0px;">Sign in</h2><br>
+	<h4 style="color:black !important; margin-top: 0px;">Sign in</h4><br>
 	<div class="form-group">
 
 		<label class="form-label sr-only" for="login_email">{{ login_label or _("Email")}}</label>
 		 <label for="login_email">Email</label>
 		<div class="email-field">
 			<input type="text" id="login_email" class="form-control"
-				placeholder="{% if login_name_placeholder %}{{ login_name_placeholder  }}{% else %}{{ _('jane@example.com') }}{% endif %}"
+				placeholder="{% if login_name_placeholder %}{{ login_name_placeholder  }}{% else %}{{ _('Email') }}{% endif %}"
 				required autofocus autocomplete="username">
 
 			<!-- <svg class="field-icon email-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"
@@ -69,11 +69,11 @@
 
 {% macro logo_section(title=null) %}
 <div class="page-card-head">
-	<img class="app-logo" src="{{ logo }}">
+	<!-- <img class="app-logo" src="{{ logo }}"> -->
 	{% if title %}
 	<h4>{{ _(title)}}</h4>
 	{% else %}
-	<h3>{{ _('Welcome back <br> <p style="font-size: 14px;">Sign in to your SCCC ERP</p>') }}</h3>
+	<h2>{{ _('Welcome back <br> <p style="font-size: 14px;">Sign in to your SCCC ERP</p>') }}</h2>
 	{% endif %}
 </div>
 {% endmacro %}
@@ -267,18 +267,23 @@
 <style>
     body {
       font-family: "HelveticaNowMTText", "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", sans-serif;
-      background: #280444;
+      background: #2C003E;
     }
     .login-content, input, button{
 		border-radius: 0px !important;
 		
 	}
-	
+	.login-content{
+		padding-top: 25px !important;
+		padding-right: 0px !important;
+		padding-left: 0px !important;
+	}
 	label{
 		color: black;
 		font-weight: bold;
+		font-size: 13px !important;
 	}
-	h4, h3{
+	h2, h4, h3{
 		color: white !important;
 	}
 	.btn-outline {
@@ -287,7 +292,20 @@
       color: palevioletred;
 
     }
-	
+	.btn:hover {
+		color: #525252;
+		text-decoration: none;
+	}
+	input:-moz-autofill-selected {
+		appearance: menulist-button;
+		background-image: none !important;
+		background-color: light-dark(rgb(232, 240, 254), rgba(70, 90, 126, 0.4)) !important;
+		color: fieldtext !important;
+	}
+	.btn{
+		height: 43px;
+		font-weight: bold;
+	}
 	.btn-color {
       background-color: rgb(252, 33, 106) !important;
       width: 30%;
@@ -335,6 +353,16 @@
 		border: 1px solid #e8e3e3 !important;
 		padding-left: 8px !important;
 		height: 45px;
+	}
+	.for-login .page-card form,
+	.for-forgot .page-card form,
+	.for-login-with-email-link .page-card form,
+	.for-signup .page-card form,
+	.for-email-login .page-card form{
+			max-width: 400px !important;
+	}
+	.for-login .page-card, .for-forgot .page-card, .for-login-with-email-link .page-card, .for-signup .page-card, .for-email-login .page-card{
+		max-width: 450px !important;
 	}
   </style>
 {% endblock %}
