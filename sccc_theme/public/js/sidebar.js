@@ -157,26 +157,22 @@
     }
   });
 
-  // Detect current slug
   let currentSlug = "home";
   let rroute = frappe.get_route();
   let pathname = window.location.pathname;
 
   if (rroute && rroute[0] === "workspace") {
-    // Example: ["workspace", "buying"]
     if (rroute[1] === "private") {
       currentSlug = `private/${rroute[2]}`;
     } else {
       currentSlug = rroute[1];
     }
   } else if (rroute && (rroute[0] === "Form" || rroute[0] === "List")) {
-    // Example: ["Form", "Item", "ITEM-0001"] OR ["List","Item"]
     const doctype = rroute[1];
     if (doctypeToWorkspace[doctype]) {
       currentSlug = doctypeToWorkspace[doctype];
     }
   } else if (pathname.startsWith("/app/")) {
-    // Example: /app/buying or /app/private/sales
     const parts = pathname.replace(/^\/app\//, "").split("/");
     if (parts[0] === "private") {
       currentSlug = `private/${parts[1]}`;
