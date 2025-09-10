@@ -1,4 +1,5 @@
 import frappe
+from frappe.utils.data import sha256_hash
 # from frappe.desk.utils import get_link_to
 
 def after_migrate():
@@ -66,3 +67,17 @@ def get_sidebar_items(page=None):
     except ImportError:
         frappe.log_error("Could not find get_sidebar_items ", "Error")
         return []
+
+@frappe.whitelist(allow_guest=True, methods=["GET"])
+def get_user(key, old_password):
+    user = None
+    if key:
+        hashed_key = sha256_hash(key)
+        user = frappe.db.get_value(
+            "User", {"reset_password_key": hashed_key}, "name"
+        )
+    elif old_password:
+        frappe.local.login_manager.check_password(frappe.session.user, old_password)
+        user = frappe.session.user
+        
+    return user
