@@ -67,8 +67,9 @@ body.sccc-rail-padding .container.page-container{
   border: 1px solid var(--sccc-border);
   border-radius: 0px;
   padding: 12px 12px;
-  color: var(--sccc-fg);
+  color: var(--sccc-muted);
   cursor: pointer;
+  font-weight: 600;
   
 }
 .sccc-collapsible{
@@ -136,7 +137,10 @@ body.sccc-rail-padding .container.page-container{
   :root{ --sccc-rail-w: 240px; }
 }
 
-
+.sccc-select option {
+  color: black;
+  background: white; /* needed for dark themes */
+}
 
 .sticky-top {
 	position: unset;

@@ -1,130 +1,335 @@
 {% extends "templates/web.html" %}
-{% macro email_login_body() -%}
 
-{% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SCCC Login</title>
-  <style>
+{% macro email_login_body() -%}
+{% if not disable_user_pass_login or (ldap_settings and ldap_settings.enabled) %}
+<div class="page-card-body">
+	<h4 style="color:black !important; margin-top: 0px;">Sign in</h4><br>
+	<div class="form-group">
+
+		<label class="form-label sr-only" for="login_email">{{ login_label or _("Email")}}</label>
+		 <label for="login_email">Email</label>
+		<div class="email-field">
+			<input type="text" id="login_email" class="form-control"
+				placeholder="{% if login_name_placeholder %}{{ login_name_placeholder  }}{% else %}{{ _('Email') }}{% endif %}"
+				required autofocus autocomplete="username">
+
+			<!-- <svg class="field-icon email-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"
+				xmlns="http://www.w3.org/2000/svg">
+				<use class="es-lock" href="#es-line-email"></use>
+			</svg> -->
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="form-label sr-only" for="login_password">{{ _("Password") }}</label>
+		<label for="login_password">Password</label>
+		<div class="password-field">
+			<input type="password" id="login_password" class="form-control" placeholder="•••••"
+				autocomplete="current-password" required>
+
+			<!-- <svg class="field-icon password-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"
+				xmlns="http://www.w3.org/2000/svg">
+					<use class="es-lock" href="#es-line-lock"></use>
+			</svg> -->
+			<span   style="top: 14px;" toggle="#login_password" class="toggle-password text-muted">{{ _('Show') }}</span>
+		</div>
+	</div>
+
+	{% if not disable_user_pass_login %}
+	<p class="forgot-password-message" style="text-align: left !important;">
+		<a  href="#forgot">{{ _("Forgot Your Password?") }}</a>
+	</p>
+	{% endif %}
+</div>
+{% endif %}
+<div class="page-card-actions">
+	{% if not disable_user_pass_login %}
+	<button class="btn btn-sm btn-primary btn-login btn-color" type="submit">
+		{{ _("Sign In") }}</button>  
+		<span class="or-separator">or</span>
+        <button type="button" class="btn btn-outline">{{ _("Login with Email link") }}</button>
+	{% endif %}
+	{% if ldap_settings and ldap_settings.enabled %}
+	<button class="btn btn-sm {{ "btn-primary" if disable_user_pass_login else "btn-default" }} btn-block btn-login btn-ldap-login">
+		{{ _("Login with LDAP") }}</button>
+	{% endif %}
+</div>
+<div class="footer-text">
+	By continuing, you acknowledge that you understand and agree to the 
+	<a href="#" style="color: palevioletred;">Terms & Conditions</a> and <a href="#" style="color: palevioletred;" >Privacy Policy</a>
+</div>
+  
+
+
+{% endmacro %}
+
+{% block head_include %}
+{{ include_style('login.bundle.css') }}
+{% endblock %}
+
+{% macro logo_section(title=null) %}
+<div class="page-card-head">
+	<!-- <img class="app-logo" src="{{ logo }}"> -->
+	{% if title %}
+	<h4>{{ _(title)}}</h4>
+	{% else %}
+	<h2>{{ _('Welcome back <br> <p style="font-size: 14px;">Sign in to your SCCC ERP</p>') }}</h2>
+	{% endif %}
+</div>
+{% endmacro %}
+
+{% block page_content %}
+<!-- {{ for_test }} -->
+<div>
+	<noscript>
+		<div class="text-center my-5">
+			<h4>{{ _("Javascript is disabled on your browser") }}</h4>
+			<p class="text-muted">
+				{{ _("You need to enable JavaScript for your app to work.") }}<br>{{ _("To enable it follow the instructions in the following link: {0}").format("<a href='https://enable-javascript.com/'>enable-javascript.com</a></p>") }}
+		</div>
+	</noscript>
+	<section class='for-login'>
+		{{ logo_section('') }}
+		<div class="login-content page-card">
+			<form class="form-signin form-login" role="form">
+				{%- if social_login or login_with_email_link -%}
+				<div class="page-card-body">
+					<form class="form-signin form-login" role="form">
+						{{ email_login_body() }}
+					</form>
+					<div class="social-logins text-center">
+						{% if not disable_user_pass_login or (ldap_settings and ldap_settings.enabled) %}
+						<p class="text-muted login-divider">{{ _("or") }}</p>
+						{% endif %}
+						<div class="social-login-buttons">
+							{% for provider in provider_logins %}
+							<div class="login-button-wrapper">
+								<a href="{{ provider.auth_url }}"
+									class="btn btn-block btn-default btn-sm btn-login-option btn-{{ provider.name }}">
+									{% if provider.icon %}
+										{{ provider.icon }}
+									{% endif %}
+									{{ _("Login with {0}").format(provider.provider_name) }}</a>
+							</div>
+							{% endfor %}
+						</div>
+
+						{% if login_with_frappe_cloud_url %}
+						<div class="social-login-buttons">
+							<div class="login-button-wrapper">
+								<a href="{{ login_with_frappe_cloud_url }}"
+									class="btn btn-block btn-default btn-sm btn-login-option btn-login-with-frappe-cloud">
+									<svg class="mr-2" width="24" height="20" viewBox="0 5 23 23" fill="none"
+										xmlns="http://www.w3.org/2000/svg">
+										<path
+											d="M24.5011 14.1124C23.3954 12.4873 21.532 11.5477 19.594 11.6747C18.7616 10.1384 17.2211 9.12267 15.4198 9.0084C14.1651 8.93222 12.8979 9.3766 11.9165 10.24C11.2456 10.8367 10.7611 11.5223 10.463 12.2968C10.289 12.7539 9.89151 13.0459 9.46912 13.0459H6.5V15.5852H9.46912C10.9226 15.5852 12.2271 14.6584 12.7737 13.2237C12.9227 12.8301 13.1712 12.4873 13.5439 12.1571C14.0284 11.7255 14.662 11.4969 15.2583 11.535C16.1528 11.5985 16.7863 12.0175 17.1839 12.538C17.6063 13.0205 17.8423 13.7696 17.979 14.5187C18.774 14.2902 19.6437 14.0997 20.476 14.2394C21.1593 14.3536 21.7929 14.7218 22.2525 15.2678C22.327 15.3567 22.4016 15.4456 22.4637 15.5471C23.06 16.4232 23.1718 17.5024 22.7743 18.5689C22.414 19.5592 21.0847 20.4607 19.9791 20.4607H11.3326C10.1524 20.4607 9.18339 19.5592 9.03432 18.4038H6.54969C6.71119 20.9686 8.78585 23 11.3326 23H19.9915C22.1283 23 24.3769 21.451 25.1098 19.4704C25.7931 17.6167 25.5695 15.6614 24.5135 14.0997L24.5011 14.1124Z"
+											fill="currentColor" />
+									</svg>
+									{{ _("Login with Frappe Cloud") }}</a>
+							</div>
+						</div>
+						{% endif %}
+
+						{% if login_with_email_link %}
+						<div class="login-with-email-link social-login-buttons">
+							<div class="login-button-wrapper">
+								<a href="#login-with-email-link"
+									class="btn btn-block btn-default btn-sm btn-login-option btn-login-with-email-link">
+									{{ _("Login with Email Link") }}</a>
+							</div>
+						</div>
+						{% endif %}
+					</div>
+				</div>
+				{% else %}
+					{{ email_login_body() }}
+				{%- endif -%}
+			</form>
+		</div>
+		{%- if not disable_signup and not disable_user_pass_login -%}
+		<div class="text-center sign-up-message">
+			{{ _("Don't have an account?") }}
+			<a href="#signup">{{ _("Sign up") }}</a>
+		</div>
+		{%- endif -%}
+	</section>
+
+	{%- if social_login -%}
+	<section class='for-email-login'>
+		{{ logo_section() }}
+		<div class="login-content page-card">
+			<form class="form-signin form-login" role="form">
+			{{ email_login_body() }}
+			</form>
+		</div>
+		{%- if not disable_signup and not disable_user_pass_login -%}
+		<div class="text-center sign-up-message">
+			{{ _("Don't have an account?") }}
+			<a href="#signup">{{ _("Sign up") }}</a>
+		</div>
+		{%- endif -%}
+	</section>
+	{%- endif -%}
+	<section class='for-signup {{ "signup-disabled" if disable_signup else "" }}'>
+		{{ logo_section(_('Create a {0} Account').format(app_name or _("Frappe"))) }}
+		<div class="login-content page-card">
+			{%- if not disable_signup -%}
+			{{ signup_form_template }}
+			{%- else -%}
+			<div class='page-card-head mb-2'>
+				<span class='indicator gray'>{{_("Signup Disabled")}}</span>
+				<p class="text-muted text-normal sign-up-message mt-1 mb-8">{{_("Signups have been disabled for this website.")}}</p>
+				<div><a href='/' class='btn btn-primary btn-md'>{{ _("Home") }}</a></div>
+			</div>
+			{%- endif -%}
+		</div>
+
+	</section>
+
+	<section class='for-forgot'>	
+		{{ logo_section(' <br>') }}
+		<div class="login-content page-card">
+			<form class="form-signin form-forgot hide" role="form">
+				<div class="page-card-body">
+					<div style="display: flex;">
+						<div style="background-color: #d4d1d163; border-radius: 25px;
+								width: 50px; text-align: center;
+								height: 45px !important; margin-right: 85px;">
+							<svg class="" width="20" height="25" viewBox="0 0 16 16" stroke="#9863cb" style="margin-top:9px !important"
+								xmlns="http://www.w3.org/2000/svg">
+								<use class="" href="#es-line-email"></use>
+							</svg>
+						</div>
+						<img width="80px" src="/assets/sccc_theme/images/SCCC_logo.png" alt="SCCC">
+					</div>
+					<br>
+					<h4 style="color: black !important; margin: 0;">{{ _("Forgot your password?") }}</h4><br>
+					<span style="color: black;">Get a verification email</span><br>
+      				<span style="font-size: 14px;">Please enter your email address below and we’ll send you a reset password link</span>
+					<br><br>
+					<div class="email-field">
+						<label for="">Email</label>
+						<input type="email" id="forgot_email" class="form-control"
+							placeholder="{{ _('Email Address') }}" required autofocus autocomplete="username">
+						<!-- <svg class="field-icon email-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"
+							xmlns="http://www.w3.org/2000/svg">
+							<path
+								d="M2.5 7.65149V15.0757C2.5 15.4374 2.64367 15.7842 2.8994 16.04C3.15513 16.2957 3.50198 16.4394 3.86364 16.4394H16.1364C16.498 16.4394 16.8449 16.2957 17.1006 16.04C17.3563 15.7842 17.5 15.4374 17.5 15.0757V7.65149"
+								stroke="#74808B" stroke-miterlimit="10" stroke-linecap="square" />
+							<path
+								d="M17.5 7.57572V5.53026C17.5 5.1686 17.3563 4.82176 17.1006 4.56603C16.8449 4.31029 16.498 4.16663 16.1364 4.16663H3.86364C3.50198 4.16663 3.15513 4.31029 2.8994 4.56603C2.64367 4.82176 2.5 5.1686 2.5 5.53026V7.57572L10 10.8333L17.5 7.57572Z"
+								stroke="#74808B" stroke-miterlimit="10" stroke-linecap="square" />
+						</svg> -->
+
+					</div>
+				</div>
+				<div class="page-card-actions" style="display: flex !important; align-items: center !important; ">
+					<button class="btn btn-sm btn-primary btn-forgot btn-color"
+						type="submit">{{ _("Send Link") }}</button>  &emsp;
+					<p class="sign-up-message" style="margin:0px;">
+						<a href="#login">{{ _("Back to sign in") }}</a>
+					</p>
+				</div>
+
+			</form>
+		</div>
+	</section>
+
+	<section class='for-login-with-email-link'>
+			{{ logo_section(_('Login with Email Link')) }}
+		<div class="login-content page-card">
+			<form class="form-signin form-login-with-email-link hide" role="form">
+				<div class="page-card-body">
+					<div class="email-field">
+						<input type="email" id="login_with_email_link_email" class="form-control"
+							placeholder="{{ _('Email Address') }}" required autofocus autocomplete="username">
+						<svg class="field-icon email-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"
+							xmlns="http://www.w3.org/2000/svg">
+							<path
+								d="M2.5 7.65149V15.0757C2.5 15.4374 2.64367 15.7842 2.8994 16.04C3.15513 16.2957 3.50198 16.4394 3.86364 16.4394H16.1364C16.498 16.4394 16.8449 16.2957 17.1006 16.04C17.3563 15.7842 17.5 15.4374 17.5 15.0757V7.65149"
+								stroke="#74808B" stroke-miterlimit="10" stroke-linecap="square" />
+							<path
+								d="M17.5 7.57572V5.53026C17.5 5.1686 17.3563 4.82176 17.1006 4.56603C16.8449 4.31029 16.498 4.16663 16.1364 4.16663H3.86364C3.50198 4.16663 3.15513 4.31029 2.8994 4.56603C2.64367 4.82176 2.5 5.1686 2.5 5.53026V7.57572L10 10.8333L17.5 7.57572Z"
+								stroke="#74808B" stroke-miterlimit="10" stroke-linecap="square" />
+						</svg>
+					</div>
+				</div>
+				<div class="page-card-actions">
+					<button class="btn btn-sm btn-primary btn-block btn-login-with-email-link"
+						type="submit">{{ _("Send login link") }}</button>
+					<p class="text-center sign-up-message">
+						<a href="#login">{{ _("Back to sign in") }}</a>
+					</p>
+				</div>
+			</form>
+		</div>
+	</section>
+	
+</div>
+
+  <div class="brand-footer">
+    <img src="/assets/sccc_theme/images/SCCC Logo - white.png" alt="SCCC">
+  </div>
+<style>
     body {
-      margin: 0;
       font-family: "HelveticaNowMTText", "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", sans-serif;
       background: #2C003E;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
     }
-    label{
-      font-weight: bold;
-
-    }
-    .password-box {
-      position: relative;
-      
-    }
-    .password-box input {
-      width: 100%;
-      padding: 8px 35px 8px 8px;
-      font-size: 16px;
-    }
-    .toggle-btn {
-      position: absolute;
-      right: 8px;
-      top: -19%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      font-size: 14px;
-      color: #555;
-    }
-    .header-text {
-      text-align: center;
-    }
-    .header-text h1 {
-      font-size: 28px;
-      font-weight: 700;
-      color: #fff;
-      margin: 0;
-    }
-    .header-text p {
-      font-size: 14px;
-      color: #bbb;
-      /* margin-top: 6px; */
-    }
-    @media (min-width: 1200px) {
-    h2 {
-        font-size: 3rem;
-        margin-top: 1rem;
-    }
-}
-
-    .login-container {
+    .login-content, input, button{
+		border-radius: 0px !important;
+		
+	}
+	.login-content{
+		padding-top: 25px !important;
+		padding-right: 0px !important;
+		padding-left: 0px !important;
+	}
+	label{
+		color: black;
+		font-weight: bold;
+		font-size: 13px !important;
+	}
+	h2, h4, h3{
+		color: white !important;
+	}
+	.btn-outline {
       background: #fff;
-      padding: 25px;
-      /* border-radius: 10px; */
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0px 6px 20px rgba(0,0,0,0.2);
-      text-align: left;
-    }
-
-    .login-container h2 {
-      margin-bottom: 20px;
-      font-size: 20px;
-      font-weight: 600;
-      color: #222;
-    }
-
-    .login-container label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 13px;
-      color: #333;
-    }
-    .web-footer, .navbar {
-      display: none !important;
-    }
-
-    .login-container input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 14px;
-      border: 1px solid #ddd;
-      /* border-radius: 6px; */
-      font-size: 14px;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 10px 12px !important;
-      font-size: 14px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      text-align: center;
-      border-radius: 0px !important;
-      padding: 10px;
-    }
-
-    .btn-sign-in {
-      background-color: palevioletred;
-      width: 30%;
-      color: white;
-      
-    }
-
-    .btn-outline {
-      background: #fff;
-      border: 1px solid palevioletred; /* Purple */
+      border: 1px solid rgb(247, 31, 103); /* Purple */
       color: palevioletred;
 
     }
+	.btn:hover {
+		color: #525252;
+		text-decoration: none;
+	}
+	input:-moz-autofill-selected {
+		appearance: menulist-button;
+		background-image: none !important;
+		background-color: light-dark(rgb(232, 240, 254), rgba(70, 90, 126, 0.4)) !important;
+		color: fieldtext !important;
+	}
+	.btn{
+		height: 43px;
+		font-weight: bold;
+	}
+	.btn-color {
+      background-color: rgb(252, 33, 106) !important;
+      width: 30%;
+      color: white;
 
-    .footer-text a {
+    }
+	 .brand-footer {
+      margin-top: 20px;
+      text-align: center;
+      color: #bbb;
+      font-size: 12px;
+    }
+    .brand-footer img {
+      max-width: 70px;
+      display: block;
+      margin: 0 auto 6px;
+    }
+	.footer-text a {
       color: #6A0DAD;  /* Purple links */
       text-decoration: none;
       font-weight: 400;
@@ -132,33 +337,7 @@
     .footer-text a:hover {
       text-decoration: underline;
     }
-
-
-    .actions {
-      display: flex;
-      align-items: center; /* ensures vertical centering */
-      gap: 8px; /* spacing between items */
-      /* margin-top: 15px; */
-    }
-
-    .actions .or-separator {
-      font-size: 14px;
-      color: #555;
-      font-weight: 500;
-    }
-
-
-    .login-container a {
-      font-size: 13px;
-      color: #4A90E2;
-      text-decoration: none;
-      display: inline-block;
-      margin-bottom: 12px;
-    }
-    .login-container a:hover {
-      text-decoration: underline;
-    }
-    .footer-text {
+	.footer-text {
       text-align: left;
       font-size: 12px;
       color: #666;
@@ -175,84 +354,35 @@
     .footer-text a:hover {
       text-decoration: underline;
     }
-
-    .brand-footer {
-      margin-top: 20px;
-      text-align: center;
-      color: #bbb;
-      font-size: 12px;
-    }
-    .brand-footer img {
-      max-width: 70px;
-      display: block;
-      margin: 0 auto 6px;
-    }
-    .or-text {
-      margin-bottom: 1rem;
-    }
+	.page-card .page-card-body input{
+		background-color: white !important;
+		border: 1px solid #e8e3e3 !important;
+		padding-left: 8px !important;
+		height: 45px;
+	}
+	.for-login .page-card form,
+	.for-forgot .page-card form,
+	.for-login-with-email-link .page-card form,
+	.for-signup .page-card form,
+	.for-email-login .page-card form{
+			max-width: 400px !important;
+	}
+	.for-login .page-card, .for-forgot .page-card, .for-login-with-email-link .page-card, .for-signup .page-card, .for-email-login .page-card{
+		max-width: 450px !important;
+	}
   </style>
-</head>
-<body>
-  <div class="header-text">
-    <h1>Welcome back</h1>
-    <p>Sign in to your SCCC ERP</p>
-  </div>
-
-  
-
-  <div class="login-container">
-    <h2 style="margin-top: 0px;">Sign in</h2>
-    <form class="form-login" role="form">
-      <label for="login_email">Email</label>
-      <input type="text" id="login_email" placeholder="Email">
-
-      <label for="login_password">Password</label>
-      <div class="password-box">
-        <input type="password" id="login_password" placeholder="Password">
-        <span id="toggleIcon" class="toggle-btn" onclick="togglePassword()">Show</span>
-      </div>
-
-      <a style="color: rgb(131, 131, 131);" href="#forgot"><u>{{ _("Forgot your password?") }}</u></a>
-
-      <div class="actions">
-        <button type="submit" class="btn btn-sign-in">{{ _("Sign In") }}</button>
-        <span class="or-separator">or</span>
-        <button type="button" class="btn btn-outline">{{ _("Login with Email link") }}</button>
-      </div>
-
-    </form>
-
-    <div class="footer-text">
-      By continuing, you acknowledge that you understand and agree to the 
-      <a href="#" style="color: palevioletred;">Terms & Conditions</a> and <a href="#" style="color: palevioletred;" >Privacy Policy</a>
-    </div>
-  </div>
-
-  <div class="brand-footer">
-    <img src="/assets/sccc_theme/images/SCCC Logo - white.png" alt="SCCC">
-  </div>
-
-</body>
-</html>
 {% endblock %}
-{% endmacro %}
 
 {% block script %}
 <script>
-{% include "templates/includes/login/login.js"  %}
+{% include "templates/includes/login/login.js" %}
+
+
 $(document).ready(function() {
     $(".web-footer").hide();
     $(".navbar").hide();
 });
-function togglePassword() {
-  const passwordField = document.getElementById("login_password");
-  if (passwordField.type === "password") {
-    passwordField.type = "text";
-    toggleIcon.textContent = "Hide";
-  } else {
-    passwordField.type = "password";
-    toggleIcon.textContent = "Show";
-  }
-}
 </script>
 {% endblock %}
+
+{% block sidebar %}{% endblock %}
