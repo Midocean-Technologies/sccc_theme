@@ -1,6 +1,34 @@
 import frappe
 # from frappe.desk.utils import get_link_to
 
+def after_migrate():
+    update_currency_symbol_for_SAR()
+    remove_workspace_items()
+
+def update_currency_symbol_for_SAR():
+    """Update currency symbol for SAR to a custom HTML."""
+    currency = frappe.get_doc("Currency", "SAR")
+    html_symbol = '<img src="https://www.sama.gov.sa/ar-sa/Currency/Documents/Saudi_Riyal_Symbol-2.svg" style="height: 0.9em; vertical-align: middle;">'
+    
+    if currency.symbol != html_symbol:
+        currency.symbol = html_symbol
+        currency.save(ignore_permissions=True)
+        frappe.db.commit()
+
+
+def remove_workspace_items():
+    """Remove all workspace items (shortcuts and links) from all workspaces."""
+    workspaces = frappe.get_all("Workspace", pluck="name")
+    for ws_name in workspaces:
+        ws = frappe.get_doc("Workspace", ws_name)
+
+        ws.shortcuts = []
+        ws.links = []
+
+        ws.save(ignore_permissions=True)
+
+    frappe.db.commit()
+
 def slugify_doctype(name: str) -> str:
     return name.strip().lower().replace(" ", "-")
 

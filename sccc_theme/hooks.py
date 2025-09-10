@@ -99,6 +99,7 @@ app_include_js = [
 
 # before_install = "sccc_theme.install.before_install"
 # after_install = "sccc_theme.install.after_install"
+after_migrate = "sccc_theme.utils.utils.after_migrate"
 
 # Uninstallation
 # ------------
