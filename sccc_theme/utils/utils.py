@@ -40,24 +40,25 @@ def get_sidebar_items(page=None):
         workspace = frappe.get_doc("Workspace", page)
         items = []
 
-        for sc in workspace.shortcuts:
+        for sc in workspace.custom_custom__shortcuts:
             # default
             route = None
 
-            if sc.type == "Page":
-                route = f"/app/{sc.link_to}"
-            elif sc.type == "DocType":
+            # if sc.type == "Page":
+            #     route = f"/app/{sc.link_to}"
+            if sc.type == "DocType":
                 route = f"/app/{slugify_doctype(sc.link_to)}"
+                
             elif sc.type == "Report":
                 route = f"/app/query-report/{sc.link_to}"
-            elif sc.type == "Dashboard":
-                route = f"/app/dashboard-view/{sc.link_to}"
+            # elif sc.type == "Dashboard":
+            #     route = f"/app/dashboard-view/{sc.link_to}"
             
             if route:
                 items.append({
                     "label": sc.label,
                     "icon": sc.icon,
-                    "type": sc.type,
+                    "type": 'Shortcuts' if sc.type == 'DocType' else 'Resports',
                     "link_to": sc.link_to,
                     "url": sc.url,
                     "route": route,
