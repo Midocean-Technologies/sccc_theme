@@ -1,4 +1,5 @@
 import frappe
+from frappe.utils.data import sha256_hash
 # from frappe.desk.utils import get_link_to
 
 def after_migrate():
@@ -39,24 +40,25 @@ def get_sidebar_items(page=None):
         workspace = frappe.get_doc("Workspace", page)
         items = []
 
-        for sc in workspace.shortcuts:
+        for sc in workspace.custom_custom__shortcuts:
             # default
             route = None
 
-            if sc.type == "Page":
-                route = f"/app/{sc.link_to}"
-            elif sc.type == "DocType":
+            # if sc.type == "Page":
+            #     route = f"/app/{sc.link_to}"
+            if sc.type == "DocType":
                 route = f"/app/{slugify_doctype(sc.link_to)}"
+                
             elif sc.type == "Report":
                 route = f"/app/query-report/{sc.link_to}"
-            elif sc.type == "Dashboard":
-                route = f"/app/dashboard-view/{sc.link_to}"
+            # elif sc.type == "Dashboard":
+            #     route = f"/app/dashboard-view/{sc.link_to}"
             
             if route:
                 items.append({
                     "label": sc.label,
                     "icon": sc.icon,
-                    "type": sc.type,
+                    "type": 'Shortcuts' if sc.type == 'DocType' else 'Resports',
                     "link_to": sc.link_to,
                     "url": sc.url,
                     "route": route,
@@ -66,3 +68,17 @@ def get_sidebar_items(page=None):
     except ImportError:
         frappe.log_error("Could not find get_sidebar_items ", "Error")
         return []
+
+@frappe.whitelist(allow_guest=True, methods=["GET"])
+def get_user(key, old_password):
+    user = None
+    if key:
+        hashed_key = sha256_hash(key)
+        user = frappe.db.get_value(
+            "User", {"reset_password_key": hashed_key}, "name"
+        )
+    elif old_password:
+        frappe.local.login_manager.check_password(frappe.session.user, old_password)
+        user = frappe.session.user
+        
+    return user
