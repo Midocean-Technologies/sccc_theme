@@ -39,10 +39,9 @@ app_include_js = [
 ]
 
 # fixtures
-# fixtures = [
-#     {"dt":"Workspace","filters":[["name", "in",["Home"]]]}, 
-#     {"dt":"Custom HTML Block","filters":[["name", "in",["Shortcuts"]]]}
-# ]
+fixtures = [
+    {"dt":"Workspace"}, 
+]
 # include js, css files in header of web template
 # web_include_css = "/assets/sccc_theme/css/sccc_theme.css"
 # web_include_js = "/assets/sccc_theme/js/sccc_theme.js"

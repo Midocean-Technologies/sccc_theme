@@ -4,7 +4,38 @@ from frappe.utils.data import sha256_hash
 
 def after_migrate():
     update_currency_symbol_for_SAR()
-    remove_workspace_items()
+    transfer_workspace_shortcuts()
+    update_website_setting_logo()
+
+def update_website_setting_logo():
+    website_settings = frappe.get_single("Website Settings")
+    navbar_settings = frappe.get_single("Navbar Settings")
+
+    logo_path = "/files/SCCC_logo.png"
+    favicon_path = "/files/sidebar_logo_new.png"
+
+    website_settings.app_name = "SCCC"
+
+    if not navbar_settings.app_logo:
+        navbar_settings.app_logo = logo_path
+        navbar_settings.save(ignore_permissions=True)
+    
+    if not website_settings.banner_image:
+        website_settings.banner_image = logo_path
+
+    if not website_settings.splash_image:
+        website_settings.splash_image = logo_path
+    
+    if not website_settings.app_logo:
+        website_settings.app_logo = logo_path
+    
+    if not website_settings.footer_logo:
+        website_settings.footer_logo = logo_path
+    
+    if not website_settings.favicon:
+        website_settings.favicon = favicon_path
+
+    website_settings.save(ignore_permissions=True)
 
 def update_currency_symbol_for_SAR():
     """Update currency symbol for SAR to a custom HTML."""
@@ -17,18 +48,25 @@ def update_currency_symbol_for_SAR():
         frappe.db.commit()
 
 
-def remove_workspace_items():
-    """Remove all workspace items (shortcuts and links) from all workspaces."""
+def transfer_workspace_shortcuts():
+    """Transfer all workspace shortcuts to custom_custom__shortcuts table."""
     workspaces = frappe.get_all("Workspace", pluck="name")
+
     for ws_name in workspaces:
         ws = frappe.get_doc("Workspace", ws_name)
 
-        ws.shortcuts = []
-        ws.links = []
-
+        if ws.get("shortcuts"):
+            ws.custom_custom__shortcuts = []
+            for sc in ws.shortcuts:
+                new_row = sc.as_dict()
+                new_row["name"] = None 
+                ws.append("custom_custom__shortcuts", new_row)
+            ws.shortcuts = []
+            ws.links = []
         ws.save(ignore_permissions=True)
 
     frappe.db.commit()
+
 
 def slugify_doctype(name: str) -> str:
     return name.strip().lower().replace(" ", "-")
@@ -40,24 +78,25 @@ def get_sidebar_items(page=None):
         workspace = frappe.get_doc("Workspace", page)
         items = []
 
-        for sc in workspace.shortcuts:
+        for sc in workspace.custom_custom__shortcuts:
             # default
             route = None
 
-            if sc.type == "Page":
-                route = f"/app/{sc.link_to}"
-            elif sc.type == "DocType":
+            # if sc.type == "Page":
+            #     route = f"/app/{sc.link_to}"
+            if sc.type == "DocType":
                 route = f"/app/{slugify_doctype(sc.link_to)}"
+                
             elif sc.type == "Report":
                 route = f"/app/query-report/{sc.link_to}"
-            elif sc.type == "Dashboard":
-                route = f"/app/dashboard-view/{sc.link_to}"
+            # elif sc.type == "Dashboard":
+            #     route = f"/app/dashboard-view/{sc.link_to}"
             
             if route:
                 items.append({
                     "label": sc.label,
                     "icon": sc.icon,
-                    "type": sc.type,
+                    "type": 'Shortcuts' if sc.type == 'DocType' else 'Reports',
                     "link_to": sc.link_to,
                     "url": sc.url,
                     "route": route,

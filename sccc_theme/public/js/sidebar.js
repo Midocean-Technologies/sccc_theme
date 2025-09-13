@@ -4,12 +4,13 @@
 
   const ICON = {
     chevUp: `<svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M7 14l5-5 5 5z"/></svg>`,
-    chevDown: `<svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>`,
+    chevDown: frappe.utils.icon('small-down', 'sm'),
     gear: `<svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M12 8a4 4 0 100 8 4 4 0 000-8zm9 4l-2.1 1.2.2 2.4-2.4.2L15.6 18 14.4 20l-2.4-.2L11 22H9l-.9-2.2L5.7 20 4.4 18l-1.9-.2.2-2.4L.9 12 2.7 10l-.2-2.4L4.9 7 6.2 5l2.4.2L11 3h2l.9 2.2 2.4-.2L18.3 7l2.4.6-.2 2.4L21 12z"/></svg>`,
     cmd: `<svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M7 3a4 4 0 100 8h2V9H7a2 2 0 110-4 2 2 0 012 2v2h6V7a4 4 0 10-4 4h2v2h-2a4 4 0 104 4v-2h-6v2a2 2 0 11-2-2h2v-2H7z"/></svg>`,
     todo: `<svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M9 11h11v2H9v-2zM9 7h11v2H9V7zm0 8h11v2H9v-2zM6 7H4v2h2V7zm0 4H4v2h2v-2zm0 4H4v2h2v-2z"/></svg>`,
     note: `<svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M14 2H6a2 2 0 00-2 2v16l4-4h8a2 2 0 002-2V4a2 2 0 00-2-2z"/></svg>`,
-    more: `<svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M6 10a2 2 0 100 4 2 2 0 000-4zm6 0a2 2 0 100 4 2 2 0 000-4zm6 0a2 2 0 100 4 2 2 0 000-4z"/></svg>`
+    more: `<svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M6 10a2 2 0 100 4 2 2 0 000-4zm6 0a2 2 0 100 4 2 2 0 000-4zm6 0a2 2 0 100 4 2 2 0 000-4z"/></svg>`,
+    workspace: `<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 3h8v8H3V3zm10 0h8v4h-8V3zM3 13h4v8H3v-8zm6 6h10v4H9v-4z"/></svg>`
   };
 
   function railHTML() {
@@ -33,7 +34,19 @@
 
           <!-- Module selector -->
           <div class="sccc-section-label">Module</div>
-          <select class="sccc-select" id="sccc-module-select_"></select>
+
+          <!-- custom dropdown: visible trigger + list; hidden native select kept for route logic -->
+          <div class="sccc-select custom" id="sccc-module-select_wrap" tabindex="0" aria-haspopup="listbox">
+            <button type="button" class="sccc-select-trigger" aria-expanded="false">
+              <span class="sccc-select-item-icn">${frappe.utils.icon('image-view', "md")}</span>
+
+              <span class="sccc-select-label">Home</span>
+              <span class="sccc-select-caret">${ICON.chevDown}</span>
+            </button>
+            <div class="sccc-select-list" role="listbox" aria-label="Modules" hidden></div>
+            <select id="sccc-module-select_" hidden></select>
+          </div>
+
           <div class="sccc-hr"></div>
 
           <div class="sccc-spacer"></div>
@@ -45,11 +58,11 @@
               <span class="sccc-tools-caret">${ICON.chevDown}</span>
             </summary>
             <div class="sccc-tool" data-route="list:ToDo">
-              <span>📊</span>
+              <span class="sccc-tools-caret">${frappe.utils.icon('list', "md")}</span>
               <span class="sccc-tool-txt">Todo</span>
             </div>
             <div class="sccc-tool" data-route="list:Note">
-              <span>💪</span>
+              <span class="sccc-tools-caret">${frappe.utils.icon('sell', "md")}</span>
               <span class="sccc-tool-txt">Note</span>
             </div>
           </details>
@@ -78,7 +91,7 @@
   }
 
   function wireRail($root) {
-    $root.on("click", ".sccc-brand", () => frappe.set_route("home"));
+     $root.on("click", ".sccc-brand", () => frappe.set_route("home"));
     $root.on("click", ".sccc-user", function() {
       $root.find(".sccc-user-menu").toggle();
     });
@@ -90,11 +103,66 @@
     });
     $root.on("click", ".sccc-link", function(){ routeGo(this.getAttribute("data-route")); });
     $root.on("click", ".sccc-tool", function(){ routeGo(this.getAttribute("data-route")); });
+
+    // custom dropdown trigger
+    $root.on("click", ".sccc-select-trigger", function (e) {
+      const $wrap = $(this).closest("#sccc-module-select_wrap");
+      const $list = $wrap.find(".sccc-select-list");
+      const expanded = $(this).attr("aria-expanded") === "true";
+      $(this).attr("aria-expanded", !expanded);
+      if (expanded) {
+        $list.attr("hidden", true);
+      } else {
+        $list.removeAttr("hidden");
+        // focus first item for keyboard users
+        $list.find(".sccc-select-item[tabindex]").first().focus();
+      }
+    });
+
+    // pick item from custom list
+    $root.on("click", ".sccc-select-item", function (e) {
+      const $item = $(this);
+      const val = $item.data("value");
+      const label = $item.data("label");
+      const $wrap = $item.closest("#sccc-module-select_wrap");
+      const $sel = $wrap.find("#sccc-module-select_");
+
+      // update visible label
+      $wrap.find(".sccc-select-label").text(label);
+
+      // update trigger icon to match selected item (fallback to image-view)
+      const iconHtml = $item.find(".sccc-select-item-icn").html() || frappe.utils.icon('image-view', 'md');
+      $wrap.find(".sccc-select-trigger .sccc-select-item-icn").html(iconHtml);
+
+      // set native select and trigger existing change handler
+      $sel.val(val).trigger("change");
+
+      // close list
+      $wrap.find(".sccc-select-list").attr("hidden", true);
+      $wrap.find(".sccc-select-trigger").attr("aria-expanded", "false");
+    });
+
+    // close dropdown when clicking outside
+    $(document).on("click", function (e) {
+      if (!$(e.target).closest("#sccc-module-select_wrap").length) {
+        const $wrap = $root.find("#sccc-module-select_wrap");
+        $wrap.find(".sccc-select-list").attr("hidden", true);
+        $wrap.find(".sccc-select-trigger").attr("aria-expanded", "false");
+      }
+    });
+
+    // keep existing change handler for logic (routes / workspace items)
     $root.on("change", "#sccc-module-select_", async function () {
       const route = this.value;
       frappe.set_route(route);
       const label = $(this).find("option:selected").text();
+      // update visible label in custom trigger
       $root.find(".sccc-select-label").text(label);
+
+      // update trigger icon to match selected/native selection (fallback)
+      const selIconHtml = $root.find(`.sccc-select-item[data-value="${route}"] .sccc-select-item-icn`).html() || frappe.utils.icon('image-view', 'md');
+      $root.find(".sccc-select-trigger .sccc-select-item-icn").html(selIconHtml);
+
       $root.find(".sccc-collapsible").remove();
       let page = this.value;
       const ws = await frappe.call("sccc_theme.utils.utils.get_sidebar_items", { page });
@@ -106,20 +174,20 @@
         return acc;
       }, {});
       Object.entries(grouped).forEach(([type, list]) => {
+        const iconHtml = frappe.utils.icon('menu', "sm");
         const details = $(`
           <details class="sccc-tools sccc-collapsible">
             <summary class="sccc-tools-head">
-              <span>${type}</span>
+              <span> <span class="sccc-tools-icon">${iconHtml}</span> ${type}</span>
               <span class="sccc-tools-caret">${ICON.chevDown}</span>
             </summary>
             ${list.map(i => `
-              <div class="sccc-tool sccc-collapsible-item" data-route="${i.route}">
-                <span class="sccc-tool-icn">${ICON.todo}</span>
+              <div class="sccc-tool sccc-collapsible-item" style=" border-radius:0; margin-left: 17px; border-left: 1px solid #424162;" data-route="${i.route}">
                 <span class="sccc-tool-txt">${i.label}</span>
               </div>`).join("")}
           </details>
         `);
-        $root.find("#sccc-module-select_").after(details);
+        $root.find(".sccc-hr").after(details);
       });
     });
     $root.on("click", ".sccc-collapsible-item", function () {
@@ -131,21 +199,38 @@
   async function loadModules($root) {
   const r = await frappe.xcall("frappe.desk.desktop.get_workspace_sidebar_items");
   const pages = (r && r.pages) || [];
-  const $sel = $root.find("#sccc-module-select_");
+
+  const $wrap = $root.find("#sccc-module-select_wrap");
+  const $list = $wrap.find(".sccc-select-list");
+  const $sel = $wrap.find("#sccc-module-select_");
 
   $sel.empty();
-  $sel.append(`<option value="home">Home</option>`);
+  $list.empty();
+
+  // helper to add item to both native select and custom list
+  function addOption(value, label, iconHtml) {
+    $sel.append(`<option value="${value}">${label}</option>`);
+    const $item = $(`
+      <div role="option" tabindex="0" class="sccc-select-item" data-value="${value}" data-label="${label}">
+        <span class="sccc-select-item-icn">${iconHtml}</span>
+        <span class="sccc-select-item-txt">${label}</span>
+      </div>
+    `);
+    $list.append($item);
+  }
+
+  addOption("home", "Home", frappe.utils.icon('image-view', "md"));
 
   // Build a lookup map of doctype → workspace
   const doctypeToWorkspace = {};
-
+  LOG(pages)
   pages.forEach(p => {
     if (frappe.router.slug(p.title) === "home") return;
     const slug = p.public ? frappe.router.slug(p.title) : `private/${frappe.router.slug(p.title)}`;
-    $sel.append(`<option value="${slug}">${p.title}</option>`);
+    const iconHtml = p.icon ? frappe.utils.icon(p.icon, "md") : frappe.utils.icon('image-view', "md");
+    addOption(slug, p.title, iconHtml);
 
     if (p.link_to) {
-      // Some pages include link_to or doctypes
       p.link_to.forEach(dt => {
         doctypeToWorkspace[dt] = slug;
       });
@@ -181,7 +266,16 @@
     }
   }
 
+  // set selection in native select (will trigger change when user picks)
   $sel.val(currentSlug);
+
+  // update visible label and mark focused item
+  const selectedText = $sel.find("option:selected").text() || "Home";
+  $wrap.find(".sccc-select-label").text(selectedText);
+  $list.find(`.sccc-select-item[data-value="${currentSlug}"]`).attr("aria-selected", "true");
+  // update trigger icon to match selected item (fallback to image-view)
+  const selIconHtml = $list.find(`.sccc-select-item[data-value="${currentSlug}"] .sccc-select-item-icn`).html();
+  $wrap.find(".sccc-select-trigger .sccc-select-item-icn").html(selIconHtml);
 }
 
 
@@ -200,4 +294,5 @@
 
   $(document).on("app_ready", mount);
   if (document.readyState !== "loading") setTimeout(mount, 0);
+
 })();
