@@ -6,6 +6,15 @@ def after_migrate():
     update_currency_symbol_for_SAR()
     transfer_workspace_shortcuts()
     update_website_setting_logo()
+    hide_workspace()
+
+def hide_workspace():
+    """Hide Financial Reports workspaces from the workspace list."""
+    ws = frappe.get_doc("Workspace", "Financial Reports")
+    if not ws.is_hidden:
+        ws.is_hidden = 1
+        ws.save(ignore_permissions=True)
+
 
 def update_website_setting_logo():
     website_settings = frappe.get_single("Website Settings")
