@@ -187,7 +187,7 @@
               </div>`).join("")}
           </details>
         `);
-        $root.find(".sccc-hr").after(details);
+        $root.find(".sccc-spacer").before(details);
       });
     });
     $root.on("click", ".sccc-collapsible-item", function () {
