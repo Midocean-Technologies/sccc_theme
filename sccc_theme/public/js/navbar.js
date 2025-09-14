@@ -69,7 +69,7 @@ body {
   padding: 6px 10px;
   background: var(--control-bg, #f6f7f9);
   border: 1px solid var(--border-color, #e5e7eb);
-  border-radius: 10px;
+  border-radius: 0px;
 }
 .sccc-search input {
   width: 100%;
@@ -99,7 +99,7 @@ body {
 <div id="${IDS.BAR}" class="sccc-topbar" role="region" aria-label="SCCC Top Bar">
   <div class="sccc-left" style="width:700px;">
     <button class="sccc-icon sccc-panes" title="Toggle Navigation" aria-label="Toggle Navigation">
-      <img src ="/assets/sccc_theme/images/Header.svg" alt="Header" style="width:100px; height:100px;"/>
+      <img src ="/assets/sccc_theme/images/Header.svg" alt="Header" style="width:100px;"/>
     </button>
     <span class="sccc-pill" id="sccc-title-pill">Home</span>
     <nav class="sccc-breadcrumbs" id="sccc-breadcrumbs"></nav>
@@ -116,16 +116,16 @@ body {
 
   <div class="sccc-right">
     <button class="sccc-icon" data-route="integrations" title="Integrations" aria-label="Integrations">
-      <img src ="/assets/sccc_theme/images/integration.svg" alt="Integrations" style="width:100px; height:100px;"/>
+      <img src ="/assets/sccc_theme/images/integration.svg" alt="Integrations" style="width:100px;"/>
     </button>
     <button class="sccc-icon" data-route="calendar-view" title="Calendar" aria-label="Calendar">
-      <img src ="/assets/sccc_theme/images/calender.svg" alt="Calender" style="width:100px; height:100px;"/>
+      <img src ="/assets/sccc_theme/images/calender.svg" alt="Calender" style="width:100px; "/>
     </button>
     <button class="sccc-icon" data-route="deleted-document" title="Clear Filters / Reload" aria-label="Clear Filters / Reload">
-      <img src ="/assets/sccc_theme/images/delete.svg" alt="Clear" style="width:100px; height:100px;"/>
+      <img src ="/assets/sccc_theme/images/delete.svg" alt="Clear" style="width:100px;"/>
     </button>
     <button class="sccc-icon" data-route="notification" title="Notifications" aria-label="Notifications">
-      <img src ="/assets/sccc_theme/images/notification.svg" alt="Notification" style="width:100px; height:100px;"/>
+      <img src ="/assets/sccc_theme/images/notification.svg" alt="Notification" style="width:100px;"/>
     </button>
     
   </div>
