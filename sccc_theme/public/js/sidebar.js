@@ -156,7 +156,6 @@
       const route = this.value;
       frappe.set_route(route);
       const label = $(this).find("option:selected").text();
-      // update visible label in custom trigger
       $root.find(".sccc-select-label").text(label);
 
       // update trigger icon to match selected/native selection (fallback)
@@ -164,30 +163,124 @@
       $root.find(".sccc-select-trigger .sccc-select-item-icn").html(selIconHtml);
 
       $root.find(".sccc-collapsible").remove();
+      $root.find(".sccc-child-module").remove();
+
+      const r = await frappe.xcall("frappe.desk.desktop.get_workspace_sidebar_items");
+      const pages = (r && r.pages) || [];
       let page = this.value;
       const ws = await frappe.call("sccc_theme.utils.utils.get_sidebar_items", { page });
       const items = ws.message || [];
       LOG("Workspace data:", items);
+
+      // build slug lookup for pages
+      const slugFor = p => (p.public ? frappe.router.slug(p.title) : `private/${frappe.router.slug(p.title)}`);
+      const slugMap = {};
+      pages.forEach(p => { p._slug = slugFor(p); slugMap[p._slug] = p; });
+
+      // determine if the selected page is itself a child module
+      const selectedPageObj = slugMap[page] || null;
+      const selectedIsChild = selectedPageObj && selectedPageObj.parent_page;
+
+      // collect child modules for the relevant parent (if selecting parent) or for the parent of selected child
+      let parentSlugForChildren = null;
+      if (selectedIsChild) {
+        parentSlugForChildren = frappe.router.slug(selectedPageObj.parent_page);
+      } else {
+        // selected page may be a parent; use its slug (strip private/ prefix for comparison)
+        parentSlugForChildren = (page || "").replace(/^private\//, "");
+      }
+
+      const childModules = pages.filter(p => {
+        if (!p.parent_page) return false;
+        return frappe.router.slug(p.parent_page) === parentSlugForChildren;
+      });
+
+      // Render child modules as collapsible details and keep a map to insert selected items into the right child
+      const $childWrap = $('<div class="sccc-child-module"></div>');
+      const childDetailsMap = {}; // slug -> $details element
+
+      for (const child of childModules) {
+        const childSlug = slugFor(child);
+        const iconHtml = child.icon ? ( (typeof child.icon === 'string' && child.icon.trim().startsWith('<svg')) ? child.icon : frappe.utils.icon(child.icon, "md") ) : frappe.utils.icon('image-view', "md");
+
+        // fetch items for this child
+        const childWs = await frappe.call("sccc_theme.utils.utils.get_sidebar_items", { page: child.title });
+        const childItems = childWs.message || [];
+
+        // group child items by type
+        const groupedChild = childItems.reduce((acc, itm) => {
+          if (!acc[itm.type]) acc[itm.type] = [];
+          acc[itm.type].push(itm);
+          return acc;
+        }, {});
+
+        // build inner HTML for grouped types inside this child details
+        const innerGroupsHtml = Object.entries(groupedChild).map(([type, list]) => {
+          const typeIcon = frappe.utils.icon('menu', "sm");
+          return `
+            <details class="sccc-tools sccc-collapsible">
+              <summary class="sccc-tools-head">
+                <span><span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(type)}</span>
+                <span class="sccc-tools-caret">${ICON.chevDown}</span>
+              </summary>
+              ${list.map(i => `
+                <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
+                  <span class="sccc-tool-txt">${frappe.utils.escape_html(i.label)}</span>
+                </div>`).join("")}
+            </details>`;
+        }).join("");
+
+        // the child container is a details element (collapsible header)
+        const $details = $(`
+          <details class="sccc-child details-child" ${selectedIsChild && selectedPageObj && childSlug === slugFor(selectedPageObj) ? "open" : ""}>
+            <summary class="sccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:8px 0 6px 0;">
+              <span class="sccc-tools-icon">${iconHtml}</span>
+              <strong style="font-size:13px">${frappe.utils.escape_html(child.title)}</strong>
+              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
+            </summary>
+            <div class="sccc-child-content">
+              ${innerGroupsHtml}
+            </div>
+          </details>
+        `);
+
+        childDetailsMap[childSlug] = $details;
+        $childWrap.append($details);
+      }
+
+      // insert child wrap if any
+      if (childModules.length) {
+        $root.find(".sccc-spacer").before($childWrap);
+        const line = $(` <div class="sccc-hr"></div>`);
+        $childWrap.append(line);
+      }
+
+      // Group and render main collapsible items (items belong to the selected page)
       const grouped = items.reduce((acc, item) => {
         if (!acc[item.type]) acc[item.type] = [];
         acc[item.type].push(item);
         return acc;
       }, {});
+     
+
       Object.entries(grouped).forEach(([type, list]) => {
         const iconHtml = frappe.utils.icon('menu', "sm");
+        
         const details = $(`
-          <details class="sccc-tools sccc-collapsible">
+          <details class="sccc-tools sccc-collapsible" style='margin-left:0; margin-right:0;'>
             <summary class="sccc-tools-head">
-              <span> <span class="sccc-tools-icon">${iconHtml}</span> ${type}</span>
+              <span><span class="sccc-tools-icon">${iconHtml}</span> ${type}</span>
               <span class="sccc-tools-caret">${ICON.chevDown}</span>
             </summary>
             ${list.map(i => `
-              <div class="sccc-tool sccc-collapsible-item" style=" border-radius:0; margin-left: 17px; border-left: 1px solid #424162;" data-route="${i.route}">
+              <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
                 <span class="sccc-tool-txt">${i.label}</span>
               </div>`).join("")}
           </details>
         `);
-        $root.find(".sccc-spacer").before(details);
+        $childWrap.append(details);
+
+        $root.find(".sccc-spacer").before($childWrap);
       });
     });
     $root.on("click", ".sccc-collapsible-item", function () {
@@ -228,17 +321,19 @@
     if (frappe.router.slug(p.title) === "home") return;
     const slug = p.public ? frappe.router.slug(p.title) : `private/${frappe.router.slug(p.title)}`;
     const iconHtml = p.icon ? frappe.utils.icon(p.icon, "md") : frappe.utils.icon('image-view', "md");
-    addOption(slug, p.title, iconHtml);
+    if(!p.parent_page){
+      addOption(slug, p.title, iconHtml);
 
-    if (p.link_to) {
-      p.link_to.forEach(dt => {
-        doctypeToWorkspace[dt] = slug;
-      });
-    }
-    if (p.doctypes) {
-      p.doctypes.forEach(dt => {
-        doctypeToWorkspace[dt] = slug;
-      });
+      if (p.link_to) {
+        p.link_to.forEach(dt => {
+          doctypeToWorkspace[dt] = slug;
+        });
+      }
+      if (p.doctypes) {
+        p.doctypes.forEach(dt => {
+          doctypeToWorkspace[dt] = slug;
+        });
+      }
     }
   });
 
