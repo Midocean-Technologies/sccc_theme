@@ -251,6 +251,8 @@
       // insert child wrap if any
       if (childModules.length) {
         $root.find(".sccc-spacer").before($childWrap);
+        const line = $(` <div class="sccc-hr"></div>`);
+        $childWrap.append(line);
       }
 
       // Group and render main collapsible items (items belong to the selected page)
@@ -259,8 +261,7 @@
         acc[item.type].push(item);
         return acc;
       }, {});
-      const line = $(` <div class="sccc-hr"></div>`);
-      $childWrap.append(line);
+     
 
       Object.entries(grouped).forEach(([type, list]) => {
         const iconHtml = frappe.utils.icon('menu', "sm");
