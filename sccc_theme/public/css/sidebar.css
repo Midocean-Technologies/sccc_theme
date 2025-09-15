@@ -72,9 +72,7 @@ body.sccc-rail-padding .container.page-container{
   font-weight: 600;
   
 }
-.sccc-collapsible{
-  overflow-x: auto;
-}
+
 
 .sccc-select:hover{ background: var(--sccc-hover); }
 .sccc-select-icon{
@@ -304,7 +302,11 @@ body.sccc-rail-padding .container.page-container{
   border-style: solid;
   border-color: #1e1e2d transparent transparent transparent;
 }
-
+.sccc-child-module{
+  overflow: auto;
+  scrollbar-width: none;
+  /* margin: 0 6px 0 6px; */
+}
 /* smooth animation */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(10px); }
