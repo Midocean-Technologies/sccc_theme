@@ -37,7 +37,7 @@ body {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 8px;
-  padding: 0 12px;
+  padding: 0 16px;
   background: var(--bg-color, #fff);
   border-bottom: 1px solid var(--border-color, #e5e7eb);
 }
@@ -96,7 +96,7 @@ body {
   // --- HTML -----------------------------------------------------------------
   function buildTopbarHTML() {
     return `
-<div id="${IDS.BAR}" class="sccc-topbar" role="region" aria-label="SCCC Top Bar">
+<div id="${IDS.BAR}" class="sccc-topbar navbar" role="region" aria-label="SCCC Top Bar">
   <div class="sccc-left" style="width:700px;">
     <button class="sccc-icon sccc-panes" title="Toggle Navigation" aria-label="Toggle Navigation">
       <img src ="/assets/sccc_theme/images/Header.svg" alt="Header" style="width:100px;"/>
@@ -124,10 +124,39 @@ body {
     <button class="sccc-icon" data-route="deleted-document" title="Clear Filters / Reload" aria-label="Clear Filters / Reload">
       <img src ="/assets/sccc_theme/images/delete.svg" alt="Clear" style="width:100px;"/>
     </button>
-    <button class="sccc-icon" data-route="notification" title="Notifications" aria-label="Notifications">
-      <img src ="/assets/sccc_theme/images/notification.svg" alt="Notification" style="width:100px;"/>
-    </button>
+
+    <!-- Notifications dropdown (core-compatible) -->
     
+    <div class=" dropdown dropdown-notifications dropdown-mobile">
+        <button
+          class="btn-reset nav-link notifications-icon text-muted"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          title="Notifications"
+          aria-label="Notifications"
+        >
+          <span class="notifications-seen">
+            <span class="sr-only">${__("No new notifications")}</span>
+            <svg class="es-icon icon-sm" style="stroke:#2523239e;"><use href="#es-line-notifications"></use></svg>
+          </span>
+          <span class="notifications-unseen">
+            <span class="sr-only">${__("You have unseen notifications")}</span>
+            <svg class="es-icon icon-sm"><use href="#es-line-notifications-unseen"></use></svg>
+          </span>
+        </button>
+        <div class="dropdown-menu notifications-list dropdown-menu-right" role="menu">
+          <div class="notification-list-header">
+            <div class="header-items"></div>
+            <div class="header-actions"></div>
+          </div>
+          <div class="notification-list-body">
+            <div class="panel-notifications"></div>
+            <div class="panel-events"></div>
+            <div class="panel-changelog-feed"></div>
+          </div>
+        </div>
+      </div>
   </div>
 </div>`;
   }
