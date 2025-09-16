@@ -3,6 +3,9 @@
 {% macro email_login_body() -%}
 {% if not disable_user_pass_login or (ldap_settings and ldap_settings.enabled) %}
 <div class="page-card-body">
+	<div style="text-align: center;">
+		<img width="68px" src="/assets/sccc_theme/images/logo.svg" alt="SCCC">
+	</div>
 	<h4 style="color:black !important; margin-top: 0px;">Sign in</h4><br>
 	<div class="form-group">
 
@@ -191,16 +194,16 @@
 		<div class="login-content page-card">
 			<form class="form-signin form-forgot hide" role="form">
 				<div class="page-card-body">
-					<div style="display: flex;">
-						<div style="background-color: #d4d1d163; border-radius: 25px;
+					<div style="text-align: center;">
+						<!-- <div style="background-color: #d4d1d163; border-radius: 25px;
 								width: 50px; text-align: center;
 								height: 45px !important; margin-right: 85px;">
 							<svg class="" width="20" height="25" viewBox="0 0 16 16" stroke="#9863cb" style="margin-top:9px !important"
 								xmlns="http://www.w3.org/2000/svg">
 								<use class="" href="#es-line-email"></use>
 							</svg>
-						</div>
-						<img width="80px" src="/assets/sccc_theme/images/SCCC_logo.png" alt="SCCC">
+						</div> -->
+					<img width="68px" src="/assets/sccc_theme/images/logo.svg" alt="SCCC">
 					</div>
 					<br>
 					<h4 style="color: black !important; margin: 0;">{{ _("Forgot your password?") }}</h4><br>
