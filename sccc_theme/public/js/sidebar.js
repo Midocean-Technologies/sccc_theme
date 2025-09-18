@@ -4,7 +4,7 @@
 
   const ICON = {
     chevUp: `<svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M7 14l5-5 5 5z"/></svg>`,
-    chevDown: frappe.utils.icon('small-down', 'sm'),
+    chevDown: `<svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>`,
     gear: `<svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M12 8a4 4 0 100 8 4 4 0 000-8zm9 4l-2.1 1.2.2 2.4-2.4.2L15.6 18 14.4 20l-2.4-.2L11 22H9l-.9-2.2L5.7 20 4.4 18l-1.9-.2.2-2.4L.9 12 2.7 10l-.2-2.4L4.9 7 6.2 5l2.4.2L11 3h2l.9 2.2 2.4-.2L18.3 7l2.4.6-.2 2.4L21 12z"/></svg>`,
     cmd: `<svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M7 3a4 4 0 100 8h2V9H7a2 2 0 110-4 2 2 0 012 2v2h6V7a4 4 0 10-4 4h2v2h-2a4 4 0 104 4v-2h-6v2a2 2 0 11-2-2h2v-2H7z"/></svg>`,
     todo: `<svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M9 11h11v2H9v-2zM9 7h11v2H9V7zm0 8h11v2H9v-2zM6 7H4v2h2V7zm0 4H4v2h2v-2zm0 4H4v2h2v-2z"/></svg>`,
@@ -26,7 +26,7 @@
             <div class="sccc-logo">
                <img src="/assets/sccc_theme/images/logo.svg" alt="SCCC Logo" style="height:38px; margin-top:-6px;">
             </div>
-               <div class="sccc-brand-text">
+            <div class="sccc-brand-text">
               <div class="sccc-brand-title">SCCC</div>
               <div class="sccc-brand-sub">By SCCC</div>
             </div>
@@ -57,33 +57,35 @@
           <div class="sccc-spacer"></div>
 
           <!-- Tools -->
-          <details class="sccc-tools" open>
-            <summary class="sccc-tools-head">
-              <span>Tools</span>
-              <span class="sccc-tools-caret">${ICON.chevDown}</span>
-            </summary>
-            <div class="sccc-tool" data-route="list:ToDo">
-              <span class="sccc-tools-caret">${frappe.utils.icon('list', "md")}</span>
-              <span class="sccc-tool-txt">Todo</span>
-            </div>
-            <div class="sccc-tool" data-route="list:Note">
-              <span class="sccc-tools-caret">${frappe.utils.icon('sell', "md")}</span>
-              <span class="sccc-tool-txt">Note</span>
-            </div>
-          </details>
+          <div class="sccc-tools-div">
+            <details class="sccc-tools" open>
+              <summary class="sccc-tools-head">
+                <span>Tools</span>
+                <span class="sccc-tools-caret">${ICON.chevDown}</span>
+              </summary>
+              <div class="sccc-tool" data-route="list:ToDo">
+                <span class="sccc-tools-caret">${frappe.utils.icon('list', "md")}</span>
+                <span class="sccc-tool-txt">Todo</span>
+              </div>
+              <div class="sccc-tool" data-route="list:Note">
+                <span class="sccc-tools-caret">${frappe.utils.icon('sell', "md")}</span>
+                <span class="sccc-tool-txt">Note</span>
+              </div>
+            </details>
 
-          <div class="sccc-hr"></div>
+            <div class="sccc-hr"></div>
 
-          <div class="sccc-user">
-            <div class="sccc-avatar">${initials}</div>
-            <div class="sccc-user-meta">
-              <div class="sccc-user-name">${frappe.utils.escape_html(user)}</div>
-              <div class="sccc-user-mail">${frappe.utils.escape_html(email)}</div>
-            </div>
-            <button class="sccc-user-caret" title="Account">${ICON.chevUp}</button>
-            <div class="sccc-user-menu">
-              <button class="sccc-account-btn"><i class="fa fa-user"></i> My Account</button>
-              <button class="sccc-logout-btn"><i class="fa fa-sign-out"></i> Logout</button>
+            <div class="sccc-user">
+              <div class="sccc-avatar">${initials}</div>
+              <div class="sccc-user-meta">
+                <div class="sccc-user-name">${frappe.utils.escape_html(user)}</div>
+                <div class="sccc-user-mail">${frappe.utils.escape_html(email)}</div>
+              </div>
+              <button class="sccc-user-caret" title="Account">${ICON.chevUp}</button>
+              <div class="sccc-user-menu">
+                <button class="sccc-account-btn"><i class="fa fa-user"></i> My Account</button>
+                <button class="sccc-logout-btn"><i class="fa fa-sign-out"></i> Logout</button>
+              </div>
             </div>
 
           </div>
