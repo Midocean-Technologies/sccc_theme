@@ -41,8 +41,10 @@ app_include_js = [
 
 # fixtures
 fixtures = [
-    {"dt":"Workspace"}, 
+    {"dt": "Workspace"},
+    # {"dt": "File", "filters": {"file_name": "logo.svg"}}
 ]
+
 # include js, css files in header of web template
 # web_include_css = "/assets/sccc_theme/css/sccc_theme.css"
 # web_include_js = "/assets/sccc_theme/js/sccc_theme.js"

@@ -1,4 +1,5 @@
 import frappe
+from frappe.custom.doctype.property_setter.property_setter import make_property_setter
 from frappe.utils.data import sha256_hash
 # from frappe.desk.utils import get_link_to
 
@@ -7,6 +8,33 @@ def after_migrate():
     transfer_workspace_shortcuts()
     update_website_setting_logo()
     hide_workspace()
+    update_currency_in_doctypes()
+    PropertySetter()
+
+def PropertySetter():
+    make_property_setter("User","birth_date","hidden",1,"Check")
+    make_property_setter("User","interest","hidden",1,"Check")
+    make_property_setter("User","location","hidden",1,"Check")
+    make_property_setter("User","bio","hidden",1,"Check")
+    make_property_setter("User","interest","hidden",1,"Check")
+
+
+def update_currency_in_doctypes():
+    """Update currency in number card to SAR."""
+    number_cards = frappe.get_all("Number Card", filters={"currency": None}, pluck="name")
+
+    for nc_name in number_cards:
+        nc = frappe.get_doc("Number Card", nc_name)
+        nc.currency = "SAR"
+        nc.save(ignore_permissions=True)
+    
+    """Update currency in Dashboard Chart to SAR."""
+    number_cards = frappe.get_all("Dashboard Chart", filters={"currency": None}, pluck="name")
+
+    for nc_name in number_cards:
+        nc = frappe.get_doc("Dashboard Chart", nc_name)
+        nc.currency = "SAR"
+        nc.save(ignore_permissions=True)
 
 def hide_workspace():
     """Hide Financial Reports workspaces from the workspace list."""
@@ -20,8 +48,8 @@ def update_website_setting_logo():
     website_settings = frappe.get_single("Website Settings")
     navbar_settings = frappe.get_single("Navbar Settings")
 
-    logo_path = "/files/SCCC_logo.png"
-    favicon_path = "/files/sidebar_logo_new.png"
+    logo_path = "/files/logo.svg"
+    favicon_path = "/files/logo.svg"
 
     website_settings.app_name = "SCCC"
 
