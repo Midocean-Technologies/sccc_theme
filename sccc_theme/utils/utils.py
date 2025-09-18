@@ -7,6 +7,16 @@ def after_migrate():
     transfer_workspace_shortcuts()
     update_website_setting_logo()
     hide_workspace()
+    update_currency_in_number_card()
+
+def update_currency_in_number_card():
+    """Update currency in number card to SAR."""
+    number_cards = frappe.get_all("Number Card", filters={"currency": None}, pluck="name")
+
+    for nc_name in number_cards:
+        nc = frappe.get_doc("Number Card", nc_name)
+        nc.currency = "SAR"
+        nc.save(ignore_permissions=True)
 
 def hide_workspace():
     """Hide Financial Reports workspaces from the workspace list."""
@@ -20,8 +30,8 @@ def update_website_setting_logo():
     website_settings = frappe.get_single("Website Settings")
     navbar_settings = frappe.get_single("Navbar Settings")
 
-    logo_path = "/files/SCCC_logo.png"
-    favicon_path = "/files/sidebar_logo_new.png"
+    logo_path = "/files/logo.svg"
+    favicon_path = "/files/logo.svg"
 
     website_settings.app_name = "SCCC"
 
@@ -105,7 +115,7 @@ def get_sidebar_items(page=None):
                 items.append({
                     "label": sc.label,
                     "icon": sc.icon,
-                    "type": 'Shortcuts' if sc.type == 'DocType' else 'Reports',
+                    "type": 'Features' if sc.type == 'DocType' else 'Reports',
                     "link_to": sc.link_to,
                     "url": sc.url,
                     "route": route,

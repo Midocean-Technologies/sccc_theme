@@ -35,7 +35,8 @@ app_include_css = [
 ]
 app_include_js = [
     "/assets/sccc_theme/js/sidebar.js",
-    "/assets/sccc_theme/js/navbar.js"
+    "/assets/sccc_theme/js/navbar.js",
+    "/assets/sccc_theme/js/workspace.js"
 ]
 
 # fixtures
