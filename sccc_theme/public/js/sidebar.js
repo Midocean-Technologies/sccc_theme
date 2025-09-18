@@ -48,7 +48,13 @@
           </div>
 
           <div class="sccc-hr"></div>
-
+          <div id="sccc-dashboard-wrap" class="sccc-dashboard-wrap" aria-hidden="false">
+            <button type="button" id="sccc-dashboard-btn" class="sccc-dashboard-btn" title="Dashboard" aria-label="Dashboard" data-route="dashboard">
+              <span class="sccc-select-item-icn sccc-tools-caret">${frappe.utils.icon('image-view', 'md')}</span>
+              <span class="sccc-dashboard-label">Home Dashboard</span>
+            </button>
+          </div>
+          <div class="sccc-hr"></div>
           <div class="sccc-spacer"></div>
 
           <!-- Tools -->
@@ -118,6 +124,12 @@
         $list.find(".sccc-select-item[tabindex]").first().focus();
       }
     });
+    // dashboard button click -> go to its route (default 'dashboard')
+    $root.on("click", "#sccc-dashboard-btn", function () {
+      const route = this.getAttribute("data-route") || "home";
+      if (route === "home") return frappe.set_route("home");
+      return frappe.set_route(route);
+    });
 
     // pick item from custom list
     $root.on("click", ".sccc-select-item", function (e) {
@@ -133,6 +145,15 @@
       // update trigger icon to match selected item (fallback to image-view)
       const iconHtml = $item.find(".sccc-select-item-icn").html() || frappe.utils.icon('image-view', 'md');
       $wrap.find(".sccc-select-trigger .sccc-select-item-icn").html(iconHtml);
+
+      // ALSO update Dashboard button label + icon and set its route
+      const $dash = $root.find("#sccc-dashboard-btn");
+      if ($dash.length) {
+        $dash.find(".sccc-select-item-icn").html(iconHtml);
+        $dash.find(".sccc-dashboard-label").text(label);
+        // make dashboard route point to module's slug (keeps same value as native select)
+        $dash.attr("data-route", val === "home" ? "dashboard" : val);
+      }
 
       // set native select and trigger existing change handler
       $sel.val(val).trigger("change");
@@ -156,11 +177,20 @@
       const route = this.value;
       frappe.set_route(route);
       const label = $(this).find("option:selected").text();
+      // update visible label in custom trigger
       $root.find(".sccc-select-label").text(label);
 
       // update trigger icon to match selected/native selection (fallback)
       const selIconHtml = $root.find(`.sccc-select-item[data-value="${route}"] .sccc-select-item-icn`).html() || frappe.utils.icon('image-view', 'md');
       $root.find(".sccc-select-trigger .sccc-select-item-icn").html(selIconHtml);
+
+      // ALSO update Dashboard button to reflect current selection
+      const $dash = $root.find("#sccc-dashboard-btn");
+      if ($dash.length) {
+        $dash.find(".sccc-select-item-icn").html(selIconHtml);
+        $dash.find(".sccc-dashboard-label").text(label || "Dashboard");
+        $dash.attr("data-route", route === "home" ? "dashboard" : route);
+      }
 
       $root.find(".sccc-collapsible").remove();
       $root.find(".sccc-child-module").remove();
@@ -302,11 +332,13 @@
 
   // helper to add item to both native select and custom list
   function addOption(value, label, iconHtml) {
-    $sel.append(`<option value="${value}">${label}</option>`);
+    const safeLabel = frappe.utils.escape_html(__(label) || label);
+
+    $sel.append(`<option value="${value}">${safeLabel}</option>`);
     const $item = $(`
       <div role="option" tabindex="0" class="sccc-select-item" data-value="${value}" data-label="${label}">
         <span class="sccc-select-item-icn">${iconHtml}</span>
-        <span class="sccc-select-item-txt">${label}</span>
+        <span class="sccc-select-item-txt">${safeLabel}</span>
       </div>
     `);
     $list.append($item);
@@ -371,6 +403,16 @@
   // update trigger icon to match selected item (fallback to image-view)
   const selIconHtml = $list.find(`.sccc-select-item[data-value="${currentSlug}"] .sccc-select-item-icn`).html();
   $wrap.find(".sccc-select-trigger .sccc-select-item-icn").html(selIconHtml);
+
+  // also update Dashboard button on load to match selected module
+  const $dash = $wrap.siblings("#sccc-dashboard-wrap").find("#sccc-dashboard-btn");
+  if ($dash.length) {
+    const dashIcon = selIconHtml || frappe.utils.icon('image-view', 'md');
+    const dashLabel = selectedText || "Dashboard";
+    $dash.find(".sccc-select-item-icn").html(dashIcon);
+    $dash.find(".sccc-dashboard-label").text(dashLabel);
+    $dash.attr("data-route", currentSlug === "home" ? "home" : currentSlug);
+  }
 }
 
 
