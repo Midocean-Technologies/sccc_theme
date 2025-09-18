@@ -105,7 +105,7 @@ def get_sidebar_items(page=None):
                 items.append({
                     "label": sc.label,
                     "icon": sc.icon,
-                    "type": 'Shortcuts' if sc.type == 'DocType' else 'Reports',
+                    "type": 'Features' if sc.type == 'DocType' else 'Reports',
                     "link_to": sc.link_to,
                     "url": sc.url,
                     "route": route,
