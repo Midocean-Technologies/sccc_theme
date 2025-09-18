@@ -80,13 +80,15 @@ def transfer_workspace_shortcuts():
 def slugify_doctype(name: str) -> str:
     return name.strip().lower().replace(" ", "-")
 
+
+
 @frappe.whitelist(allow_guest=True)
 def get_sidebar_items(page=None):
     """Get sidebar items"""
     try:
         workspace = frappe.get_doc("Workspace", page)
         items = []
-
+        link_cards = []
         for sc in workspace.custom_custom__shortcuts:
             # default
             route = None
@@ -111,7 +113,28 @@ def get_sidebar_items(page=None):
                     "route": route,
                 })
 
-        return items
+        for lc in workspace.custom_custom_link_cards_:
+            # default
+            route = None
+            if lc.type == "Card Break":
+                category = lc.label
+                continue
+            if lc.link_type == "DocType":
+                route = f"/app/{slugify_doctype(lc.link_to)}"
+                
+            elif lc.link_type == "Report":
+                route = f"/app/query-report/{lc.link_to}"
+           
+            if route and lc.type == "Link":
+                link_cards.append({
+                    "label": lc.label,
+                    "icon": lc.icon,
+                    "link_type": lc.link_type,
+                    "category": category,
+                    "link_to": lc.link_to,
+                    "route": route,
+                })
+        return items, link_cards
     except ImportError:
         frappe.log_error("Could not find get_sidebar_items ", "Error")
         return []
