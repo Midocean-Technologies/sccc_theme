@@ -110,3 +110,19 @@ select{
   color: #fff !important;
   border: none !important;
 } 
+
+.widget.number-widget-box {
+  border-radius: 0px !important;
+}
+
+.layout-main-section{
+  border-radius: 0px !important;
+}
+
+.widget{
+  border-radius: 0px !important;
+}
+
+/* .kanban-empty-state text-muted text-center{
+  background-color:#ec0552 !important;   
+} */

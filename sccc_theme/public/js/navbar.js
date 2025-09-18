@@ -288,8 +288,10 @@ body {
       let cleanRoute = r.filter((part) => {
         if (!part) return false;
         const p = String(part).toLowerCase();
-        return p !== "list" && p !== "form";
+        // remove list/form + "workspaces"
+        return p !== "list" && p !== "form" && p !== "workspaces";
       });
+
 
       breadcrumbParts = cleanRoute.map((part, idx, arr) => {
         const raw = String(part);

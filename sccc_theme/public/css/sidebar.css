@@ -14,7 +14,8 @@
   position: fixed;
   top: 0; left: 0; bottom: 0;
   width: var(--sccc-rail-w);
-  background: linear-gradient(180deg, var(--sccc-bg), #1a0630 70%);
+  background-color: #3A1066;
+  /* background: linear-gradient(180deg, var(--sccc-bg), #1a0630 70%); */
   color: var(--sccc-fg);
   border-right: 1px solid var(--sccc-border);
   z-index: 20;
@@ -47,7 +48,8 @@ body.sccc-rail-padding .container.page-container{
 /* Brand block */
 .sccc-brand{
   display:flex; align-items:center; gap:10px;
-  padding: 16px 16px 12px 16px;     /* tiny internal for readability */
+  padding: 16px 16px 12px 16px;
+  /* background-color: #280444;      */
 }
 .sccc-logo{ color:#cdbbff; filter: drop-shadow(0 0 10px rgba(139,92,246,.25)); }
 .sccc-brand-title{ font-size: 18px; font-weight: 700; letter-spacing:.2px; }
@@ -79,9 +81,15 @@ body.sccc-rail-padding .container.page-container{
   width: 32px; height: 32px; display:grid; place-items:center;
   border-radius: 10px; background: var(--sccc-bg-2);
 }
-.sccc-select-label{ flex:1; font-weight: 700; }
-.sccc-select-caret{ opacity:.9; stroke: #cea0f7; stroke-width: 2px !important;
+.sccc-tools-caret svg,sccc-tools-icon svg, .sccc-select-icon svg {
+  fill: #fff !important;   /* makes icons white */
+  color: #fff !important;
 }
+
+.sccc-select-label{ flex:1; font-weight: 700; }
+/* .sccc-select-caret{ opacity:.9; stroke: #cea0f7; stroke-width: 2px !important; */
+/* }
+ */
 
 /* Custom dropdown styles */
 .sccc-select.custom {
@@ -116,7 +124,7 @@ body.sccc-rail-padding .container.page-container{
   outline-offset: 2px;
 }
 
-.sccc-select-caret { margin-left: auto; opacity: .9; color: var(--sccc-muted); }
+/* .sccc-select-caret { margin-left: auto; opacity: .9; color: #fff; } */
 
 .sccc-select-list {
   position: absolute;
@@ -172,12 +180,12 @@ body.sccc-rail-padding .container.page-container{
   color: #fff;
   outline: none;
 }
-.icon, .sccc-tools-icon, .sccc-tools-caret, .sccc-select-caret {
-  stroke: var(--sccc-muted) !important;
-}
-.sccc-tools-caret {
-  stroke: var(--sccc-muted); stroke-width: 2px !important;
-}
+/* .icon, .sccc-tools-icon, .sccc-tools-caret, .sccc-select-caret { */
+  /* stroke: var(--sccc-muted) !important; */
+/* } */
+/* .sccc-tools-caret { */
+  /* stroke: var(--sccc-muted); stroke-width: 2px !important; */
+/* } */
 /* Divider */
 .sccc-hr{ height:1px; background: var(--sccc-border); margin: 14px 16px; }
 
@@ -194,6 +202,9 @@ body.sccc-rail-padding .container.page-container{
 /* Spacer pushes tools & user to bottom sections neatly */
 .sccc-spacer{ flex: 1; }
 
+.sccc-tools-div{
+  background-color: #280444;
+}
 /* Tools collapsible list */
 .sccc-tools{ margin: 0 8px 0 8px; }
 .sccc-tools-head{
@@ -215,7 +226,8 @@ body.sccc-rail-padding .container.page-container{
   display:flex; align-items:center; gap:10px;
   margin: 12px 16px 16px 16px;
   padding: 10px 12px; border-radius: 0px;
-  background: rgba(255,255,255,0.04); border: 1px solid var(--sccc-border);
+  /* background: rgba(255,255,255,0.04); */
+  border: 1px solid var(--sccc-border);
 }
 .sccc-avatar{
   width: 34px; height: 34px; border-radius: 10px;
@@ -234,8 +246,8 @@ body.sccc-rail-padding .container.page-container{
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
-  background: rgba(255,255,255,0.02);
-  border: 1px solid var(--sccc-border);
+  background-color: #3A1066;
+  border:none;
   color: var(--sccc-fg);
   cursor: pointer;
   font-weight: 700;
@@ -247,7 +259,7 @@ body.sccc-rail-padding .container.page-container{
 .sccc-dashboard-btn .sccc-dashboard-label { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
 /* ensure dashboard button icon inherits color */
-.sccc-dashboard-btn svg { color: inherit; fill: currentColor; }
+.sccc-dashboard-btn svg { stroke: white !important; }
 
 /* Optional: slim version on smaller screens */
 @media (max-width: 1280px){

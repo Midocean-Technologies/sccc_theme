@@ -1,4 +1,5 @@
 import frappe
+from frappe.custom.doctype.property_setter.property_setter import make_property_setter
 from frappe.utils.data import sha256_hash
 # from frappe.desk.utils import get_link_to
 
@@ -7,14 +8,31 @@ def after_migrate():
     transfer_workspace_shortcuts()
     update_website_setting_logo()
     hide_workspace()
-    update_currency_in_number_card()
+    update_currency_in_doctypes()
+    PropertySetter()
 
-def update_currency_in_number_card():
+def PropertySetter():
+    make_property_setter("User","birth_date","hidden",1,"Check")
+    make_property_setter("User","interest","hidden",1,"Check")
+    make_property_setter("User","location","hidden",1,"Check")
+    make_property_setter("User","bio","hidden",1,"Check")
+    make_property_setter("User","interest","hidden",1,"Check")
+
+
+def update_currency_in_doctypes():
     """Update currency in number card to SAR."""
     number_cards = frappe.get_all("Number Card", filters={"currency": None}, pluck="name")
 
     for nc_name in number_cards:
         nc = frappe.get_doc("Number Card", nc_name)
+        nc.currency = "SAR"
+        nc.save(ignore_permissions=True)
+    
+    """Update currency in Dashboard Chart to SAR."""
+    number_cards = frappe.get_all("Dashboard Chart", filters={"currency": None}, pluck="name")
+
+    for nc_name in number_cards:
+        nc = frappe.get_doc("Dashboard Chart", nc_name)
         nc.currency = "SAR"
         nc.save(ignore_permissions=True)
 
@@ -90,13 +108,15 @@ def transfer_workspace_shortcuts():
 def slugify_doctype(name: str) -> str:
     return name.strip().lower().replace(" ", "-")
 
+
+
 @frappe.whitelist(allow_guest=True)
 def get_sidebar_items(page=None):
     """Get sidebar items"""
     try:
         workspace = frappe.get_doc("Workspace", page)
         items = []
-
+        link_cards = []
         for sc in workspace.custom_custom__shortcuts:
             # default
             route = None
@@ -121,7 +141,28 @@ def get_sidebar_items(page=None):
                     "route": route,
                 })
 
-        return items
+        for lc in workspace.custom_custom_link_cards_:
+            # default
+            route = None
+            if lc.type == "Card Break":
+                category = lc.label
+                continue
+            if lc.link_type == "DocType":
+                route = f"/app/{slugify_doctype(lc.link_to)}"
+                
+            elif lc.link_type == "Report":
+                route = f"/app/query-report/{lc.link_to}"
+           
+            if route and lc.type == "Link":
+                link_cards.append({
+                    "label": lc.label,
+                    "icon": lc.icon,
+                    "link_type": lc.link_type,
+                    "category": category,
+                    "link_to": lc.link_to,
+                    "route": route,
+                })
+        return items, link_cards
     except ImportError:
         frappe.log_error("Could not find get_sidebar_items ", "Error")
         return []
