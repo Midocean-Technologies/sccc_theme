@@ -14,7 +14,8 @@
   position: fixed;
   top: 0; left: 0; bottom: 0;
   width: var(--sccc-rail-w);
-  background: linear-gradient(180deg, var(--sccc-bg), #1a0630 70%);
+  background-color: #3A1066;
+  /* background: linear-gradient(180deg, var(--sccc-bg), #1a0630 70%); */
   color: var(--sccc-fg);
   border-right: 1px solid var(--sccc-border);
   z-index: 20;

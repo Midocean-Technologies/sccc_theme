@@ -1,4 +1,5 @@
 import frappe
+from frappe.custom.doctype.property_setter.property_setter import make_property_setter
 from frappe.utils.data import sha256_hash
 # from frappe.desk.utils import get_link_to
 
@@ -8,6 +9,15 @@ def after_migrate():
     update_website_setting_logo()
     hide_workspace()
     update_currency_in_number_card()
+    PropertySetter()
+
+def PropertySetter():
+    make_property_setter("User","birth_date","hidden",1,"Check")
+    make_property_setter("User","interest","hidden",1,"Check")
+    make_property_setter("User","location","hidden",1,"Check")
+    make_property_setter("User","bio","hidden",1,"Check")
+    make_property_setter("User","interest","hidden",1,"Check")
+
 
 def update_currency_in_number_card():
     """Update currency in number card to SAR."""
