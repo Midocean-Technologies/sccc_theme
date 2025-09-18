@@ -50,11 +50,10 @@
           <div class="sccc-hr"></div>
           <div id="sccc-dashboard-wrap" class="sccc-dashboard-wrap" aria-hidden="false">
             <button type="button" id="sccc-dashboard-btn" class="sccc-dashboard-btn" title="Dashboard" aria-label="Dashboard" data-route="dashboard">
-              <span class="sccc-select-item-icn sccc-tools-caret">${frappe.utils.icon('image-view', 'md')}</span>
+              <span class="sccc-select-item-icon icon">${frappe.utils.icon('image-view', 'md')}</span>
               <span class="sccc-dashboard-label">Home Dashboard</span>
             </button>
           </div>
-          <div class="sccc-hr"></div>
           <div class="sccc-spacer"></div>
 
           <!-- Tools -->
@@ -155,7 +154,7 @@
       // ALSO update Dashboard button label + icon and set its route
       const $dash = $root.find("#sccc-dashboard-btn");
       if ($dash.length) {
-        $dash.find(".sccc-select-item-icn").html(iconHtml);
+        $dash.find(".sccc-select-item-icon").html(iconHtml);
         $dash.find(".sccc-dashboard-label").text(label);
         // make dashboard route point to module's slug (keeps same value as native select)
         $dash.attr("data-route", val === "home" ? "dashboard" : val);
@@ -193,7 +192,7 @@
       // ALSO update Dashboard button to reflect current selection
       const $dash = $root.find("#sccc-dashboard-btn");
       if ($dash.length) {
-        $dash.find(".sccc-select-item-icn").html(selIconHtml);
+        $dash.find(".sccc-select-item-icon").html(selIconHtml);
         $dash.find(".sccc-dashboard-label").text(label || "Dashboard");
         $dash.attr("data-route", route === "home" ? "dashboard" : route);
       }
@@ -205,8 +204,9 @@
       const pages = (r && r.pages) || [];
       let page = this.value;
       const ws = await frappe.call("sccc_theme.utils.utils.get_sidebar_items", { page });
-      const items = ws.message || [];
-      LOG("Workspace data:", items);
+      const items = ws.message[0] || [];
+      const links = ws.message[1] || [];
+      LOG("Workspace data:", ws);
 
       // build slug lookup for pages
       const slugFor = p => (p.public ? frappe.router.slug(p.title) : `private/${frappe.router.slug(p.title)}`);
@@ -241,12 +241,17 @@
 
         // fetch items for this child
         const childWs = await frappe.call("sccc_theme.utils.utils.get_sidebar_items", { page: child.title });
-        const childItems = childWs.message || [];
-
+        const childItems = childWs.message[0] || [];
+        const childlinks = childWs.message[1] || [];
         // group child items by type
         const groupedChild = childItems.reduce((acc, itm) => {
           if (!acc[itm.type]) acc[itm.type] = [];
           acc[itm.type].push(itm);
+          return acc;
+        }, {});
+        const groupedLinks = childlinks.reduce((acc, itm) => {
+          if (!acc[itm.category]) acc[itm.category] = [];
+          acc[itm.category].push(itm);
           return acc;
         }, {});
 
@@ -255,8 +260,22 @@
           const typeIcon = frappe.utils.icon('menu', "sm");
           return `
             <details class="sccc-tools sccc-collapsible">
-              <summary class="sccc-tools-head">
+              <summary class="ccc-child-header sccc-tools-head">
                 <span><span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(type)}</span>
+                <span class="sccc-tools-caret">${ICON.chevDown}</span>
+              </summary>
+              ${list.map(i => `
+                <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
+                  <span class="sccc-tool-txt">${frappe.utils.escape_html(i.label)}</span>
+                </div>`).join("")}
+            </details>`;
+        }).join("");
+        const innerlinkGroupsHtml = Object.entries(groupedLinks).map(([category, list]) => {
+          const typeIcon = frappe.utils.icon('menu', "sm");
+          return `
+            <details class="sccc-tools sccc-collapsible">
+              <summary class="ccc-child-header sccc-tools-head">
+                <span><span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(category)}</span>
                 <span class="sccc-tools-caret">${ICON.chevDown}</span>
               </summary>
               ${list.map(i => `
@@ -269,13 +288,14 @@
         // the child container is a details element (collapsible header)
         const $details = $(`
           <details class="sccc-child details-child" ${selectedIsChild && selectedPageObj && childSlug === slugFor(selectedPageObj) ? "open" : ""}>
-            <summary class="sccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:8px 0 6px 0;">
+            <summary class="sccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${frappe.utils.escape_html(child.title)}</strong>
               <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
             </summary>
             <div class="sccc-child-content">
               ${innerGroupsHtml}
+              ${innerlinkGroupsHtml}
             </div>
           </details>
         `);
@@ -288,7 +308,7 @@
       if (childModules.length) {
         $root.find(".sccc-spacer").before($childWrap);
         const line = $(` <div class="sccc-hr"></div>`);
-        $childWrap.append(line);
+        // $childWrap.append(line);
       }
 
       // Group and render main collapsible items (items belong to the selected page)
@@ -297,16 +317,43 @@
         acc[item.type].push(item);
         return acc;
       }, {});
+      
+      const links_grouped = links.reduce((acc, item) => {
+        if (!acc[item.category]) acc[item.category] = [];
+        acc[item.category].push(item);
+        return acc;
+      }, {});
      
+      Object.entries(links_grouped).forEach(([category, list]) => {
+        const iconHtml = frappe.utils.icon('menu', "sm");
+        
+        const link_details = $(`
+          <details class="sccc-tools sccc-collapsible details-child" style='margin-left:0; margin-right:0;'>
+            <summary class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
+              <span class="sccc-tools-icon">${iconHtml}</span>
+              <strong style="font-size:13px">${category}</strong>
+              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
+            </summary>
+            ${list.map(i => `
+              <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
+                <span class="sccc-tool-txt">${i.label}</span>
+              </div>`).join("")}
+          </details>
+        `);
+        $childWrap.append(link_details);
+
+        $root.find(".sccc-spacer").before($childWrap);
+      });
 
       Object.entries(grouped).forEach(([type, list]) => {
         const iconHtml = frappe.utils.icon('menu', "sm");
         
         const details = $(`
-          <details class="sccc-tools sccc-collapsible" style='margin-left:0; margin-right:0;'>
-            <summary class="sccc-tools-head">
-              <span><span class="sccc-tools-icon">${iconHtml}</span> ${type}</span>
-              <span class="sccc-tools-caret">${ICON.chevDown}</span>
+          <details class=" sccc-collapsible details-child" style='margin-left:0; margin-right:0;'>
+            <summary class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
+              <span class="sccc-tools-icon">${iconHtml}</span>
+              <strong style="font-size:13px">${type}</strong>
+              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
             </summary>
             ${list.map(i => `
               <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
@@ -318,6 +365,7 @@
 
         $root.find(".sccc-spacer").before($childWrap);
       });
+
     });
     $root.on("click", ".sccc-collapsible-item", function () {
       const route = $(this).data("route");
@@ -416,6 +464,7 @@
     const dashIcon = selIconHtml || frappe.utils.icon('image-view', 'md');
     const dashLabel = selectedText || "Dashboard";
     $dash.find(".sccc-select-item-icn").html(dashIcon);
+    $dash.find(".sccc-select-item-icon").html(dashIcon);
     $dash.find(".sccc-dashboard-label").text(dashLabel);
     $dash.attr("data-route", currentSlug === "home" ? "home" : currentSlug);
   }

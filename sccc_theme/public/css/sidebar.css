@@ -248,7 +248,7 @@ body.sccc-rail-padding .container.page-container{
 .sccc-dashboard-btn .sccc-dashboard-label { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
 /* ensure dashboard button icon inherits color */
-.sccc-dashboard-btn svg { color: inherit; fill: currentColor; }
+.sccc-dashboard-btn svg { stroke: white !important; }
 
 /* Optional: slim version on smaller screens */
 @media (max-width: 1280px){
