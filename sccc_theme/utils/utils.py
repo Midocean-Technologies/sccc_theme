@@ -28,13 +28,13 @@ def update_currency_in_doctypes():
         nc.currency = "SAR"
         nc.save(ignore_permissions=True)
     
-    """Update currency in Dashboard Chart to SAR."""
-    number_cards = frappe.get_all("Dashboard Chart", filters={"currency": None}, pluck="name")
+    # """Update currency in Dashboard Chart to SAR."""
+    # number_cards = frappe.get_all("Dashboard Chart", filters={"currency": None}, pluck="name")
 
-    for nc_name in number_cards:
-        nc = frappe.get_doc("Dashboard Chart", nc_name)
-        nc.currency = "SAR"
-        nc.save(ignore_permissions=True)
+    # for nc_name in number_cards:
+    #     nc = frappe.get_doc("Dashboard Chart", nc_name)
+    #     nc.currency = "SAR"
+    #     nc.save(ignore_permissions=True)
 
 def hide_workspace():
     """Hide Financial Reports workspaces from the workspace list."""
