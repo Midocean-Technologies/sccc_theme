@@ -141,6 +141,7 @@ def get_sidebar_items(page=None):
                     "route": route,
                 })
 
+        category = None
         for lc in workspace.custom_custom_link_cards_:
             # default
             route = None
