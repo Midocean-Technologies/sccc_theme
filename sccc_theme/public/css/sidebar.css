@@ -29,6 +29,38 @@
   position: initial !important;
   width: 100% !important;
 }
+.page-head.no-sticky{
+  position: unset !important;
+}
+.ce-block__content.no-sticky{
+  position: unset !important;
+}
+.col.no-sticky{
+  position: unset !important;
+}
+.editor__redactor.no-sticky{
+  position: unset !important;
+}
+.widget.no-sticky{
+  position: unset !important;
+}
+.codex-editor.no-sticky{
+  position: unset !important;
+}
+
+.col-xs-12.no-sticky{
+  position: unset !important;
+}
+.btn-group.no-sticky{
+  position: unset !important;
+}
+.btn.no-sticky{
+  position: unset !important;
+}
+.dropdown.no-sticky{
+  position: unset !important;
+}
+
 /* push desk to the right so content is never covered */
 body.sccc-rail-padding .desk-container,
 body.sccc-rail-padding .page-container,
