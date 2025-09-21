@@ -51,7 +51,10 @@
           <div id="sccc-dashboard-wrap" class="sccc-dashboard-wrap" aria-hidden="false">
             <button type="button" id="sccc-dashboard-btn" class="sccc-dashboard-btn" title="Dashboard" aria-label="Dashboard" data-route="dashboard">
               <span class="sccc-select-item-icon icon">${frappe.utils.icon('image-view', 'md')}</span>
-              <span class="sccc-dashboard-label">Home Dashboard</span>
+              <span>
+                <span class="sccc-dashboard-label">Home</span>
+                <span class="">Dashboard</span>
+              </span>
             </button>
           </div>
           <div class="sccc-spacer"></div>

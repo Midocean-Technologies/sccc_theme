@@ -68,7 +68,9 @@ body.sccc-rail-padding #page-desktop,
 body.sccc-rail-padding .container.page-container{
   padding-left: var(--sccc-rail-w) !important;
 }
-
+.sccc-select-item-icon{
+  margin: 0 !important;
+}
 /* Inner panel = zero top/bottom padding as requested */
 .sccc-rail-panel{
   height: 100%;
