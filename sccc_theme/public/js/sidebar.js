@@ -159,7 +159,7 @@
         $dash.find(".sccc-select-item-icon").html(iconHtml);
         $dash.find(".sccc-dashboard-label").text(label);
         // make dashboard route point to module's slug (keeps same value as native select)
-        $dash.attr("data-route", val === "home" ? "dashboard" : val);
+        $dash.attr("data-route", val === "home" ? "home" : val);
       }
 
       // set native select and trigger existing change handler
