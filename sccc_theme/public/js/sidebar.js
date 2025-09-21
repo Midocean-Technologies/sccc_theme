@@ -473,6 +473,8 @@
     $dash.find(".sccc-dashboard-label").text(dashLabel);
     $dash.attr("data-route", currentSlug === "home" ? "home" : currentSlug);
   }
+  $root.find("#sccc-module-select_").trigger("change");
+
 }
 
 
