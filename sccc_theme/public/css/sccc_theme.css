@@ -122,3 +122,24 @@ select{
 .widget{
   border-radius: 0px !important;
 }
+
+.line-graph-path,.donut-path{
+  stroke: #00C48C !important;
+}
+
+.bar.mini {
+  fill: #00C48C !important;
+}
+
+.legend-dot{
+  fill: #00C48C !important;
+}
+
+.tooltip-legend{
+  background: #00C48C !important;
+}
+
+.region-fill{
+  stroke: none !important;
+  fill: #CCF1E7 !important;
+}
