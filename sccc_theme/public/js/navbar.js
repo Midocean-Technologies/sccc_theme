@@ -235,43 +235,15 @@ body {
         setTimeout(ensureLeftOffset, 260); // typical transition end
         const sidebar = document.getElementById("sccc-rail-fixed");
         const topbar = document.getElementById("sccc-topbar");
-        const header = document.getElementsByClassName("page-head");
-        const block__content = document.getElementsByClassName("ce-block__content");
-        const codex = document.getElementsByClassName("codex-editor");
-        const editor__redactor = document.getElementsByClassName("col-xs-12");
-        const col = document.getElementsByClassName("col");
-        const widget = document.getElementsByClassName("widget");
-        const btn_group = document.getElementsByClassName("btn-group");
-        const btn = document.getElementsByClassName("btn");
-        const dropdown = document.getElementsByClassName("dropdown");
-        
 
         sidebar.classList.toggle("closed");
         if(sidebar.classList.contains("closed")){
           document.body.classList.remove("sccc-rail-padding");
           topbar.classList.add("expanded");
-          Array.from(header).forEach(el => el.classList.add("no-sticky"));
-          Array.from(codex).forEach(el => el.classList.add("no-sticky"));
-          Array.from(block__content).forEach(el => el.classList.add("no-sticky"));
-          Array.from(editor__redactor).forEach(el => el.classList.add("no-sticky"));
-          Array.from(col).forEach(el => el.classList.add("no-sticky"));
-          Array.from(widget).forEach(el => el.classList.add("no-sticky"));
-          Array.from(btn_group).forEach(el => el.classList.add("no-sticky"));
-          Array.from(dropdown).forEach(el => el.classList.add("no-sticky"));
-          Array.from(btn).forEach(el => el.classList.add("no-sticky"));
         }
         else {
            document.body.classList.add("sccc-rail-padding");
            topbar.classList.remove("expanded");
-           Array.from(header).forEach(el => el.classList.remove("no-sticky"));
-           Array.from(codex).forEach(el => el.classList.remove("no-sticky"));
-           Array.from(block__content).forEach(el => el.classList.remove("no-sticky"));
-           Array.from(editor__redactor).forEach(el => el.classList.remove("no-sticky"));
-           Array.from(col).forEach(el => el.classList.remove("no-sticky"));
-           Array.from(widget).forEach(el => el.classList.remove("no-sticky"));
-           Array.from(btn_group).forEach(el => el.classList.remove("no-sticky"));
-           Array.from(dropdown).forEach(el => el.classList.remove("no-sticky"));
-           Array.from(btn).forEach(el => el.classList.remove("no-sticky"));
         }
       });
     });
