@@ -86,8 +86,10 @@
               </div>
               <button class="sccc-user-caret" title="Account">${ICON.chevUp}</button>
               <div class="sccc-user-menu">
-                <button class="sccc-account-btn"><i class="fa fa-user"></i> My Account</button>
-                <button class="sccc-logout-btn"><i class="fa fa-sign-out"></i> Logout</button>
+                <button class="sccc-account-btn">My Profile</button>
+                <button class="sccc-my-settings-btn"">My Settings</button>
+                <button class="sccc-apps-btn">Apps</button>
+                <button class="sccc-logout-btn">Log out</button>
               </div>
             </div>
 
@@ -113,10 +115,19 @@
         callback: () => window.location.href = "/login"
       });
     });
-    $root.on("click", ".sccc-account-btn", () => {
+
+    $root.on("click", ".sccc-my-settings-btn", () => {
       frappe.set_route("Form", "User", frappe.session.user);
     });
 
+    $root.on("click", ".sccc-account-btn", () => {
+      frappe.set_route("/app/user-profile");
+    });
+    
+    $root.on("click", ".sccc-apps-btn", () => {
+      frappe.set_route("/app/module-def");
+    });
+    
     $root.on("click", ".sccc-link", function(){ routeGo(this.getAttribute("data-route")); });
     $root.on("click", ".sccc-tool", function(){ routeGo(this.getAttribute("data-route")); });
 
