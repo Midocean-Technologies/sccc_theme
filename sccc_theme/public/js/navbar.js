@@ -49,7 +49,7 @@ body {
 .sccc-right { justify-content: flex-end; gap: 8px; }
 
 /* pill/title */
-.sccc-pill {
+#navbar-breadcrumbs li:first-child {
   font-weight: 600;
   font-size: 14px;
   padding: 6px 10px;
@@ -61,7 +61,7 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
+#navbar-breadcrumbs li:first-child a:before {content: unset !important}
 /* search */
 .sccc-search {
   display: flex; align-items: center; gap: 8px;
@@ -101,8 +101,7 @@ body {
     <button class="sccc-icon sccc-panes" title="Toggle Navigation" aria-label="Toggle Navigation">
       <img src ="/assets/sccc_theme/images/Header.svg" alt="Header" style="width:100px;"/>
     </button>
-    <span class="sccc-pill" id="sccc-title-pill">Home</span>
-    <nav class="sccc-breadcrumbs" id="sccc-breadcrumbs"></nav>
+    <nav style=" margin:0 !important;" class="sccc-breadcrumbs nav d-none d-sm-flex" id="navbar-breadcrumbs"></nav>
   </div>
 
   <div class="sccc-center">
@@ -483,11 +482,23 @@ body {
     }
     return bar;
   }
-
+  function syncBreadcrumb() {
+    setTimeout(() => {
+      const $breadcrumbs = $("#navbar-breadcrumbs");
+      
+      if ($breadcrumbs.children().length === 0) {
+        // get the page title text
+        const titleText = $(".title-text").attr("title");
+        $breadcrumbs.empty().append(
+          $("<li>").append($("<a>").attr("href", '').text(titleText))
+        );
+      }
+    }, 1000);
+  }
   function onEveryShow() {
     // called on route change/page show
     ensureLeftOffset();
-    syncTitle();
+    syncBreadcrumb();
   }
 
   // --- mount ----------------------------------------------------------------
@@ -499,14 +510,14 @@ body {
 
     // sync now
     ensureLeftOffset();
-    syncTitle();
+    syncBreadcrumb();
 
     // observers and hooks
     observeFixedRail();
     attachToggleSync();
 
     // Frappe "show" event on page wrappers updates title/offset reliably
-    $(document).on("show", ".page-container, .page-head, .page-content", onEveryShow);
+    $(document).on("show", ".page-container, .page-head, .page-content, .title-text", onEveryShow);
     // Also watch route changes (SPA)
     if (window.frappe && frappe.router) {
       frappe.router.on("change", onEveryShow);
