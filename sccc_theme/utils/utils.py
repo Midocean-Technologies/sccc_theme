@@ -114,6 +114,7 @@ def slugify_doctype(name: str) -> str:
 def get_sidebar_items(page=None):
     """Get sidebar items"""
     try:
+        page = page or "Home"
         workspace = frappe.get_doc("Workspace", page)
         items = []
         link_cards = []

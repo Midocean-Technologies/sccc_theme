@@ -467,7 +467,7 @@
   const $dash = $wrap.siblings("#sccc-dashboard-wrap").find("#sccc-dashboard-btn");
   if ($dash.length) {
     const dashIcon = selIconHtml || frappe.utils.icon('image-view', 'md');
-    const dashLabel = selectedText || "Dashboard";
+    const dashLabel = selectedText || "Home";
     $dash.find(".sccc-select-item-icn").html(dashIcon);
     $dash.find(".sccc-select-item-icon").html(dashIcon);
     $dash.find(".sccc-dashboard-label").text(dashLabel);
