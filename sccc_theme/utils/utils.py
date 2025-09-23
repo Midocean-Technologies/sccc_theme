@@ -10,13 +10,26 @@ def after_migrate():
     hide_workspace()
     update_currency_in_doctypes()
     PropertySetter()
+    remove_gender_records()
+
+def remove_gender_records():
+    # Fetch all genders except Male and Female
+    gender_list = frappe.get_all(
+        "Gender",
+        filters={"name": ["not in", ["Male", "Female"]]},
+        pluck="name"
+    )
+
+    for gender in gender_list:
+        frappe.delete_doc("Gender", gender, force=1)
 
 def PropertySetter():
-    make_property_setter("User","birth_date","hidden",1,"Check")
-    make_property_setter("User","interest","hidden",1,"Check")
-    make_property_setter("User","location","hidden",1,"Check")
-    make_property_setter("User","bio","hidden",1,"Check")
-    make_property_setter("User","interest","hidden",1,"Check")
+    pass
+    # make_property_setter("User","birth_date","hidden",1,"Check")
+    # make_property_setter("User","interest","hidden",1,"Check")
+    # make_property_setter("User","location","hidden",1,"Check")
+    # make_property_setter("User","bio","hidden",1,"Check")
+    # make_property_setter("User","interest","hidden",1,"Check")
 
 
 def update_currency_in_doctypes():

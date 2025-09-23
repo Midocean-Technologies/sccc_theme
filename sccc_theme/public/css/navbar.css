@@ -40,7 +40,7 @@ body { padding-top: var(--sccc-globalbar-h); }
 /* icons */
 .sccc-icon{
   appearance:none; border:0; background:transparent;
-  padding:6px; border-radius:8px; cursor:pointer;
+  padding:6px; border-radius:0px; cursor:pointer;
 }
 .sccc-icon:hover{background:rgba(0,0,0,.05)}
 
@@ -51,7 +51,7 @@ body { padding-top: var(--sccc-globalbar-h); }
   width:50%;
   position:relative; display:flex; align-items:center;
   border:1px solid var(--border-color, #e5e7eb);
-  border-radius:10px; padding:8px 12px 8px 34px;
+  border-radius:0px; padding:8px 12px 8px 34px;
   background: var(--control-bg, #fff);
 }
 .sccc-search-icn{position:absolute; left:10px; opacity:.6}
