@@ -50,11 +50,27 @@ def update_currency_in_doctypes():
     #     nc.save(ignore_permissions=True)
 
 def hide_workspace():
-    """Hide Financial Reports workspaces from the workspace list."""
-    ws = frappe.get_doc("Workspace", "Financial Reports")
-    if not ws.is_hidden:
-        ws.is_hidden = 1
-        ws.save(ignore_permissions=True)
+    """Hide specific workspaces from the workspace list."""
+    # List of workspaces you want to hide
+    workspaces_to_hide = [
+        "Financial Reports",
+        "ERPNext Settings",
+        "ERPNext Integrations",
+        "ERP Settings",
+        "ERP Integrations"
+    ]
+
+    # Get all workspace docs that match and are not hidden
+    ws_list = frappe.get_all(
+        "Workspace",
+        filters={"name": ["in", workspaces_to_hide], "is_hidden": 0},
+        pluck="name"
+    )
+
+    for w in ws_list:
+        ws_doc = frappe.get_doc("Workspace", w)
+        ws_doc.is_hidden = 1
+        ws_doc.save(ignore_permissions=True)
 
 
 def update_website_setting_logo():
@@ -129,6 +145,9 @@ def get_sidebar_items(page=None):
     try:
         page = page or "Home"
         workspace = frappe.get_doc("Workspace", page)
+        if workspace.is_hidden:
+            return [], []
+        
         items = []
         link_cards = []
         for sc in workspace.custom_custom__shortcuts:

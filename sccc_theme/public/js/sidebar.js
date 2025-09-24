@@ -3,8 +3,21 @@
   const LOG = (...a) => console.log("%c[SCCC]", "color:#8b5cf6;font-weight:bold", ...a);
 
   const ICON = {
-    chevUp: `<svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M7 14l5-5 5 5z"/></svg>`,
-    chevDown: `<svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>`,
+    userCaret: `
+        <svg class="chev-both" width="16" height="16" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Up arrow (placed higher) -->
+          <polyline points="6 8 12 4 18 8"/>
+          <!-- Down arrow (placed lower) -->
+          <polyline points="6 16 12 20 18 16"/>
+        </svg>
+      `,
+
+
+
+    chevUp: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>`,
+    chevDown: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`,
+    chevRight: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>`,
     gear: `<svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M12 8a4 4 0 100 8 4 4 0 000-8zm9 4l-2.1 1.2.2 2.4-2.4.2L15.6 18 14.4 20l-2.4-.2L11 22H9l-.9-2.2L5.7 20 4.4 18l-1.9-.2.2-2.4L.9 12 2.7 10l-.2-2.4L4.9 7 6.2 5l2.4.2L11 3h2l.9 2.2 2.4-.2L18.3 7l2.4.6-.2 2.4L21 12z"/></svg>`,
     cmd: `<svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M7 3a4 4 0 100 8h2V9H7a2 2 0 110-4 2 2 0 012 2v2h6V7a4 4 0 10-4 4h2v2h-2a4 4 0 104 4v-2h-6v2a2 2 0 11-2-2h2v-2H7z"/></svg>`,
     todo: `<svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M9 11h11v2H9v-2zM9 7h11v2H9V7zm0 8h11v2H9v-2zM6 7H4v2h2V7zm0 4H4v2h2v-2zm0 4H4v2h2v-2z"/></svg>`,
@@ -61,21 +74,21 @@
 
           <!-- Tools -->
           <div class="sccc-tools-div">
-            <details class="sccc-tools" open>
-              <summary class="sccc-tools-head">
-                <span>Tools</span>
-                <span class="sccc-tools-caret">${ICON.chevDown}</span>
-              </summary>
-              <div class="sccc-tool" data-route="list:ToDo">
-                <span class="sccc-tools-caret">${frappe.utils.icon('list', "md")}</span>
-                <span class="sccc-tool-txt">Todo</span>
+              <div class="sccc-tool", data-route="list:ToDo">
+                <span>
+                  <img src ="/assets/sccc_theme/images/tools.svg" alt="tools" style="height:20px; margin-left:10px;"/>
+                </span>
+                <span class="sccc-tool-txt">Tools</span>
+                <span class="sccc-row-caret">${ICON.chevRight}</span>
               </div>
               <div class="sccc-tool" data-route="list:Note">
-                <span class="sccc-tools-caret">${frappe.utils.icon('sell', "md")}</span>
-                <span class="sccc-tool-txt">Note</span>
+                <span>
+                  <img src ="/assets/sccc_theme/images/configuration.svg" alt="configuration" style="height:18px; margin-left:10px;"/>
+                </span>
+                <span class="sccc-tool-txt">Configuration</span>
+                <span class="sccc-row-caret">${ICON.chevRight}</span>
               </div>
-            </details>
-
+            
             <div class="sccc-hr"></div>
 
             <div class="sccc-user">
@@ -84,7 +97,9 @@
                 <div class="sccc-user-name">${frappe.utils.escape_html(user)}</div>
                 <div class="sccc-user-mail">${frappe.utils.escape_html(email)}</div>
               </div>
-              <button class="sccc-user-caret" title="Account">${ICON.chevUp}</button>
+              <button class="sccc-user-caret" title="Account">
+                <span class="sccc-user-caret-up">${ICON.userCaret}</span>
+              </button>
               <div class="sccc-user-menu">
                 <button class="sccc-account-btn">My Profile</button>
                 <button class="sccc-my-settings-btn"">My Settings</button>
