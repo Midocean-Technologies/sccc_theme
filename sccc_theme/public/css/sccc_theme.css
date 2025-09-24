@@ -81,6 +81,19 @@ body, * {
   margin-top: 0;
   margin-bottom: 55px;
 }
+/* .form-control{
+  border:1px solid black !important;
+} */
+.form-control {
+  height: var(--input-height);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  letter-spacing: 0.02em;
+  padding: var(--input-padding);
+  position: relative;
+  background-color: white !important;
+  border:1px solid lightgray !important;
+}
 
 /* .layout-side-section, 
 .desk-sidebar, 
