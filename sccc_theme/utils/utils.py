@@ -13,7 +13,6 @@ def after_migrate():
     remove_gender_records()
 
 def remove_gender_records():
-    # Fetch all genders except Male and Female
     gender_list = frappe.get_all(
         "Gender",
         filters={"name": ["not in", ["Male", "Female"]]},
@@ -24,8 +23,7 @@ def remove_gender_records():
         frappe.delete_doc("Gender", gender, force=1)
 
 def PropertySetter():
-    pass
-    # make_property_setter("User","birth_date","hidden",1,"Check")
+    make_property_setter("Workspace","icon","read_only",0,"Check")
     # make_property_setter("User","interest","hidden",1,"Check")
     # make_property_setter("User","location","hidden",1,"Check")
     # make_property_setter("User","bio","hidden",1,"Check")
