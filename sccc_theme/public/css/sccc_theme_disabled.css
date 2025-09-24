@@ -23,7 +23,7 @@ body, * {
 .standard-sidebar-item.selected{
   border: 1px solid #cf9dd1 !important;
   background-color: transparent !important;
-  border-radius: 2px !important;
+  border-radius: px !important;
 }
 .sidebar-item-icon{
   stroke: #cf9dd1 !important;

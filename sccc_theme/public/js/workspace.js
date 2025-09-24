@@ -22,12 +22,11 @@
   }
 
   function hideWorkspaceButtons() {
-    document.querySelectorAll(HIDDEN_SEL).forEach(btn => {
-      // keep button in DOM but hide visually
-      btn.style.display = "none";
-      // ensure data-label exists (empty) for downstream logic / i18n hooks
-      try { btn.setAttribute("data-label", ""); } catch (e) {}
-    });
+    if ($(".layout-main-section").hasClass("edit-mode")) {
+        $(HIDDEN_SEL).hide();
+    } else {
+      $(HIDDEN_SEL).show();
+    }
   }
 
   function findHeaderTarget() {
@@ -65,6 +64,7 @@
   function moveWorkspaceButtonsToHeader() {
     const target = findHeaderTarget();
     if (!target) return false;
+    if ($(".layout-main-section").hasClass("edit-mode")) return false;
 
     // collect both buttons (edit first, then new)
     const selectors = [".btn-edit-workspace", ".btn-new-workspace"];
@@ -155,6 +155,13 @@
 
     // re-run on route changes / Frappe page show events
     $(document).on("show route:change", () => setTimeout(handlePlacement, 40));
+    $(document).on("click", ".btn-edit-workspace", function() {
+      $(HIDDEN_SEL).hide();
+    });
+    $(document).on("click", ".btn.btn-secondary.btn-default.btn-sm", function() {
+      console.log("Default button clicked");
+      $(HIDDEN_SEL).show();
+    });
     if (window.frappe && frappe.router && typeof frappe.router.on === "function") {
       try { frappe.router.on("change", () => setTimeout(handlePlacement, 80)); } catch (e) {}
     }

@@ -21,7 +21,51 @@ body, * {
 
   }
 } */
-
+.form-tabs {
+    background: #e3e3e363 !important;
+}
+.nav-link {
+    background: #e3e3e300 !important;
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+.nav-link.active{
+    background: #ffffff !important;
+    border: 1px solid #b9b9b9 !important;
+    padding: 7px !important;
+    border-radius: 0px !important;
+}
+.form-page{
+  border-radius: 0 !important;
+}
+.form-tabs-list {
+  padding-left: 0 !important;
+}
+.comment-input-container{
+  border: 1px solid #ededed !important;
+}
+.comment-box .comment-input-container .frappe-control .ql-editor{
+  background-color: white  !important;
+  border-radius: 0px !important;
+  border-left: 0;
+}
+.activity-title, .timeline-items{
+  border: 1px solid #ededed !important;
+}
+.activity-title{
+  border-bottom: 0 !important;
+  padding-left: 10px !important;
+}
+.timeline-items{
+  border-top: 0 !important;
+}
+.timeline-actions{
+  border-left: 0 !important;
+  border-bottom: 0 !important;
+}
+.avatar{
+  margin: 2px 0px 2px 5px !important;
+}
 .page-body .container{
   margin: 0;
   max-width: 1610px !important;
@@ -36,6 +80,19 @@ body, * {
 .page-head {
   margin-top: 0;
   margin-bottom: 55px;
+}
+/* .form-control{
+  border:1px solid black !important;
+} */
+.form-control {
+  height: var(--input-height);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  letter-spacing: 0.02em;
+  padding: var(--input-padding);
+  position: relative;
+  background-color: white !important;
+  border:1px solid lightgray !important;
 }
 
 /* .layout-side-section, 
