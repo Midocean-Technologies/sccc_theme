@@ -41,12 +41,30 @@ body, * {
 .form-tabs-list {
   padding-left: 0 !important;
 }
-.ql-container{
-  border: 1px solid #b9b9b9 !important;
+.comment-input-container{
+  border: 1px solid #ededed !important;
 }
 .comment-box .comment-input-container .frappe-control .ql-editor{
   background-color: white  !important;
   border-radius: 0px !important;
+  border-left: 0;
+}
+.activity-title, .timeline-items{
+  border: 1px solid #ededed !important;
+}
+.activity-title{
+  border-bottom: 0 !important;
+  padding-left: 10px !important;
+}
+.timeline-items{
+  border-top: 0 !important;
+}
+.timeline-actions{
+  border-left: 0 !important;
+  border-bottom: 0 !important;
+}
+.avatar{
+  margin: 2px 0px 2px 5px !important;
 }
 .page-body .container{
   margin: 0;
