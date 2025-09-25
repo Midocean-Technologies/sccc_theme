@@ -75,6 +75,10 @@ def update_website_setting_logo():
     website_settings = frappe.get_single("Website Settings")
     navbar_settings = frappe.get_single("Navbar Settings")
 
+    if not website_settings.footer_powered == "Powered By <b>SCCC</b>":
+        website_settings.footer_powered = "Powered By <b>SCCC</b>"
+        website_settings.save(ignore_permissions=True)
+
     logo_path = "/files/logo.svg"
     favicon_path = "/files/logo.svg"
 
