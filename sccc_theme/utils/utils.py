@@ -127,7 +127,8 @@ def slugify_doctype(name: str) -> str:
 def get_sidebar_items(page=None):
     """Get sidebar items"""
     try:
-        page = page or "Home"
+        if not frappe.db.exists('Workspace',{'name':page}):
+            return [],[]
         workspace = frappe.get_doc("Workspace", page)
         items = []
         link_cards = []
