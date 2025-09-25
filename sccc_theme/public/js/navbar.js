@@ -493,7 +493,7 @@ body {
           $("<li>").append($("<a>").attr("href", '').text(titleText))
         );
       }
-    }, 1000);
+    }, 1500);
   }
   function onEveryShow() {
     // called on route change/page show
@@ -517,7 +517,20 @@ body {
     attachToggleSync();
 
     // Frappe "show" event on page wrappers updates title/offset reliably
-    $(document).on("show", ".page-container, .page-head, .page-content, .title-text", onEveryShow);
+    $(document).on("show", ".page-container, .page-head, .page-content, .title-text, #sccc-module-select_", onEveryShow);
+    const titleNode = document.querySelector(".title-text");
+    if (titleNode) {
+        const observer = new MutationObserver(() => {
+            syncBreadcrumb();
+        });
+
+        observer.observe(titleNode, {
+            characterData: true,   // changes inside text nodes
+            subtree: true,         // include all child nodes
+            attributes: true,      // catch attribute changes
+            attributeFilter: ["title"] // only watch title attribute
+        });
+    }
     // Also watch route changes (SPA)
     if (window.frappe && frappe.router) {
       frappe.router.on("change", onEveryShow);
