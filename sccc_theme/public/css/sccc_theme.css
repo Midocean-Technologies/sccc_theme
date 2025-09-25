@@ -12,6 +12,14 @@ body, * {
        font-style: normal; */
 }  
 
+body{
+  text-transform: lowercase !important;
+}
+
+.layout-main .layout-main-section.edit-mode{
+  background-color:none !important;
+}
+
 /* @media (min-width: 992px) {
   [data-page-route="Workspaces"] .layout-main .layout-main-section {
     border: 1px solid var(--border-color);
@@ -95,6 +103,16 @@ body, * {
   border:1px solid lightgray !important;
 }
 
+.widget-title{
+  font-weight: bold !important;
+}
+.widget.number-widget-box .widget-head .widget-title {
+    font-weight: bold !important;
+    color: var(--text-muted);
+    text-transform: lowercase !important;
+    font-size: var(--text-tiny);
+    margin-top: var(--margin-xs);
+}
 /* .layout-side-section, 
 .desk-sidebar, 
 .list-sidebar{
@@ -174,6 +192,7 @@ select{
 
 .layout-main-section{
   border-radius: 0px !important;
+  border:none !important;
 }
 
 .widget{
