@@ -12,9 +12,6 @@
           <polyline points="6 16 12 20 18 16"/>
         </svg>
       `,
-
-
-
     chevUp: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>`,
     chevDown: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`,
     chevRight: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>`,
@@ -25,6 +22,15 @@
     more: `<svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M6 10a2 2 0 100 4 2 2 0 000-4zm6 0a2 2 0 100 4 2 2 0 000-4zm6 0a2 2 0 100 4 2 2 0 000-4z"/></svg>`,
     workspace: `<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 3h8v8H3V3zm10 0h8v4h-8V3zM3 13h4v8H3v-8zm6 6h10v4H9v-4z"/></svg>`
   };
+
+  function lowerFirst(text) {
+    if (!text) return "";
+    return text.charAt(0).toLowerCase() + text.slice(1);
+  }
+
+  function formatLabel(label) {
+    return lowerFirst(frappe.utils.escape_html(label));
+  }
 
   function railHTML() {
     const user  = (frappe.session && frappe.session.user_fullname) || frappe.user.full_name();
@@ -40,8 +46,8 @@
                <img src="/assets/sccc_theme/images/logo.svg" alt="SCCC Logo" style="height:38px; margin-top:-6px;">
             </div>
             <div class="sccc-brand-text">
-              <div class="sccc-brand-title">SCCC</div>
-              <div class="sccc-brand-sub">By SCCC</div>
+              <div class="sccc-brand-title">sccc erp</div>
+              <div class="sccc-brand-sub">sccc by stc</div>
             </div>
           </div>
 
@@ -53,7 +59,7 @@
             <button type="button" class="sccc-select-trigger" aria-expanded="false">
               <span class="sccc-select-item-icn">${frappe.utils.icon('image-view', "md")}</span>
 
-              <span class="sccc-select-label">Home</span>
+              <span class="sccc-select-label">home</span>
               <span class="sccc-select-caret">${ICON.chevDown}</span>
             </button>
             <div class="sccc-select-list" role="listbox" aria-label="Modules" hidden></div>
@@ -65,8 +71,8 @@
             <button type="button" id="sccc-dashboard-btn" class="sccc-dashboard-btn" title="Dashboard" aria-label="Dashboard" data-route="dashboard">
               <span class="sccc-select-item-icon icon">${frappe.utils.icon('image-view', 'md')}</span>
               <span>
-                <span class="sccc-dashboard-label">Home</span>
-                <span class="">Dashboard</span>
+                <span class="sccc-dashboard-label">home</span>
+                <span class="">dashboard</span>
               </span>
             </button>
           </div>
@@ -78,14 +84,14 @@
                 <span>
                   <img src ="/assets/sccc_theme/images/tools.svg" alt="tools" style="height:20px; margin-left:10px;"/>
                 </span>
-                <span class="sccc-tool-txt">Tools</span>
+                <span class="sccc-tool-txt">tools</span>
                 <span class="sccc-row-caret">${ICON.chevRight}</span>
               </div>
               <div class="sccc-tool" data-route="list:Note">
                 <span>
                   <img src ="/assets/sccc_theme/images/configuration.svg" alt="configuration" style="height:18px; margin-left:10px;"/>
                 </span>
-                <span class="sccc-tool-txt">Configuration</span>
+                <span class="sccc-tool-txt">configuration</span>
                 <span class="sccc-row-caret">${ICON.chevRight}</span>
               </div>
             
@@ -224,7 +230,7 @@
       const $dash = $root.find("#sccc-dashboard-btn");
       if ($dash.length) {
         $dash.find(".sccc-select-item-icon").html(selIconHtml);
-        $dash.find(".sccc-dashboard-label").text(label || "Home");
+        $dash.find(".sccc-dashboard-label").text(label || "home");
         $dash.attr("data-route", route === "home" ? "home" : route);
       }
 
@@ -607,7 +613,7 @@
     $list.append($item);
   }
 
-  addOption("home", "Home", frappe.utils.icon('image-view', "md"));
+  addOption("home", "home", frappe.utils.icon('image-view', "md"));
 
   // Build a lookup map of doctype → workspace
   const doctypeToWorkspace = {};
@@ -672,7 +678,7 @@
     const $dash = $wrap.siblings("#sccc-dashboard-wrap").find("#sccc-dashboard-btn");
     if ($dash.length) {
       const dashIcon = selIconHtml || frappe.utils.icon('image-view', 'md');
-      const dashLabel = selectedText || "Home";
+      const dashLabel = selectedText || "home";
       $dash.find(".sccc-select-item-icn").html(dashIcon);
       $dash.find(".sccc-select-item-icon").html(dashIcon);
       $dash.find(".sccc-dashboard-label").text(dashLabel);

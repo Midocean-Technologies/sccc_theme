@@ -1,6 +1,8 @@
 import frappe
 from frappe.custom.doctype.property_setter.property_setter import make_property_setter
+from frappe.custom.doctype.custom_field.custom_field import create_custom_field
 from frappe.utils.data import sha256_hash
+from frappe import _
 # from frappe.desk.utils import get_link_to
 
 def after_migrate():
@@ -11,6 +13,18 @@ def after_migrate():
     update_currency_in_doctypes()
     PropertySetter()
     remove_gender_records()
+    create_custom_fields()
+
+def create_custom_fields():
+    create_custom_field(  
+        "Workspace Link",
+        {
+            "label":_("Is Below Divider"),
+            "fieldname": "is_below_divider",
+            "fieldtype": "Check",
+            "insert_after": "type",
+        },
+    )
 
 def remove_gender_records():
     gender_list = frappe.get_all(
