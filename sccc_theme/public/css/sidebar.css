@@ -137,6 +137,7 @@ body.sccc-rail-padding .container.page-container{
 }
 
 .sccc-select-trigger{
+  text-transform: lowercase !important;
   width: 100%;
   display: flex;
   align-items: center;
@@ -151,6 +152,9 @@ body.sccc-rail-padding .container.page-container{
   border-radius: 0px;
   height: 44px;
   line-height: 20px;
+}
+.sccc-dashboard-label{
+  text-transform: lowercase !important;
 }
 
 .sccc-tool{
