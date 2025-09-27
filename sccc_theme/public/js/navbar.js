@@ -12,7 +12,7 @@
 /* root layout variables */
 :root {
   --sccc-left: 0px;           /* computed from #sccc-rail-fixed */
-  --sccc-top-h: 52px;         /* bar height */
+  --sccc-top-h: 58px;         /* bar height */
   --sccc-rightwidth: calc(100% - var(--sccc-left));
 }
 
