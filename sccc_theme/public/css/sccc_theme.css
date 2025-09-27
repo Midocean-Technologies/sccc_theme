@@ -8,6 +8,7 @@
     }
 body, * {
       font-family: 'STCForward' !important;
+      text-transform: lowercase !important;
        /* font-weight: 400;
        font-style: normal; */
 }  
@@ -112,6 +113,18 @@ body{
     text-transform: lowercase !important;
     font-size: var(--text-tiny);
     margin-top: var(--margin-xs);
+}
+#navbar-breadcrumbs li:first-child {
+  font-weight: 600;
+  font-size: 14px;
+  padding: 6px 0px 6px 4px;
+  background: var(--control-bg, #f6f7f9);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 0px;
+  max-width: 40vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 /* .layout-side-section, 
 .desk-sidebar, 

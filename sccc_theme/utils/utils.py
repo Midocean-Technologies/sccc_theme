@@ -193,6 +193,8 @@ def get_sidebar_items(page=None):
 
         category = None
         for lc in workspace.custom_custom_link_cards_:
+            if getattr(lc, "is_below_divider", 0):  
+                continue
             # default
             route = None
             if lc.type == "Card Break":
