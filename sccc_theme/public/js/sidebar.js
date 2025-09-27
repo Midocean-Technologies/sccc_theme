@@ -50,7 +50,6 @@
               <div class="sccc-brand-sub">sccc by stc</div>
             </div>
           </div>
-
           <!-- Module selector -->
           <div class="sccc-section-label">Module</div>
 
@@ -69,10 +68,13 @@
           <div class="sccc-hr"></div>
           <div id="sccc-dashboard-wrap" class="sccc-dashboard-wrap" aria-hidden="false">
             <button type="button" id="sccc-dashboard-btn" class="sccc-dashboard-btn" title="Dashboard" aria-label="Dashboard" data-route="dashboard">
-              <span class="sccc-select-item-icon icon">${frappe.utils.icon('image-view', 'md')}</span>
+              <span class="sccc-select-item-icon icon">
+                <img src="/assets/sccc_theme/icon/Home.svg" alt="Home Icon" class="icon-img" />
+              </span>
+
               <span>
-                <span class="sccc-dashboard-label">home</span>
-                <span class="">dashboard</span>
+                <span class="sccc-dashboard-label" style="font-size:14px;">home</span>
+                <span class="" style="font-size:14px;">dashboard</span>
               </span>
             </button>
           </div>
@@ -191,7 +193,7 @@
       // ALSO update Dashboard button label + icon and set its route
       const $dash = $root.find("#sccc-dashboard-btn");
       if ($dash.length) {
-        $dash.find(".sccc-select-item-icon").html(iconHtml);
+        // $dash.find(".sccc-select-item-icon").html(iconHtml);
         $dash.find(".sccc-dashboard-label").text(label);
         // make dashboard route point to module's slug (keeps same value as native select)
         $dash.attr("data-route", val === "home" ? "home" : val);
@@ -229,7 +231,7 @@
       // ALSO update Dashboard button to reflect current selection
       const $dash = $root.find("#sccc-dashboard-btn");
       if ($dash.length) {
-        $dash.find(".sccc-select-item-icon").html(selIconHtml);
+        // $dash.find(".sccc-select-item-icon").html(selIconHtml);
         $dash.find(".sccc-dashboard-label").text(label || "home");
         $dash.attr("data-route", route === "home" ? "home" : route);
       }
@@ -365,7 +367,7 @@
         const iconHtml = frappe.utils.icon('menu', "sm");
         
         const link_details = $(`
-          <details class="sccc-tools sccc-collapsible details-child" style='margin-left:0; margin-right:0;'>
+          <details class="sccc-tools sccc-collapsible details-child">
             <summary class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${category}</strong>
@@ -548,7 +550,7 @@
         const iconHtml = frappe.utils.icon('menu', "sm");
         
         const link_details = $(`
-          <details class="sccc-tools sccc-collapsible details-child" style='margin-left:0; margin-right:0;'>
+          <details class="sccc-tools sccc-collapsible details-child" '>
             <summary class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${category}</strong>
@@ -680,7 +682,7 @@
       const dashIcon = selIconHtml || frappe.utils.icon('image-view', 'md');
       const dashLabel = selectedText || "home";
       $dash.find(".sccc-select-item-icn").html(dashIcon);
-      $dash.find(".sccc-select-item-icon").html(dashIcon);
+      // $dash.find(".sccc-select-item-icon").html(dashIcon);
       $dash.find(".sccc-dashboard-label").text(dashLabel);
       $dash.attr("data-route", currentSlug === "home" ? "home" : currentSlug);
     }
