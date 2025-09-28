@@ -73,13 +73,13 @@ body, * {
 .widget .widget-head .widget-title {
     font-size: var(--text-base);
 }
-.comment-box .comment-input-header, .form-dashboard-section .section-head, .form-section .section-head, .head-title {
+/* .comment-box .comment-input-header, .form-dashboard-section .section-head, .form-section .section-head, .head-title {
     font-size: var(--text-base);
     font-weight: 600;
 }
 .comment-box .comment-input-container .ql-editor {
     border: 1px solid var(--border-color);
-}
+} */
 .duration-picker .duration-input {
     background-color: var(--bg-color);
     border: 1px solid var(--border-color);
@@ -480,9 +480,9 @@ symbol#icon-small-down{
 }
 
 /* Heading Color */
-.head-title, .form-section .section-head, .form-dashboard-section .section-head, .comment-box .comment-input-header{
+/* .head-title, .form-section .section-head, .form-dashboard-section .section-head, .comment-box .comment-input-header{
     color: var(--primary-color);
-}
+} */
 
 /* Lists */
 .list-subject a{
@@ -1340,12 +1340,12 @@ textarea.input-with-feedback:focus {
 
 
 
-.new-timeline,
+/* .new-timeline,
 .new-timeline * {
   color: #4F00BC !important;
   fill: #4F00BC !important;
   font-weight: normal !important;
-}
+} */
 
 
 

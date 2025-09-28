@@ -9,8 +9,6 @@
 body, * {
       font-family: 'STCForward' !important;
       text-transform: lowercase !important;
-       /* font-weight: 400;
-       font-style: normal; */
 }  
 
 body{
@@ -21,15 +19,6 @@ body{
   background-color:none !important;
 }
 
-/* @media (min-width: 992px) {
-  [data-page-route="Workspaces"] .layout-main .layout-main-section {
-    border: 1px solid var(--border-color);
-    padding: var(--padding-md);
-    margin-bottom: var(--margin-sm);
-    margin-top: 50px;
-
-  }
-} */
 .form-tabs {
     background: #e3e3e363 !important;
 }
@@ -37,6 +26,19 @@ body{
     background: #e3e3e300 !important;
     margin-top: 5px !important;
     margin-bottom: 5px !important;
+}
+@media (min-width: 1200px) {
+  .container-xl, .container-lg, .container-md, .container-sm, .container {
+    max-width: 1380px !important;
+  }
+}
+
+.container, .container-fluid, .container-xl, .container-lg, .container-md, .container-sm {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  /* margin-left: auto; */
 }
 .nav-link.active{
     background: #ffffff !important;
@@ -57,6 +59,33 @@ body{
   background-color: white  !important;
   border-radius: 0px !important;
   border-left: 0;
+  height: var(--height-h-11, 44px);
+  padding: var(--spacing-1, 4px) var(--spacing-2, 8px);
+  align-items: center;
+  gap: var(--spacing-3, 12px);
+  align-self: stretch;
+  border: none !important;
+}
+.comment-input-wrapper{
+  padding: 32px !important;
+}
+.comment-box .comment-input-container .frappe-control {
+  padding-right: 0;
+}
+.new-timeline .timeline-item .timeline-content {
+  position: relative;
+  max-width: var(--timeline-content-max-width);
+  max-width:100% !important;
+  padding: var(--padding-sm);
+  margin-left: var(--margin-md);
+  padding-left: 32px !important;
+}
+
+.comment-box{
+  border: var(--border-width-border, 1px) solid var(--base-border, #E9EAEC);
+flex-direction: column;
+align-items: flex-start;
+align-self: stretch;
 }
 .activity-title, .timeline-items{
   border: 1px solid #ededed !important;
@@ -69,8 +98,7 @@ body{
   border-top: 0 !important;
 }
 .timeline-actions{
-  border-left: 0 !important;
-  border-bottom: 0 !important;
+  border: 0 !important;
 }
 .avatar{
   margin: 2px 0px 2px 5px !important;
@@ -79,20 +107,28 @@ body{
   margin: 0;
   max-width: 1610px !important;
 }
-.page-body,
-.layout-main-section,
-.page-content,
-.container {
-  max-width: 100% !important;  
-  width: 100% !important;
+.std-form-layout > .form-layout > .form-page {
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  box-shadow: none;
+  background-color: var(--card-bg);
+  margin-top: 50px;
 }
+
 .page-head {
-  margin-top: 0;
-  margin-bottom: 55px;
+display: flex;
+padding-top: var(--spacing-6, 24px);
+flex-direction: column;
+align-items: center;
+gap: var(--spacing-2, 8px);
+flex: 1 0 0;
+margin-top: 30px !important;
+margin-left: -30px !important;
+
 }
-/* .form-control{
-  border:1px solid black !important;
-} */
+.page-wrapper{
+  margin-left: -30px !important;
+}
 .form-control {
   height: var(--input-height);
   font-size: var(--text-base);
@@ -126,61 +162,6 @@ body{
   overflow: hidden;
   text-overflow: ellipsis;
 }
-/* .layout-side-section, 
-.desk-sidebar, 
-.list-sidebar{
-  background: #340746 !important;
-  color: white !important;
-}
-.sidebar-section a{
-  color: violet !important;
-}
-.layout-side-section .sidebar-label{
-  color: violet !important;
-}
-.widget.shortcut-widget-box {
-  border-radius: 2px !important;
-  padding: 10% !important;
-  box-shadow: 10px 10px 10px 10px rgba(235, 92, 235, 0.1) !important;
-   text-align: center;
-
-}
-.widget .widget-head .widget-label .widget-title {
-  color: #4c0b74 !important;
-  font-weight: 800 !important;
- 
-}
-
-
-
-
-.standard-sidebar-item:hover{
-    background-color: transparent !important;
-    border: 3px solid  #836191 !important;
-    background-color: #4d0357 !important;
-    border-radius: 0px !important;
-} 
-.standard-sidebar-item.selected{
-  border: 3px solid  #836191 !important;
-  background-color: #4d0357 !important;
-  border-radius: 2px !important;
-
-}
-
-.desk-sidebar .standard-sidebar-item svg{
-  fill: white !important;
-}
-.desk-sidebar .standard-sidebar-item{
-  padding: 10px;
-}
-.desk-sidebar .standard-sidebar-item.standard-sidebar-item.selected svg{
-  fill:   rgb(228, 151, 252) !important;
-   background-color: rgb(228, 151, 252) !important;
-    border-radius: 5px;
-}
-.sidebar-item-label, .sidebar-item-icon, .standard-sidebar-label{
-  color: white !important;
-}*/
 .btn{
   border-radius: 0px !important;
 }
