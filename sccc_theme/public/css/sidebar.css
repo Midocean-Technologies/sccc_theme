@@ -116,8 +116,6 @@ body.sccc-rail-padding .container.page-container{
   vertical-align: middle;
 }
 
-
-
 .sccc-select:hover{ background: var(--sccc-hover); }
 .sccc-select-icon{
   width: 32px; height: 32px; display:grid; place-items:center;
@@ -128,6 +126,19 @@ body.sccc-rail-padding .container.page-container{
   color: #fff !important;
 }
 
+/* .sccc-tools sccc-collapsible details-child{
+  display: flex;
+  height: var(--width-w-10, 40px);
+  padding: var(--spacing-2, 8px);
+  align-items: center;
+  gap: var(--spacing-2, 8px);
+  align-self: stretch;
+  border-radius: var(--border-radius-rounded-none, 0);
+  background: var(--base-sidebar-accent, rgba(255, 255, 255, 0.10));
+} */
+/* .sccc-tools-icon{
+  background-color: white !important;
+} */
 .sccc-select-label,.sccc-tool-txt{ flex:1; font-weight: 700; }
 /* .sccc-select-caret{ opacity:.9; stroke: #cea0f7; stroke-width: 2px !important; */
 /* }
@@ -406,6 +417,8 @@ body.sccc-rail-padding .container.page-container{
 .sccc-child-module{
   overflow: auto;
   scrollbar-width: none;
+  padding: var(--spacing-2, 8px);
+
   /* display: flex;
 padding: var(--spacing-1-5, 6px) var(--spacing-1, 4px);
 flex-direction: column;

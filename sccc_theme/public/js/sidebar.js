@@ -84,7 +84,7 @@
           <div class="sccc-tools-div">
               <div class="sccc-tool", data-route="list:ToDo">
                 <span>
-                  <img src ="/assets/sccc_theme/images/tools.svg" alt="tools" style="height:20px; margin-left:10px;"/>
+                  <img src ="/assets/sccc_theme/images/tools.svg" alt="tools" style="height:18px; margin-left:10px;"/>
                 </span>
                 <span class="sccc-tool-txt">tools</span>
                 <span class="sccc-row-caret">${ICON.chevRight}</span>
@@ -300,7 +300,7 @@
           return `
             <details class="sccc-tools sccc-collapsible">
               <summary class="ccc-child-header sccc-tools-head">
-                <span><span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(type)}</span>
+                <span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(type)}</span>
                 <span class="sccc-tools-caret">${ICON.chevDown}</span>
               </summary>
               ${list.map(i => `
@@ -314,7 +314,7 @@
           return `
             <details class="sccc-tools sccc-collapsible">
               <summary class="ccc-child-header sccc-tools-head">
-                <span><span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(category)}</span>
+                <span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(category)}</span>
                 <span class="sccc-tools-caret">${ICON.chevDown}</span>
               </summary>
               ${list.map(i => `
@@ -362,10 +362,10 @@
         acc[item.category].push(item);
         return acc;
       }, {});
-     
+
       Object.entries(links_grouped).forEach(([category, list]) => {
-        const iconHtml = frappe.utils.icon('menu', "sm");
-        
+        const iconHtml = list[0] && list[0].category_icon ? `<img src="${list[0].category_icon}" style="height:18px; width:18px;" />` : frappe.utils.icon('menu', "sm");
+
         const link_details = $(`
           <details class="sccc-tools sccc-collapsible details-child">
             <summary class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
@@ -483,7 +483,7 @@
           return `
             <details class="sccc-tools sccc-collapsible">
               <summary class="ccc-child-header sccc-tools-head">
-                <span><span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(type)}</span>
+                <span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(type)}</span>
                 <span class="sccc-tools-caret">${ICON.chevDown}</span>
               </summary>
               ${list.map(i => `
@@ -497,7 +497,7 @@
           return `
             <details class="sccc-tools sccc-collapsible">
               <summary class="ccc-child-header sccc-tools-head">
-                <span><span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(category)}</span>
+                <span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(category)}</span>
                 <span class="sccc-tools-caret">${ICON.chevDown}</span>
               </summary>
               ${list.map(i => `
@@ -545,10 +545,10 @@
         acc[item.category].push(item);
         return acc;
       }, {});
-     
+
       Object.entries(links_grouped).forEach(([category, list]) => {
-        const iconHtml = frappe.utils.icon('menu', "sm");
-        
+        const iconHtml = list[0] && list[0].category_icon ? `<img src="${list[0].category_icon}" style="height:18px; width:18px;" />` : frappe.utils.icon('menu', "sm");
+
         const link_details = $(`
           <details class="sccc-tools sccc-collapsible details-child" '>
             <summary class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
