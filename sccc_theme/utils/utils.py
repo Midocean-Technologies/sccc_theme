@@ -49,6 +49,8 @@ def remove_gender_records():
 
 def PropertySetter():
     make_property_setter("Workspace","icon","read_only",0,"Check")
+    # make_property_setter("Workspace Link", "link_to", "mandatory_depends_on", "eval:doc.type != 'Link'", "Data")
+    # make_property_setter("Workspace Link", "link_to", "read_only_depends_on", "eval:doc.type != 'Link'", "Data")
     # make_property_setter("User","interest","hidden",1,"Check")
     # make_property_setter("User","location","hidden",1,"Check")
     # make_property_setter("User","bio","hidden",1,"Check")
