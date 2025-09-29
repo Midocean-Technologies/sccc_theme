@@ -256,12 +256,9 @@
       const selectedPageObj = slugMap[page] || null;
       const selectedIsChild = selectedPageObj && selectedPageObj.parent_page;
 
-      // collect child modules for the relevant parent (if selecting parent) or for the parent of selected child
+      // collect child modules only if selected is a child (treat as parent), else none
       let parentSlugForChildren = null;
       if (selectedIsChild) {
-        parentSlugForChildren = frappe.router.slug(selectedPageObj.parent_page);
-      } else {
-        // selected page may be a parent; use its slug (strip private/ prefix for comparison)
         parentSlugForChildren = (page || "").replace(/^private\//, "");
       }
 
@@ -439,13 +436,10 @@
       // determine if the selected page is itself a child module
       const selectedPageObj = slugMap[page] || null;
       const selectedIsChild = selectedPageObj && selectedPageObj.parent_page;
-     
-      // collect child modules for the relevant parent (if selecting parent) or for the parent of selected child
+
+      // collect child modules only if selected is a child (treat as parent), else none
       let parentSlugForChildren = null;
       if (selectedIsChild) {
-        parentSlugForChildren = frappe.router.slug(selectedPageObj.parent_page);
-      } else {
-        // selected page may be a parent; use its slug (strip private/ prefix for comparison)
         parentSlugForChildren = (page || "").replace(/^private\//, "");
       }
 
@@ -624,19 +618,18 @@
     if (frappe.router.slug(p.title) === "home") return;
     const slug = p.public ? frappe.router.slug(p.title) : `private/${frappe.router.slug(p.title)}`;
     const iconHtml = p.icon ? frappe.utils.icon(p.icon, "md") : frappe.utils.icon('image-view', "md");
-    if(!p.parent_page){
-      addOption(slug, p.title, iconHtml);
+    // Add all workspaces to dropdown, including children
+    addOption(slug, p.title, iconHtml);
 
-      if (p.link_to) {
-        p.link_to.forEach(dt => {
-          doctypeToWorkspace[dt] = slug;
-        });
-      }
-      if (p.doctypes) {
-        p.doctypes.forEach(dt => {
-          doctypeToWorkspace[dt] = slug;
-        });
-      }
+    if (p.link_to) {
+      p.link_to.forEach(dt => {
+        doctypeToWorkspace[dt] = slug;
+      });
+    }
+    if (p.doctypes) {
+      p.doctypes.forEach(dt => {
+        doctypeToWorkspace[dt] = slug;
+      });
     }
   });
 
@@ -691,8 +684,6 @@
   
 
 }
-
-
 
   function mount() {
     if (document.getElementById("sccc-rail-fixed")) return;
