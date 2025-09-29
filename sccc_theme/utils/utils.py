@@ -1,6 +1,8 @@
 import frappe
 from frappe.custom.doctype.property_setter.property_setter import make_property_setter
+from frappe.custom.doctype.custom_field.custom_field import create_custom_field
 from frappe.utils.data import sha256_hash
+from frappe import _
 # from frappe.desk.utils import get_link_to
 
 def after_migrate():
@@ -11,9 +13,31 @@ def after_migrate():
     update_currency_in_doctypes()
     PropertySetter()
     remove_gender_records()
+    create_custom_fields()
+
+def create_custom_fields():
+    create_custom_field(  
+        "Workspace Link",
+        {
+            "label":_("Is Below Divider"),
+            "fieldname": "is_below_divider",
+            "fieldtype": "Check",
+            "insert_after": "type",
+            "depends_on":"eval:doc.type == 'Card Break'",
+        },
+    )
+    create_custom_field(  
+        "Workspace Link",
+        {
+            "label":_("Custom Icon"),
+            "fieldname": "custom_icon",
+            "fieldtype": "Attach",
+            "insert_after": "is_below_divider",
+            "depends_on":"eval:doc.type == 'Card Break'",
+        },
+    )
 
 def remove_gender_records():
-    # Fetch all genders except Male and Female
     gender_list = frappe.get_all(
         "Gender",
         filters={"name": ["not in", ["Male", "Female"]]},
@@ -24,8 +48,7 @@ def remove_gender_records():
         frappe.delete_doc("Gender", gender, force=1)
 
 def PropertySetter():
-    pass
-    # make_property_setter("User","birth_date","hidden",1,"Check")
+    make_property_setter("Workspace","icon","read_only",0,"Check")
     # make_property_setter("User","interest","hidden",1,"Check")
     # make_property_setter("User","location","hidden",1,"Check")
     # make_property_setter("User","bio","hidden",1,"Check")
@@ -50,16 +73,36 @@ def update_currency_in_doctypes():
     #     nc.save(ignore_permissions=True)
 
 def hide_workspace():
-    """Hide Financial Reports workspaces from the workspace list."""
-    ws = frappe.get_doc("Workspace", "Financial Reports")
-    if not ws.is_hidden:
-        ws.is_hidden = 1
-        ws.save(ignore_permissions=True)
+    """Hide specific workspaces from the workspace list."""
+    # List of workspaces you want to hide
+    workspaces_to_hide = [
+        "Financial Reports",
+        "ERPNext Settings",
+        "ERPNext Integrations",
+        "ERP Settings",
+        "ERP Integrations"
+    ]
+
+    # Get all workspace docs that match and are not hidden
+    ws_list = frappe.get_all(
+        "Workspace",
+        filters={"name": ["in", workspaces_to_hide], "is_hidden": 0},
+        pluck="name"
+    )
+
+    for w in ws_list:
+        ws_doc = frappe.get_doc("Workspace", w)
+        ws_doc.is_hidden = 1
+        ws_doc.save(ignore_permissions=True)
 
 
 def update_website_setting_logo():
     website_settings = frappe.get_single("Website Settings")
     navbar_settings = frappe.get_single("Navbar Settings")
+
+    if not website_settings.footer_powered == "Powered By <b>SCCC</b>":
+        website_settings.footer_powered = "Powered By <b>SCCC</b>"
+        website_settings.save(ignore_permissions=True)
 
     logo_path = "/files/logo.svg"
     favicon_path = "/files/logo.svg"
@@ -130,6 +173,9 @@ def get_sidebar_items(page=None):
         if not frappe.db.exists('Workspace',{'name':page}):
             return [],[]
         workspace = frappe.get_doc("Workspace", page)
+        if workspace.is_hidden:
+            return [], []
+        
         items = []
         link_cards = []
         for sc in workspace.custom_custom__shortcuts:
@@ -157,27 +203,33 @@ def get_sidebar_items(page=None):
                 })
 
         category = None
+        category_icon = None
         for lc in workspace.custom_custom_link_cards_:
+            if getattr(lc, "is_below_divider", 0):
+                continue
             # default
             route = None
             if lc.type == "Card Break":
                 category = lc.label
+                category_icon = lc.custom_icon
                 continue
             if lc.link_type == "DocType":
                 route = f"/app/{slugify_doctype(lc.link_to)}"
-                
+
             elif lc.link_type == "Report":
                 route = f"/app/query-report/{lc.link_to}"
-           
+
             if route and lc.type == "Link":
                 link_cards.append({
                     "label": lc.label,
-                    "icon": lc.icon,
+                    "icon": lc.custom_icon,
                     "link_type": lc.link_type,
                     "category": category,
+                    "category_icon": category_icon,
                     "link_to": lc.link_to,
                     "route": route,
                 })
+        print(link_cards)
         return items, link_cards
     except ImportError:
         frappe.log_error("Could not find get_sidebar_items ", "Error")

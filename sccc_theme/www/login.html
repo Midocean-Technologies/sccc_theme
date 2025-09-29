@@ -61,9 +61,6 @@
 	By continuing, you acknowledge that you understand and agree to the 
 	<a href="#" style="color: palevioletred;">Terms & Conditions</a> and <a href="#" style="color: palevioletred;" >Privacy Policy</a>
 </div>
-  
-
-
 {% endmacro %}
 
 {% block head_include %}
@@ -72,11 +69,10 @@
 
 {% macro logo_section(title=null) %}
 <div class="page-card-head">
-	<!-- <img class="app-logo" src="{{ logo }}"> -->
 	{% if title %}
 	<h4>{{ _(title)}}</h4>
 	{% else %}
-	<h2>{{ _('Welcome back <br> <p style="font-size: 14px;">Sign in to your SCCC ERP</p>') }}</h2>
+	<h2>{{ _('welcome back <br> <p style="font-size: 14px;">sign in to your sccc erp</p>') }}</h2>
 	{% endif %}
 </div>
 {% endmacro %}
@@ -195,25 +191,18 @@
 			<form class="form-signin form-forgot hide" role="form">
 				<div class="page-card-body">
 					<div style="text-align: center;">
-						<!-- <div style="background-color: #d4d1d163; border-radius: 25px;
-								width: 50px; text-align: center;
-								height: 45px !important; margin-right: 85px;">
-							<svg class="" width="20" height="25" viewBox="0 0 16 16" stroke="#9863cb" style="margin-top:9px !important"
-								xmlns="http://www.w3.org/2000/svg">
-								<use class="" href="#es-line-email"></use>
-							</svg>
-						</div> -->
+						
 					<img width="68px" src="/assets/sccc_theme/images/logo.svg" alt="SCCC">
 					</div>
 					<br>
-					<h4 style="color: black !important; margin: 0;">{{ _("Forgot your password?") }}</h4><br>
-					<span style="color: black;">Get a verification email</span><br>
-      				<span style="font-size: 14px;">Please enter your email address below and we’ll send you a reset password link</span>
+					<h4 style="color: black !important; margin: 0;">{{ _("forget password?") }}</h4><br>
+					<span style="color: black;">get a verification email</span><br>
+      				<span style="font-size: 14px;">please enter your email address below and we’ll send you a reset password link</span>
 					<br><br>
 					<div class="email-field">
-						<label for="">Email</label>
+						<label for="">email</label>
 						<input type="email" id="forgot_email" class="form-control"
-							placeholder="{{ _('Email Address') }}" required autofocus autocomplete="username">
+							placeholder="{{ _('your email address') }}" required autofocus autocomplete="username">
 						<!-- <svg class="field-icon email-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"
 							xmlns="http://www.w3.org/2000/svg">
 							<path
@@ -274,6 +263,38 @@
     <img src="/assets/sccc_theme/images/SCCC Logo - white.png" alt="SCCC">
   </div>
 <style>
+	/* force lowercase first letter for headings, labels, buttons, links, etc. */
+	.page-card h1::first-letter,
+	.page-card h2::first-letter,
+	.page-card h3::first-letter,
+	.page-card h4::first-letter,
+	.page-card h5::first-letter,
+	.page-card h6::first-letter,
+	.page-card label::first-letter,
+	.page-card p::first-letter,
+	.page-card a::first-letter,
+	.page-card button::first-letter,
+	.page-card li::first-letter,
+	.footer-text::first-letter {
+		text-transform: lowercase !important;
+	}
+
+	/* if you also want the entire text lowercase (not just first letter), use this */
+	.page-card h1,
+	.page-card h2,
+	.page-card h3,
+	.page-card h4,
+	.page-card h5,
+	.page-card h6,
+	.page-card label,
+	.page-card p,
+	.page-card a,
+	.page-card button,
+	.page-card li,
+	.footer-text {
+		text-transform: lowercase !important;
+	}
+
     body {
       font-family: "HelveticaNowMTText", "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", sans-serif;
       background-color :#4F008C;
