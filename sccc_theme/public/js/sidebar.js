@@ -241,19 +241,25 @@
 
       const r = await frappe.xcall("frappe.desk.desktop.get_workspace_sidebar_items");
       const pages = (r && r.pages) || [];
+      const filteredPages = pages.filter(p => !p.parent_page);
       let page = this.value;
-      const ws = await frappe.call("sccc_theme.utils.utils.get_sidebar_items", { page });
-      const items = ws.message[0] || [];
-      const links = ws.message[1] || [];
-      LOG("Workspace data:", ws);
 
       // build slug lookup for pages
       const slugFor = p => (p.public ? frappe.router.slug(p.title) : `private/${frappe.router.slug(p.title)}`);
       const slugMap = {};
-      pages.forEach(p => { p._slug = slugFor(p); slugMap[p._slug] = p; });
+      filteredPages.forEach(p => { p._slug = slugFor(p); slugMap[p._slug] = p; });
 
       // determine if the selected page is itself a child module
       const selectedPageObj = slugMap[page] || null;
+
+      let items = [], links = [];
+      if (selectedPageObj) {
+        const ws = await frappe.call("sccc_theme.utils.utils.get_sidebar_items", { page });
+        items = ws.message[0] || [];
+        links = ws.message[1] || [];
+      }
+      LOG("Workspace data:", {items, links});
+
       const selectedIsChild = selectedPageObj && selectedPageObj.parent_page;
 
       // collect child modules only if selected is a child (treat as parent), else none
@@ -262,7 +268,7 @@
         parentSlugForChildren = (page || "").replace(/^private\//, "");
       }
 
-      const childModules = pages.filter(p => {
+      const childModules = filteredPages.filter(p => {
         if (!p.parent_page) return false;
         return frappe.router.slug(p.parent_page) === parentSlugForChildren;
       });
@@ -420,21 +426,27 @@
       $root.find(".sccc-child-module").remove();
       const r = await frappe.xcall("frappe.desk.desktop.get_workspace_sidebar_items");
       const pages = (r && r.pages) || [];
+      const filteredPages = pages.filter(p => !p.parent_page);
       // let page = pages.filter(p => p.name === selectedText)[0];
 
       let page = slugify(selectedText)
-      const ws = await frappe.call("sccc_theme.utils.utils.get_sidebar_items", { page });
-      const items = ws.message[0] || [];
-      const links = ws.message[1] || [];
-      LOG("Workspace data:", ws);
 
       // build slug lookup for pages
       const slugFor = p => (p.public ? frappe.router.slug(p.title) : `private/${frappe.router.slug(p.title)}`);
       const slugMap = {};
-      pages.forEach(p => { p._slug = slugFor(p); slugMap[p._slug] = p; });
+      filteredPages.forEach(p => { p._slug = slugFor(p); slugMap[p._slug] = p; });
 
       // determine if the selected page is itself a child module
       const selectedPageObj = slugMap[page] || null;
+
+      let items = [], links = [];
+      if (selectedPageObj) {
+        const ws = await frappe.call("sccc_theme.utils.utils.get_sidebar_items", { page });
+        items = ws.message[0] || [];
+        links = ws.message[1] || [];
+      }
+      LOG("Workspace data:", {items, links});
+
       const selectedIsChild = selectedPageObj && selectedPageObj.parent_page;
 
       // collect child modules only if selected is a child (treat as parent), else none
@@ -443,7 +455,7 @@
         parentSlugForChildren = (page || "").replace(/^private\//, "");
       }
 
-      const childModules = pages.filter(p => {
+      const childModules = filteredPages.filter(p => {
         if (!p.parent_page) return false;
         return frappe.router.slug(p.parent_page) === parentSlugForChildren;
       });
@@ -587,6 +599,7 @@
   async function loadModules($root) {
   const r = await frappe.xcall("frappe.desk.desktop.get_workspace_sidebar_items");
   const pages = (r && r.pages) || [];
+  const filteredPages = pages.filter(p => !p.parent_page);
 
   const $wrap = $root.find("#sccc-module-select_wrap");
   const $list = $wrap.find(".sccc-select-list");
@@ -613,8 +626,8 @@
 
   // Build a lookup map of doctype → workspace
   const doctypeToWorkspace = {};
-  LOG(pages)
-  pages.forEach(p => {
+  LOG(filteredPages)
+  filteredPages.forEach(p => {
     if (frappe.router.slug(p.title) === "home") return;
     const slug = p.public ? frappe.router.slug(p.title) : `private/${frappe.router.slug(p.title)}`;
     const iconHtml = p.icon ? frappe.utils.icon(p.icon, "md") : frappe.utils.icon('image-view', "md");
