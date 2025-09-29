@@ -23,6 +23,17 @@ def create_custom_fields():
             "fieldname": "is_below_divider",
             "fieldtype": "Check",
             "insert_after": "type",
+            "depends_on":"eval:doc.type == 'Card Break'",
+        },
+    )
+    create_custom_field(  
+        "Workspace Link",
+        {
+            "label":_("Custom Icon"),
+            "fieldname": "custom_icon",
+            "fieldtype": "Attach",
+            "insert_after": "is_below_divider",
+            "depends_on":"eval:doc.type == 'Card Break'",
         },
     )
 
@@ -192,29 +203,33 @@ def get_sidebar_items(page=None):
                 })
 
         category = None
+        category_icon = None
         for lc in workspace.custom_custom_link_cards_:
-            if getattr(lc, "is_below_divider", 0):  
+            if getattr(lc, "is_below_divider", 0):
                 continue
             # default
             route = None
             if lc.type == "Card Break":
                 category = lc.label
+                category_icon = lc.custom_icon
                 continue
             if lc.link_type == "DocType":
                 route = f"/app/{slugify_doctype(lc.link_to)}"
-                
+
             elif lc.link_type == "Report":
                 route = f"/app/query-report/{lc.link_to}"
-           
+
             if route and lc.type == "Link":
                 link_cards.append({
                     "label": lc.label,
-                    "icon": lc.icon,
+                    "icon": lc.custom_icon,
                     "link_type": lc.link_type,
                     "category": category,
+                    "category_icon": category_icon,
                     "link_to": lc.link_to,
                     "route": route,
                 })
+        print(link_cards)
         return items, link_cards
     except ImportError:
         frappe.log_error("Could not find get_sidebar_items ", "Error")
