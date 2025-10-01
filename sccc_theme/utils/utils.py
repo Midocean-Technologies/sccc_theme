@@ -49,13 +49,6 @@ def remove_gender_records():
 
 def PropertySetter():
     make_property_setter("Workspace","icon","read_only",0,"Check")
-    # make_property_setter("Workspace Link", "link_to", "mandatory_depends_on", "eval:doc.type != 'Link'", "Data")
-    # make_property_setter("Workspace Link", "link_to", "read_only_depends_on", "eval:doc.type != 'Link'", "Data")
-    # make_property_setter("User","interest","hidden",1,"Check")
-    # make_property_setter("User","location","hidden",1,"Check")
-    # make_property_setter("User","bio","hidden",1,"Check")
-    # make_property_setter("User","interest","hidden",1,"Check")
-
 
 def update_currency_in_doctypes():
     """Update currency in number card to SAR."""
@@ -65,14 +58,6 @@ def update_currency_in_doctypes():
         nc = frappe.get_doc("Number Card", nc_name)
         nc.currency = "SAR"
         nc.save(ignore_permissions=True)
-    
-    # """Update currency in Dashboard Chart to SAR."""
-    # number_cards = frappe.get_all("Dashboard Chart", filters={"currency": None}, pluck="name")
-
-    # for nc_name in number_cards:
-    #     nc = frappe.get_doc("Dashboard Chart", nc_name)
-    #     nc.currency = "SAR"
-    #     nc.save(ignore_permissions=True)
 
 def hide_workspace():
     """Hide specific workspaces from the workspace list."""
@@ -189,8 +174,8 @@ def get_sidebar_items(page=None):
             if sc.type == "DocType":
                 route = f"/app/{slugify_doctype(sc.link_to)}"
                 
-            elif sc.type == "Report":
-                route = f"/app/query-report/{sc.link_to}"
+            # elif sc.type == "Report":
+            #     route = f"/app/query-report/{sc.link_to}"
             # elif sc.type == "Dashboard":
             #     route = f"/app/dashboard-view/{sc.link_to}"
             
@@ -231,7 +216,7 @@ def get_sidebar_items(page=None):
                     "link_to": lc.link_to,
                     "route": route,
                 })
-        print(link_cards)
+        # print(link_cards)
         return items, link_cards
     except ImportError:
         frappe.log_error("Could not find get_sidebar_items ", "Error")

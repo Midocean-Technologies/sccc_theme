@@ -1,0 +1,114 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"9LZWlVLpfh\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Reports</span>\",\"col\":12}},{\"id\":\"A76ir1USia\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Reported This Month\",\"col\":3}}]",
+ "creation": "2025-10-01 08:30:30.214560",
+ "custom_blocks": [],
+ "custom_custom__shortcuts": [],
+ "custom_custom_link_cards_": [
+  {
+   "custom_icon": "/files/FileLineChart.svg",
+   "hidden": 0,
+   "is_below_divider": 0,
+   "is_query_report": 0,
+   "label": "crm reports",
+   "link_count": 0,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_below_divider": 0,
+   "is_query_report": 0,
+   "label": "lead details",
+   "link_count": 0,
+   "link_to": "Lead Details",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_below_divider": 0,
+   "is_query_report": 0,
+   "label": "Sales Pipeline Analytics",
+   "link_count": 0,
+   "link_to": "Sales Pipeline Analytics",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_below_divider": 0,
+   "is_query_report": 0,
+   "label": "Lost Opportunity",
+   "link_count": 0,
+   "link_to": "Lost Opportunity",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_below_divider": 0,
+   "is_query_report": 0,
+   "label": "Sales Pipeline Analytics",
+   "link_count": 0,
+   "link_to": "Sales Pipeline Analytics",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_icon": "/files/FileLineChart.svg",
+   "hidden": 0,
+   "is_below_divider": 0,
+   "is_query_report": 0,
+   "label": "Accounting reports",
+   "link_count": 0,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_below_divider": 0,
+   "is_query_report": 0,
+   "label": "Account Balance",
+   "link_count": 0,
+   "link_to": "Account Balance",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "small-file",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Reports",
+ "links": [],
+ "modified": "2025-10-01 10:48:23.420476",
+ "modified_by": "Administrator",
+ "module": "SCCC Theme",
+ "name": "Reports",
+ "number_cards": [
+  {
+   "label": "Reported This Month",
+   "number_card_name": "Reported This Month"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 39.0,
+ "shortcuts": [],
+ "title": "Reports"
+}
