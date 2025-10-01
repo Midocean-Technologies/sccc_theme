@@ -128,7 +128,11 @@
   }
 
   function wireRail($root) {
-     $root.on("click", ".sccc-brand", () => frappe.set_route("home"));
+    //  $root.on("click", ".sccc-brand", () => frappe.set_route("home"));
+    $root.on("click", ".sccc-brand", () => {
+      const $sel = $root.find("#sccc-module-select_");
+      $sel.val("home").trigger("change");
+    });
     $root.on("click", ".sccc-user", function() {
       $root.find(".sccc-user-menu").toggle();
     });
