@@ -152,6 +152,19 @@
     injectHideCSS();
     handlePlacement();
     startObserver();
+    setTimeout(function () {
+      const $btn = $('.btn-edit-workspace');
+      const $newbtn = $('.btn-new-workspace');
+
+      $btn.find('span').text('Edit Dashboard');
+      $btn.css('background', '#ec0552');
+      $btn.css('color', 'white');
+      $newbtn.find('span').text('');
+      $newbtn.css('border', '1px solid #ec0552');
+      $newbtn.css('color', '#ec0552');
+      $newbtn.css('background', 'white');
+      $btn.find('svg').hide();
+    }, 500);
 
     // re-run on route changes / Frappe page show events
     $(document).on("show route:change", () => setTimeout(handlePlacement, 40));
