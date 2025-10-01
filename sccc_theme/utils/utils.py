@@ -203,8 +203,8 @@ def get_sidebar_items(page=None):
             if lc.link_type == "DocType":
                 route = f"/app/{slugify_doctype(lc.link_to)}"
 
-            # elif lc.link_type == "Report":
-            #     route = f"/app/query-report/{lc.link_to}"
+            elif lc.link_type == "Report":
+                route = f"/app/query-report/{lc.link_to}"
 
             if route and lc.type == "Link":
                 link_cards.append({
