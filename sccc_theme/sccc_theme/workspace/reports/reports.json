@@ -1,7 +1,7 @@
 {
  "charts": [],
  "content": "[{\"id\":\"9LZWlVLpfh\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Reports</span>\",\"col\":12}},{\"id\":\"A76ir1USia\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Reported This Month\",\"col\":3}}]",
- "creation": "2025-10-01 08:30:30.214560",
+ "creation": "2025-10-01 13:38:12.805562",
  "custom_blocks": [],
  "custom_custom__shortcuts": [],
  "custom_custom_link_cards_": [
@@ -81,6 +81,28 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "custom_icon": "/files/FileLineChart.svg",
+   "hidden": 0,
+   "is_below_divider": 0,
+   "is_query_report": 0,
+   "label": "Hr reports",
+   "link_count": 0,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_below_divider": 0,
+   "is_query_report": 0,
+   "label": "Leave Ledger",
+   "link_count": 0,
+   "link_to": "Leave Ledger",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
  "docstatus": 0,
@@ -93,16 +115,11 @@
  "is_hidden": 0,
  "label": "Reports",
  "links": [],
- "modified": "2025-10-01 10:48:23.420476",
+ "modified": "2025-10-01 16:11:57.448385",
  "modified_by": "Administrator",
  "module": "SCCC Theme",
  "name": "Reports",
- "number_cards": [
-  {
-   "label": "Reported This Month",
-   "number_card_name": "Reported This Month"
-  }
- ],
+ "number_cards": [],
  "owner": "Administrator",
  "parent_page": "",
  "public": 1,
