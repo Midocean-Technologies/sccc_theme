@@ -14,7 +14,40 @@ body, * {
 body{
   text-transform: lowercase !important;
 }
+.page-actions .form-sidebar-items {
+  display: inline-flex !important;
+  align-items: center !important;
+  flex-direction: row-reverse !important;
 
+} 
+.page-actions .list-unstyled{
+  margin: 0 !important;
+  margin-right: 12px !important;
+  flex-direction: row !important;
+} 
+/* Tag and Attachment: icon on the RIGHT */
+.page-actions .form-sidebar-items .explore-link{
+  margin-top: 0 !important;
+}
+.page-actions .form-sidebar-items > span svg {
+  margin-left: 6px !important;   /* space between + and label */
+}
+.form-stats{
+  margin-top: 4px !important;
+}
+.page-actions .form-tags .form-sidebar-items > span,
+.page-actions .form-shared .form-sidebar-items > span,
+.page-actions .form-assignments .form-sidebar-items > span,
+.page-actions .form-attachments .form-sidebar-items > span {
+  display: inline-flex;
+  flex-direction: row-reverse !important;
+  align-items: center;
+}
+
+.custom-sidebar-wrapper{
+  display: flex;
+  align-items: flex-start;
+}
 .layout-main .layout-main-section.edit-mode{
   background-color:none !important;
 }
@@ -129,7 +162,7 @@ margin-top: 30px !important;
   margin-top: 20px !important;
 }
 .form-control {
-  height: var(--input-height);
+  /* height: var(--input-height); */
   font-size: var(--text-base);
   font-weight: var(--weight-regular);
   letter-spacing: 0.02em;
