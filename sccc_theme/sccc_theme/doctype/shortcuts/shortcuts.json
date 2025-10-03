@@ -1,0 +1,64 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-10-03 12:17:23.505455",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "name1",
+  "icon",
+  "column_break_qfdo",
+  "redirect_to",
+  "column_break_bqci",
+  "parent_shortcut"
+ ],
+ "fields": [
+  {
+   "fieldname": "icon",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "icon"
+  },
+  {
+   "fieldname": "redirect_to",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "redirect to"
+  },
+  {
+   "fieldname": "column_break_qfdo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "parent_shortcut",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "parent shortcut"
+  },
+  {
+   "fieldname": "column_break_bqci",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "name"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-10-03 12:20:57.371816",
+ "modified_by": "Administrator",
+ "module": "SCCC Theme",
+ "name": "shortcuts",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
