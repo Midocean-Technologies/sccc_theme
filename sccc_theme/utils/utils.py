@@ -14,6 +14,19 @@ def after_migrate():
     PropertySetter()
     remove_gender_records()
     create_custom_fields()
+    # remove_reports_from_workspace_custom_link_cards()
+
+def remove_reports_from_workspace_custom_link_cards():
+    workspaces = frappe.get_all("Workspace", pluck="name")
+
+    for ws_name in workspaces:
+        if ws_name != "Reports":
+            ws = frappe.get_doc("Workspace", ws_name)
+            ws.custom_custom_link_cards_ = [
+                x for x in ws.custom_custom_link_cards_ if x.link_type != "Report"
+            ]
+            ws.save(ignore_permissions=True)
+
 
 def create_custom_fields():
     create_custom_field(  
