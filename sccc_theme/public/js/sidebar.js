@@ -455,6 +455,13 @@
         caret.html(this.open ? ICON.chevDown : ICON.chevRight);
     });
 
+    // Update caret for sccc-select custom dropdown
+    $root.on('click', '#sccc-module-select_wrap.sccc-select.custom', function() {
+        const $caret = $(this).find('.sccc-select-caret');
+        const expanded = $(this).find('.sccc-select-trigger').attr('aria-expanded') === 'true';
+        $caret.html(expanded ? ICON.chevDown : ICON.chevRight);
+    });
+
   }
   function slugify(text) {
     return text
