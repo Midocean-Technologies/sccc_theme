@@ -82,7 +82,7 @@
 
           <!-- Tools -->
           <div class="sccc-tools-div">
-              <div class="sccc-tool", data-route="configuration">
+              <div class="sccc-tool", data-route="tools-page">
                 <span>
                   <img src ="/assets/sccc_theme/images/tools.svg" alt="tools" style="height:18px; margin-left:10px;"/>
                 </span>
@@ -124,7 +124,8 @@
   function routeGo(route) {
     if (route.startsWith("list:")) return frappe.set_route("list", route.split(":")[1]);
     if (route === "home") return frappe.set_route("home");
-    if (route === "configuration") return frappe.set_route("app/configuration"); // 👈 added this
+    if (route === "configuration") return frappe.set_route("app/configuration");
+    if (route === "tools-page") return frappe.set_route("app/tools-page"); 
 
     return frappe.set_route(route);
   }
