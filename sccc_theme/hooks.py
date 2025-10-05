@@ -103,7 +103,9 @@ doctype_js = {"User" : "public/js/user.js"}
 # before_install = "sccc_theme.install.before_install"
 # after_install = "sccc_theme.install.after_install"
 after_migrate = "sccc_theme.utils.utils.after_migrate"
-
+# permission_query_conditions = {
+#     "Language": "sccc_theme.utils.api.language_permission_query"
+# }
 # Uninstallation
 # ------------
 
