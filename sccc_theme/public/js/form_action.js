@@ -1,27 +1,22 @@
-// sccc_topbar.js
-
 (function () {
-  
     function mountSidebarElements() {
         const moveToPageActions = [
             '.form-assignments',
             '.form-attachments',
             '.form-tags',
             '.form-shared',
-            '.form-sidebar-stats' // for likes and comments
+            '.form-sidebar-stats'
         ];
 
         const $pageActions = $('.page-actions');
 
         if ($pageActions.length) {
-            // create a wrapper div inside page-actions
             let $wrapper = $pageActions.find('.page-actions .custom-sidebar-wrapper');
             if (!$wrapper.length) {
                 $wrapper = $('<div class="custom-sidebar-wrapper"></div>');
                 $pageActions.prepend($wrapper);
             }
 
-            // move elements into the wrapper
             moveToPageActions.forEach(selector => {
                 const $element = $('.form-sidebar').find(selector);
                 if ($element.length) {
@@ -29,28 +24,40 @@
                 }
             });
 
-            // hide follow button
             $('.form-sidebar-stats .form-follow').hide();
         }
     }
-    
-    // --- mount ----------------------------------------------------------------
+
+    function addMyButton() {
+        const container = document.querySelector(".custom-actions.hidden-xs.hidden-md");
+        if (!container) return;
+
+        const fullPageBtn = Array.from(container.querySelectorAll("button.btn.btn-default.btn-sm.ellipsis"))
+                                .find(btn => btn.textContent.includes("Full Page"));
+
+        if (fullPageBtn && !container.querySelector(".my-custom-btn")) {
+            const newBtn = document.createElement("button");
+            newBtn.className = "btn btn-default btn-sm ellipsis my-custom-btn";
+            newBtn.textContent = "My Button";
+
+            fullPageBtn.insertAdjacentElement("beforebegin", newBtn);
+
+            newBtn.addEventListener("click", () => alert("Button clicked!"));
+        }
+    }
+
     function start() {
         setTimeout(mountSidebarElements, 2500);
 
-        // Re-mount on form refresh
-        // $(document).on('form-refresh', function () {
-        //     console.log('----------------------------------------------')
-        //     setTimeout(mountSidebarElements, 500);
-        // });
-        
+        const observer = new MutationObserver(() => addMyButton());
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        addMyButton();
     }
 
-    // Wait until Frappe booted/DOM ready
     if (document.readyState === "complete" || document.readyState === "interactive") {
         start();
     } else {
         document.addEventListener("DOMContentLoaded", start);
     }
-    
 })();
