@@ -3,6 +3,11 @@
 (function () {
   
     function mountSidebarElements() {
+        const $pageHeadPrint = $('.page-actions .custom-actions');
+        const $pageHead = $('.frappe-control[data-fieldname="language"]');
+        $pageHeadPrint.prepend($pageHead);
+
+        
         const moveToPageActions = [
             '.form-assignments',
             '.form-attachments',
@@ -36,7 +41,7 @@
     
     // --- mount ----------------------------------------------------------------
     function start() {
-        setTimeout(mountSidebarElements, 2500);
+        setTimeout(mountSidebarElements, 500);
 
         // Re-mount on form refresh
         // $(document).on('form-refresh', function () {
