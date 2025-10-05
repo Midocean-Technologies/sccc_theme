@@ -59,7 +59,7 @@
               <span class="sccc-select-item-icn">${frappe.utils.icon('image-view', "md")}</span>
 
               <span class="sccc-select-label">home</span>
-              <span class="sccc-select-caret">${ICON.chevDown}</span>
+              <span class="sccc-select-caret">${ICON.chevRight}</span>
             </button>
             <div class="sccc-select-list" role="listbox" aria-label="Modules" hidden></div>
             <select id="sccc-module-select_" hidden></select>
@@ -312,7 +312,7 @@
             <div class="sccc-tools sccc-collapsible">
               <div class="ccc-child-header sccc-tools-head">
                 <span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(type)}</span>
-                <span class="sccc-tools-caret">${ICON.chevDown}</span>
+                <span class="sccc-tools-caret">${ICON.chevRight}</span>
               </div>
               <div id="${collapseId}" class="collapse sccc-collapsible-body">
                 ${list.map(i => `
@@ -329,7 +329,7 @@
             <div class="sccc-tools sccc-collapsible">
               <div class="ccc-child-header sccc-tools-head">
                 <span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(category)}</span>
-                <span class="sccc-tools-caret">${ICON.chevDown}</span>
+                <span class="sccc-tools-caret">${ICON.chevRight}</span>
               </div>
               <div id="${collapseId}" class="collapse sccc-collapsible-body">
                 ${list.map(i => `
@@ -346,7 +346,7 @@
             <summary class="sccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${frappe.utils.escape_html(child.title)}</strong>
-              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
+              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevRight}</span>
             </summary>
             <div class="sccc-child-content">
               ${innerGroupsHtml}
@@ -386,7 +386,7 @@
             <div class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${category}</strong>
-              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
+              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevRight}</span>
             </div>
             <div id="${collapseId}" class="collapse sccc-collapsible-body">
               ${list.map(i => `
@@ -410,7 +410,7 @@
             <div class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${type}</strong>
-              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
+              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevRight}</span>
             </div>
             <div id="${collapseId}" class="collapse sccc-collapsible-body">
               ${list.map(i => `
@@ -439,6 +439,20 @@
 
         // Toggle clicked one
         $body.collapse('toggle');
+    });
+
+    // Update caret on collapse show/hide
+    $root.on('shown.bs.collapse', '.sccc-collapsible-body', function() {
+        $(this).prev('.sccc-tools-head').find('.sccc-tools-caret').html(ICON.chevDown);
+    });
+    $root.on('hidden.bs.collapse', '.sccc-collapsible-body', function() {
+        $(this).prev('.sccc-tools-head').find('.sccc-tools-caret').html(ICON.chevRight);
+    });
+
+    // Update caret on details toggle
+    $root.on('toggle', 'details', function() {
+        const caret = $(this).find('summary .sccc-tools-caret');
+        caret.html(this.open ? ICON.chevDown : ICON.chevRight);
     });
 
   }
@@ -519,7 +533,7 @@
             <div class="sccc-tools sccc-collapsible">
               <div class="ccc-child-header sccc-tools-head">
                 <span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(type)}</span>
-                <span class="sccc-tools-caret">${ICON.chevDown}</span>
+                <span class="sccc-tools-caret">${ICON.chevRight}</span>
               </div>
               <div id="${collapseId}" class="collapse sccc-collapsible-body">
                 ${list.map(i => `
@@ -536,7 +550,7 @@
             <div class="sccc-tools sccc-collapsible">
               <div class="ccc-child-header sccc-tools-head">
                 <span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(category)}</span>
-                <span class="sccc-tools-caret">${ICON.chevDown}</span>
+                <span class="sccc-tools-caret">${ICON.chevRight}</span>
               </div>
               <div id="${collapseId}" class="collapse sccc-collapsible-body">
                 ${list.map(i => `
@@ -553,7 +567,7 @@
             <summary class="sccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${frappe.utils.escape_html(child.title)}</strong>
-              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
+              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevRight}</span>
             </summary>
             <div class="sccc-child-content">
               ${innerGroupsHtml}
@@ -595,7 +609,7 @@
             <div class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${category}</strong>
-              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
+              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevRight}</span>
             </div>
             <div id="${collapseId}" class="collapse sccc-collapsible-body">
               ${list.map(i => `
@@ -618,7 +632,7 @@
             <div class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${type}</strong>
-              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
+              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevRight}</span>
             </div>
             <div id="${collapseId}" class="collapse sccc-collapsible-body">
               ${list.map(i => `
