@@ -757,7 +757,7 @@
       $dash.attr("data-route", currentSlug === "home" ? "home" : currentSlug);
     }
     loadchild($root,selectedText)
-  },1502)
+  },500)
   
 
 }
