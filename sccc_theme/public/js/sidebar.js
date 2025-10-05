@@ -305,33 +305,39 @@
         }, {});
 
         // build inner HTML for grouped types inside this child details
-        const innerGroupsHtml = Object.entries(groupedChild).map(([type, list]) => {
+        const innerGroupsHtml = Object.entries(groupedChild).map(([type, list],j) => {
+          const collapseId = `collapse-child-${j}`;
           const typeIcon = frappe.utils.icon('menu', "sm");
           return `
-            <details class="sccc-tools sccc-collapsible">
-              <summary class="ccc-child-header sccc-tools-head">
+            <div class="sccc-tools sccc-collapsible">
+              <div class="ccc-child-header sccc-tools-head">
                 <span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(type)}</span>
                 <span class="sccc-tools-caret">${ICON.chevDown}</span>
-              </summary>
-              ${list.map(i => `
-                <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
-                  <span class="sccc-tool-txt">${frappe.utils.escape_html(i.label)}</span>
-                </div>`).join("")}
-            </details>`;
+              </div>
+              <div id="${collapseId}" class="collapse sccc-collapsible-body">
+                ${list.map(i => `
+                  <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
+                    <span class="sccc-tool-txt">${frappe.utils.escape_html(i.label)}</span>
+                  </div>`).join("")}
+              </div>
+            </div>`;
         }).join("");
-        const innerlinkGroupsHtml = Object.entries(groupedLinks).map(([category, list]) => {
+        const innerlinkGroupsHtml = Object.entries(groupedLinks).map(([category, list],j) => {
+          const collapseId = `collapse-child-links-${j}`;
           const typeIcon = frappe.utils.icon('menu', "sm");
           return `
-            <details class="sccc-tools sccc-collapsible">
-              <summary class="ccc-child-header sccc-tools-head">
+            <div class="sccc-tools sccc-collapsible">
+              <div class="ccc-child-header sccc-tools-head">
                 <span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(category)}</span>
                 <span class="sccc-tools-caret">${ICON.chevDown}</span>
-              </summary>
-              ${list.map(i => `
-                <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
-                  <span class="sccc-tool-txt">${frappe.utils.escape_html(i.label)}</span>
-                </div>`).join("")}
-            </details>`;
+              </div>
+              <div id="${collapseId}" class="collapse sccc-collapsible-body">
+                ${list.map(i => `
+                  <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
+                    <span class="sccc-tool-txt">${frappe.utils.escape_html(i.label)}</span>
+                  </div>`).join("")}
+              </div>
+            </div>`;
         }).join("");
 
         // the child container is a details element (collapsible header)
@@ -352,7 +358,6 @@
         childDetailsMap[childSlug] = $details;
         $childWrap.append($details);
       }
-
       // insert child wrap if any
       if (childModules.length) {
         $root.find(".sccc-spacer").before($childWrap);
@@ -373,42 +378,47 @@
         return acc;
       }, {});
 
-      Object.entries(links_grouped).forEach(([category, list]) => {
+      Object.entries(links_grouped).forEach(([category, list],j) => {
         const iconHtml = list[0] && list[0].category_icon ? `<img src="${list[0].category_icon}" style="height:18px; width:18px;" />` : frappe.utils.icon('menu', "sm");
-
+        const collapseId = `collapse-links-${j}`;
         const link_details = $(`
-          <details class="sccc-tools sccc-collapsible details-child">
-            <summary class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
+          <div class="sccc-tools sccc-collapsible details-child">
+            <div class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${category}</strong>
               <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
-            </summary>
-            ${list.map(i => `
-              <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
-                <span class="sccc-tool-txt">${i.label}</span>
-              </div>`).join("")}
-          </details>
+            </div>
+            <div id="${collapseId}" class="collapse sccc-collapsible-body">
+              ${list.map(i => `
+                <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
+                  <span class="sccc-tool-txt">${i.label}</span>
+                </div>`).join("")}
+            </div>
+          </div>
         `);
         $childWrap.append(link_details);
 
         $root.find(".sccc-spacer").before($childWrap);
       });
 
-      Object.entries(grouped).forEach(([type, list]) => {
+      Object.entries(grouped).forEach(([type, list], j) => {
         const iconHtml = frappe.utils.icon('menu', "sm");
-        
+        const collapseId = `collapse-card-${j}`;
+
         const details = $(`
-          <details class=" sccc-collapsible details-child" style='margin-left:0; margin-right:0;'>
-            <summary class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
+          <div class=" sccc-collapsible details-child" style='margin-left:0; margin-right:0;'>
+            <div class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${type}</strong>
               <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
-            </summary>
-            ${list.map(i => `
-              <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
-                <span class="sccc-tool-txt">${i.label}</span>
-              </div>`).join("")}
-          </details>
+            </div>
+            <div id="${collapseId}" class="collapse sccc-collapsible-body">
+              ${list.map(i => `
+                <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
+                  <span class="sccc-tool-txt">${i.label}</span>
+                </div>`).join("")}
+            </div>
+          </div>
         `);
         $childWrap.append(details);
 
@@ -420,6 +430,17 @@
       const route = $(this).data("route");
       if (route) frappe.set_route(route);
     });
+    // Accordion behavior: only one open at a time
+    $root.on('click', '.sccc-collapsible .sccc-tools-head', function() {
+        const $body = $(this).next('.sccc-collapsible-body');
+
+        // Close all other collapses
+        $('.sccc-collapsible-body').not($body).collapse('hide');
+
+        // Toggle clicked one
+        $body.collapse('toggle');
+    });
+
   }
   function slugify(text) {
     return text
@@ -491,33 +512,39 @@
         }, {});
 
         // build inner HTML for grouped types inside this child details
-        const innerGroupsHtml = Object.entries(groupedChild).map(([type, list]) => {
+        const innerGroupsHtml = Object.entries(groupedChild).map(([type, list],j) => {
+          const collapseId = `collapse-child-${j}`;
           const typeIcon = frappe.utils.icon('menu', "sm");
           return `
-            <details class="sccc-tools sccc-collapsible">
-              <summary class="ccc-child-header sccc-tools-head">
+            <div class="sccc-tools sccc-collapsible">
+              <div class="ccc-child-header sccc-tools-head">
                 <span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(type)}</span>
                 <span class="sccc-tools-caret">${ICON.chevDown}</span>
-              </summary>
-              ${list.map(i => `
-                <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
-                  <span class="sccc-tool-txt">${frappe.utils.escape_html(i.label)}</span>
-                </div>`).join("")}
-            </details>`;
+              </div>
+              <div id="${collapseId}" class="collapse sccc-collapsible-body">
+                ${list.map(i => `
+                  <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
+                    <span class="sccc-tool-txt">${frappe.utils.escape_html(i.label)}</span>
+                  </div>`).join("")}
+              </div>
+            </div>`;
         }).join("");
-        const innerlinkGroupsHtml = Object.entries(groupedLinks).map(([category, list]) => {
+        const innerlinkGroupsHtml = Object.entries(groupedLinks).map(([category, list],j) => {
+          const collapseId = `collapse-child-links-${j}`;
           const typeIcon = frappe.utils.icon('menu', "sm");
           return `
-            <details class="sccc-tools sccc-collapsible">
-              <summary class="ccc-child-header sccc-tools-head">
+            <div class="sccc-tools sccc-collapsible">
+              <div class="ccc-child-header sccc-tools-head">
                 <span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(category)}</span>
                 <span class="sccc-tools-caret">${ICON.chevDown}</span>
-              </summary>
-              ${list.map(i => `
-                <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
-                  <span class="sccc-tool-txt">${frappe.utils.escape_html(i.label)}</span>
-                </div>`).join("")}
-            </details>`;
+              </div>
+              <div id="${collapseId}" class="collapse sccc-collapsible-body">
+                ${list.map(i => `
+                  <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
+                    <span class="sccc-tool-txt">${frappe.utils.escape_html(i.label)}</span>
+                  </div>`).join("")}
+              </div>
+            </div>`;
         }).join("");
 
         // the child container is a details element (collapsible header)
@@ -559,42 +586,47 @@
         return acc;
       }, {});
 
-      Object.entries(links_grouped).forEach(([category, list]) => {
+      Object.entries(links_grouped).forEach(([category, list],j) => {
         const iconHtml = list[0] && list[0].category_icon ? `<img src="${list[0].category_icon}" style="height:18px; width:18px;" />` : frappe.utils.icon('menu', "sm");
+        const collapseId = `collapse-links-${j}`;
 
         const link_details = $(`
-          <details class="sccc-tools sccc-collapsible details-child" '>
-            <summary class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
+          <div class="sccc-tools sccc-collapsible details-child" '>
+            <div class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${category}</strong>
               <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
-            </summary>
-            ${list.map(i => `
-              <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
-                <span class="sccc-tool-txt">${i.label}</span>
-              </div>`).join("")}
-          </details>
+            </div>
+            <div id="${collapseId}" class="collapse sccc-collapsible-body">
+              ${list.map(i => `
+                <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
+                  <span class="sccc-tool-txt">${i.label}</span>
+                </div>`).join("")}
+            </div>
+          </div>
         `);
         $childWrap.append(link_details);
 
         $root.find(".sccc-spacer").before($childWrap);
       });
 
-      Object.entries(grouped).forEach(([type, list]) => {
+      Object.entries(grouped).forEach(([type, list],j) => {
         const iconHtml = frappe.utils.icon('menu', "sm");
-        
+        const collapseId = `collapse-card-${j}`;
         const details = $(`
-          <details class=" sccc-collapsible details-child" style='margin-left:0; margin-right:0;'>
-            <summary class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
+          <div class=" sccc-collapsible details-child" style='margin-left:0; margin-right:0;'>
+            <div class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${type}</strong>
               <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
-            </summary>
-            ${list.map(i => `
-              <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
-                <span class="sccc-tool-txt">${i.label}</span>
-              </div>`).join("")}
-          </details>
+            </div>
+            <div id="${collapseId}" class="collapse sccc-collapsible-body">
+              ${list.map(i => `
+                <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
+                  <span class="sccc-tool-txt">${i.label}</span>
+                </div>`).join("")}
+            </div>
+          </div>
         `);
         $childWrap.append(details);
 
