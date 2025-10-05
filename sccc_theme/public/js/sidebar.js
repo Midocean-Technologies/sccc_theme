@@ -209,6 +209,10 @@
       // set native select and trigger existing change handler
       $sel.val(val).trigger("change");
 
+      // update selected class
+      $wrap.find(".sccc-select-list .sccc-select-item").removeClass("selected");
+      $item.addClass("selected");
+
       // close list
       $wrap.find(".sccc-select-list").attr("hidden", true);
       $wrap.find(".sccc-select-trigger").attr("aria-expanded", "false");
@@ -737,7 +741,7 @@
   setTimeout(()=>{
     const selectedText = $("#navbar-breadcrumbs li:first a").text().trim();
     $wrap.find(".sccc-select-label").text(selectedText);
-    $list.find(`.sccc-select-item[data-value="${currentSlug}"]`).attr("aria-selected", "true");
+    $list.find(`.sccc-select-item[data-value="${currentSlug}"]`).attr("aria-selected", "true").addClass("selected");
     // update trigger icon to match selected item (fallback to image-view)
     const selIconHtml = $list.find(`.sccc-select-item[data-value="${currentSlug}"] .sccc-select-item-icn`).html();
     $wrap.find(".sccc-select-trigger .sccc-select-item-icn").html(selIconHtml);
