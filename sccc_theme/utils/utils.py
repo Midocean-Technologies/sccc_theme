@@ -80,7 +80,8 @@ def hide_workspace():
         "ERPNext Settings",
         "ERPNext Integrations",
         "ERP Settings",
-        "ERP Integrations"
+        "ERP Integrations",
+        "Tools"
     ]
 
     # Get all workspace docs that match and are not hidden
