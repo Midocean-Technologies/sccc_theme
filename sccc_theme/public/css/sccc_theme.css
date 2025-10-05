@@ -44,6 +44,9 @@ body{
   align-items: center;
 }
 
+.frappe-card, .list-row, .list-row-head{
+  border-radius: 0px !important;
+}
 .custom-sidebar-wrapper{
   display: flex;
   align-items: flex-start;
@@ -218,9 +221,12 @@ select{
 
 .layout-main-section{
   border-radius: 0px !important;
-  border:none !important;
+  /* border:none !important; */
 }
 
+#navbar-breadcrumbs a {
+    margin-right: 0px !important;
+}
 .widget{
   border-radius: 0px !important;
 }
