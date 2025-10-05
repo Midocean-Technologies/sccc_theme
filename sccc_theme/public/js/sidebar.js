@@ -82,14 +82,14 @@
 
           <!-- Tools -->
           <div class="sccc-tools-div">
-              <div class="sccc-tool", data-route="list:ToDo">
+              <div class="sccc-tool", data-route="tools-page">
                 <span>
                   <img src ="/assets/sccc_theme/images/tools.svg" alt="tools" style="height:18px; margin-left:10px;"/>
                 </span>
                 <span class="sccc-tool-txt">tools</span>
                 <span class="sccc-row-caret">${ICON.chevRight}</span>
               </div>
-              <div class="sccc-tool" data-route="list:Note">
+              <div class="sccc-tool" data-route="configuration">
                 <span>
                   <img src ="/assets/sccc_theme/images/configuration.svg" alt="configuration" style="height:18px; margin-left:10px;"/>
                 </span>
@@ -124,11 +124,18 @@
   function routeGo(route) {
     if (route.startsWith("list:")) return frappe.set_route("list", route.split(":")[1]);
     if (route === "home") return frappe.set_route("home");
+    if (route === "configuration") return frappe.set_route("app/configuration");
+    if (route === "tools-page") return frappe.set_route("app/tools-page"); 
+
     return frappe.set_route(route);
   }
 
   function wireRail($root) {
-     $root.on("click", ".sccc-brand", () => frappe.set_route("home"));
+    //  $root.on("click", ".sccc-brand", () => frappe.set_route("home"));
+    $root.on("click", ".sccc-brand", () => {
+      const $sel = $root.find("#sccc-module-select_");
+      $sel.val("home").trigger("change");
+    });
     $root.on("click", ".sccc-user", function() {
       $root.find(".sccc-user-menu").toggle();
     });
@@ -239,7 +246,7 @@
       $root.find(".sccc-collapsible").remove();
       $root.find(".sccc-child-module").remove();
 
-      const r = await frappe.xcall("frappe.desk.desktop.get_workspace_sidebar_items");
+      const r = await frappe.xcall("sccc_theme.utils.workspace.get_workspace_sidebar_items");
       const pages = (r && r.pages) || [];
       const filteredPages = pages.filter(p => !p.parent_page);
       let page = this.value;
@@ -424,7 +431,7 @@
   async function loadchild($root,selectedText) {
       $root.find(".sccc-collapsible").remove();
       $root.find(".sccc-child-module").remove();
-      const r = await frappe.xcall("frappe.desk.desktop.get_workspace_sidebar_items");
+      const r = await frappe.xcall("sccc_theme.utils.workspace.get_workspace_sidebar_items");
       const pages = (r && r.pages) || [];
       const filteredPages = pages.filter(p => !p.parent_page);
       // let page = pages.filter(p => p.name === selectedText)[0];
@@ -597,7 +604,7 @@
     }
   
   async function loadModules($root) {
-  const r = await frappe.xcall("frappe.desk.desktop.get_workspace_sidebar_items");
+  const r = await frappe.xcall("sccc_theme.utils.workspace.get_workspace_sidebar_items");
   const pages = (r && r.pages) || [];
   const filteredPages = pages.filter(p => !p.parent_page);
 

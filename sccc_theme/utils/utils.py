@@ -14,6 +14,19 @@ def after_migrate():
     PropertySetter()
     remove_gender_records()
     create_custom_fields()
+    # remove_reports_from_workspace_custom_link_cards()
+
+def remove_reports_from_workspace_custom_link_cards():
+    workspaces = frappe.get_all("Workspace", pluck="name")
+
+    for ws_name in workspaces:
+        if ws_name != "Reports":
+            ws = frappe.get_doc("Workspace", ws_name)
+            ws.custom_custom_link_cards_ = [
+                x for x in ws.custom_custom_link_cards_ if x.link_type != "Report"
+            ]
+            ws.save(ignore_permissions=True)
+
 
 def create_custom_fields():
     create_custom_field(  
@@ -49,13 +62,6 @@ def remove_gender_records():
 
 def PropertySetter():
     make_property_setter("Workspace","icon","read_only",0,"Check")
-    # make_property_setter("Workspace Link", "link_to", "mandatory_depends_on", "eval:doc.type != 'Link'", "Data")
-    # make_property_setter("Workspace Link", "link_to", "read_only_depends_on", "eval:doc.type != 'Link'", "Data")
-    # make_property_setter("User","interest","hidden",1,"Check")
-    # make_property_setter("User","location","hidden",1,"Check")
-    # make_property_setter("User","bio","hidden",1,"Check")
-    # make_property_setter("User","interest","hidden",1,"Check")
-
 
 def update_currency_in_doctypes():
     """Update currency in number card to SAR."""
@@ -65,14 +71,6 @@ def update_currency_in_doctypes():
         nc = frappe.get_doc("Number Card", nc_name)
         nc.currency = "SAR"
         nc.save(ignore_permissions=True)
-    
-    # """Update currency in Dashboard Chart to SAR."""
-    # number_cards = frappe.get_all("Dashboard Chart", filters={"currency": None}, pluck="name")
-
-    # for nc_name in number_cards:
-    #     nc = frappe.get_doc("Dashboard Chart", nc_name)
-    #     nc.currency = "SAR"
-    #     nc.save(ignore_permissions=True)
 
 def hide_workspace():
     """Hide specific workspaces from the workspace list."""
@@ -82,7 +80,8 @@ def hide_workspace():
         "ERPNext Settings",
         "ERPNext Integrations",
         "ERP Settings",
-        "ERP Integrations"
+        "ERP Integrations",
+        "Tools"
     ]
 
     # Get all workspace docs that match and are not hidden
@@ -189,8 +188,8 @@ def get_sidebar_items(page=None):
             if sc.type == "DocType":
                 route = f"/app/{slugify_doctype(sc.link_to)}"
                 
-            elif sc.type == "Report":
-                route = f"/app/query-report/{sc.link_to}"
+            # elif sc.type == "Report":
+            #     route = f"/app/query-report/{sc.link_to}"
             # elif sc.type == "Dashboard":
             #     route = f"/app/dashboard-view/{sc.link_to}"
             
@@ -231,7 +230,7 @@ def get_sidebar_items(page=None):
                     "link_to": lc.link_to,
                     "route": route,
                 })
-        print(link_cards)
+        # print(link_cards)
         return items, link_cards
     except ImportError:
         frappe.log_error("Could not find get_sidebar_items ", "Error")
@@ -250,3 +249,68 @@ def get_user(key, old_password):
         user = frappe.session.user
         
     return user
+
+@frappe.whitelist()
+def get_workspace_sidebar_items():
+	"""Get list of sidebar items for desk"""
+	has_access = "Workspace Manager" in frappe.get_roles()
+
+	# don't get domain restricted pages
+	blocked_modules = frappe.get_cached_doc("User", frappe.session.user).get_blocked_modules()
+	blocked_modules.append("Dummy Module")
+
+	# adding None to allowed_domains to include pages without domain restriction
+	allowed_domains = [None, *frappe.get_active_domains()]
+
+	filters = {
+		"restrict_to_domain": ["in", allowed_domains],
+		"module": ["not in", blocked_modules],
+	}
+
+	if has_access:
+		filters = []
+
+	# pages sorted based on sequence id
+	order_by = "sequence_id asc"
+	fields = [
+		"name",
+		"title",
+		"for_user",
+		"parent_page",
+		"content",
+		"public",
+		"module",
+		"icon",
+		"indicator_color",
+		"is_hidden",
+	]
+	all_pages = frappe.get_all(
+		"Workspace", fields=fields, filters=filters, order_by=order_by, ignore_permissions=True
+	)
+	pages = []
+	private_pages = []
+
+	# Filter Page based on Permission
+	for page in all_pages:
+		try:
+			workspace = Workspace(page, True)
+			if has_access or workspace.is_permitted():
+				if page.public and (has_access or not page.is_hidden) and page.title != "Welcome Workspace":
+					pages.append(page)
+				elif page.for_user == frappe.session.user:
+					private_pages.append(page)
+				page["label"] = _(page.get("name"))
+		except frappe.PermissionError:
+			pass
+	if private_pages:
+		pages.extend(private_pages)
+
+	if len(pages) == 0:
+		pages = [frappe.get_doc("Workspace", "Welcome Workspace").as_dict()]
+		pages[0]["label"] = _("Welcome Workspace")
+
+	return {
+		"pages": pages,
+		"has_access": has_access,
+		"has_create_access": frappe.has_permission(doctype="Workspace", ptype="create"),
+	}
