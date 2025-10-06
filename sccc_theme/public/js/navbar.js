@@ -115,13 +115,10 @@ body {
 
   <div class="sccc-right">
     <button class="sccc-icon" data-route="integrations" title="Integrations" aria-label="Integrations">
-      <img src ="/assets/sccc_theme/images/integration.svg" alt="Integrations" style="width:100px;"/>
+      <img src ="/files/integ.svg" alt="integration"/>
     </button>
     <button class="sccc-icon" data-route="calendar-view" title="Calendar" aria-label="Calendar">
-      <img src ="/assets/sccc_theme/images/calender.svg" alt="Calender" style="width:100px; "/>
-    </button>
-    <button class="sccc-icon" data-route="deleted-document" title="Clear Filters / Reload" aria-label="Clear Filters / Reload">
-      <img src ="/assets/sccc_theme/images/delete.svg" alt="Clear" style="width:100px;"/>
+      <img src ="/files/calendr.svg" alt="calender"/>
     </button>
 
     <!-- Notifications dropdown (core-compatible) -->
