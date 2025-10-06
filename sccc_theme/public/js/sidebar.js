@@ -740,7 +740,14 @@
   // update visible label and mark focused item
   setTimeout(()=>{
     const selectedText = $("#navbar-breadcrumbs li:first a").text().trim();
-    $wrap.find(".sccc-select-label").text(selectedText);
+    // Only update label if selectedText is not empty, otherwise keep default or use from selected option
+    if (selectedText) {
+      $wrap.find(".sccc-select-label").text(selectedText);
+    } else {
+      // Fallback to the label of the selected option
+      const fallbackLabel = $sel.find("option:selected").text() || "home";
+      $wrap.find(".sccc-select-label").text(fallbackLabel);
+    }
     $list.find(`.sccc-select-item[data-value="${currentSlug}"]`).attr("aria-selected", "true").addClass("selected");
     // update trigger icon to match selected item (fallback to image-view)
     const selIconHtml = $list.find(`.sccc-select-item[data-value="${currentSlug}"] .sccc-select-item-icn`).html();
@@ -750,13 +757,13 @@
     const $dash = $wrap.siblings("#sccc-dashboard-wrap").find("#sccc-dashboard-btn");
     if ($dash.length) {
       const dashIcon = selIconHtml || frappe.utils.icon('image-view', 'md');
-      const dashLabel = selectedText || "home";
+      const dashLabel = selectedText || $sel.find("option:selected").text() || "home";
       $dash.find(".sccc-select-item-icn").html(dashIcon);
       // $dash.find(".sccc-select-item-icon").html(dashIcon);
       $dash.find(".sccc-dashboard-label").text(dashLabel);
       $dash.attr("data-route", currentSlug === "home" ? "home" : currentSlug);
     }
-    loadchild($root,selectedText)
+    loadchild($root, selectedText || $sel.find("option:selected").text() || "home")
   },1000)
   
 
