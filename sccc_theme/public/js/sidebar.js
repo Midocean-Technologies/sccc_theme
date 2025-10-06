@@ -136,9 +136,12 @@
       const $sel = $root.find("#sccc-module-select_");
       $sel.val("home").trigger("change");
     });
-    $root.on("click", ".sccc-user", function() {
-      $root.find(".sccc-user-menu").toggle();
-    });
+$root.on("click", ".sccc-user", function() {
+  $root.find(".sccc-user-menu").toggle();
+  // Hide the select list when user menu is toggled
+  $root.find(".sccc-select-list").attr("hidden", true);
+  $root.find(".sccc-select-trigger").attr("aria-expanded", "false");
+});
     $root.on("click", ".sccc-logout-btn", () => {
       frappe.call({
         method: "logout",
@@ -162,19 +165,21 @@
     $root.on("click", ".sccc-tool", function(){ routeGo(this.getAttribute("data-route")); });
 
     // custom dropdown trigger
-    $root.on("click", ".sccc-select-trigger", function (e) {
-      const $wrap = $(this).closest("#sccc-module-select_wrap");
-      const $list = $wrap.find(".sccc-select-list");
-      const expanded = $(this).attr("aria-expanded") === "true";
-      $(this).attr("aria-expanded", !expanded);
-      if (expanded) {
-        $list.attr("hidden", true);
-      } else {
-        $list.removeAttr("hidden");
-        // focus first item for keyboard users
-        $list.find(".sccc-select-item[tabindex]").first().focus();
-      }
-    });
+$root.on("click", ".sccc-select-trigger", function (e) {
+  const $wrap = $(this).closest("#sccc-module-select_wrap");
+  const $list = $wrap.find(".sccc-select-list");
+  const expanded = $(this).attr("aria-expanded") === "true";
+  $(this).attr("aria-expanded", !expanded);
+  if (expanded) {
+    $list.attr("hidden", true);
+  } else {
+    $list.removeAttr("hidden");
+    // focus first item for keyboard users
+    $list.find(".sccc-select-item[tabindex]").first().focus();
+    // Hide the user menu when select list is toggled
+    $root.find(".sccc-user-menu").hide();
+  }
+});
     // dashboard button click -> go to its route (default 'dashboard')
     $root.on("click", "#sccc-dashboard-btn", function () {
       const route = this.getAttribute("data-route") || "home";
@@ -740,7 +745,14 @@
   // update visible label and mark focused item
   setTimeout(()=>{
     const selectedText = $("#navbar-breadcrumbs li:first a").text().trim();
-    $wrap.find(".sccc-select-label").text(selectedText);
+    // Only update label if selectedText is not empty, otherwise keep default or use from selected option
+    if (selectedText) {
+      $wrap.find(".sccc-select-label").text(selectedText);
+    } else {
+      // Fallback to the label of the selected option
+      const fallbackLabel = $sel.find("option:selected").text() || "home";
+      $wrap.find(".sccc-select-label").text(fallbackLabel);
+    }
     $list.find(`.sccc-select-item[data-value="${currentSlug}"]`).attr("aria-selected", "true").addClass("selected");
     // update trigger icon to match selected item (fallback to image-view)
     const selIconHtml = $list.find(`.sccc-select-item[data-value="${currentSlug}"] .sccc-select-item-icn`).html();
@@ -750,13 +762,13 @@
     const $dash = $wrap.siblings("#sccc-dashboard-wrap").find("#sccc-dashboard-btn");
     if ($dash.length) {
       const dashIcon = selIconHtml || frappe.utils.icon('image-view', 'md');
-      const dashLabel = selectedText || "home";
+      const dashLabel = selectedText || $sel.find("option:selected").text() || "home";
       $dash.find(".sccc-select-item-icn").html(dashIcon);
       // $dash.find(".sccc-select-item-icon").html(dashIcon);
       $dash.find(".sccc-dashboard-label").text(dashLabel);
       $dash.attr("data-route", currentSlug === "home" ? "home" : currentSlug);
     }
-    loadchild($root,selectedText)
+    loadchild($root, selectedText || $sel.find("option:selected").text() || "home")
   },1000)
   
 
