@@ -246,9 +246,10 @@ body.sccc-rail-padding .container.page-container{
 }
 
 .sccc-select-item:hover,
+.sccc-select-item.selected,
 .sccc-select-item:focus,
 .sccc-select-item[aria-selected="true"] {
-  background: rgba(255, 255, 255, 0.04);
+  background: #FFFFFF1A; /* 10% opacity white */
   color: #fff;
   outline: none;
 }

@@ -15,6 +15,32 @@ def after_migrate():
     remove_gender_records()
     create_custom_fields()
     # remove_reports_from_workspace_custom_link_cards()
+    add_language_permission_for_ar_en()
+
+def add_language_permission_for_ar_en():
+    allowed_languages = ["ar", "en"]
+
+    # Fetch all enabled users
+    users = frappe.get_all("User", filters={"enabled": 1}, fields=["name"])
+
+    for user in users:
+        for lang in allowed_languages:
+            if not frappe.db.exists({
+                "doctype": "User Permission",
+                "user": user.name,
+                "allow": "Language",
+                "for_value": lang
+            }):
+                # Create user permission
+                user_perm = frappe.get_doc({
+                    "doctype": "User Permission",
+                    "user": user.name,
+                    "allow": "Language",
+                    "for_value": lang,
+                    "apply_to_all_doctypes": 1
+                })
+                user_perm.insert(ignore_permissions=True)
+
 
 def remove_reports_from_workspace_custom_link_cards():
     workspaces = frappe.get_all("Workspace", pluck="name")
