@@ -136,9 +136,12 @@
       const $sel = $root.find("#sccc-module-select_");
       $sel.val("home").trigger("change");
     });
-    $root.on("click", ".sccc-user", function() {
-      $root.find(".sccc-user-menu").toggle();
-    });
+$root.on("click", ".sccc-user", function() {
+  $root.find(".sccc-user-menu").toggle();
+  // Hide the select list when user menu is toggled
+  $root.find(".sccc-select-list").attr("hidden", true);
+  $root.find(".sccc-select-trigger").attr("aria-expanded", "false");
+});
     $root.on("click", ".sccc-logout-btn", () => {
       frappe.call({
         method: "logout",
@@ -162,19 +165,21 @@
     $root.on("click", ".sccc-tool", function(){ routeGo(this.getAttribute("data-route")); });
 
     // custom dropdown trigger
-    $root.on("click", ".sccc-select-trigger", function (e) {
-      const $wrap = $(this).closest("#sccc-module-select_wrap");
-      const $list = $wrap.find(".sccc-select-list");
-      const expanded = $(this).attr("aria-expanded") === "true";
-      $(this).attr("aria-expanded", !expanded);
-      if (expanded) {
-        $list.attr("hidden", true);
-      } else {
-        $list.removeAttr("hidden");
-        // focus first item for keyboard users
-        $list.find(".sccc-select-item[tabindex]").first().focus();
-      }
-    });
+$root.on("click", ".sccc-select-trigger", function (e) {
+  const $wrap = $(this).closest("#sccc-module-select_wrap");
+  const $list = $wrap.find(".sccc-select-list");
+  const expanded = $(this).attr("aria-expanded") === "true";
+  $(this).attr("aria-expanded", !expanded);
+  if (expanded) {
+    $list.attr("hidden", true);
+  } else {
+    $list.removeAttr("hidden");
+    // focus first item for keyboard users
+    $list.find(".sccc-select-item[tabindex]").first().focus();
+    // Hide the user menu when select list is toggled
+    $root.find(".sccc-user-menu").hide();
+  }
+});
     // dashboard button click -> go to its route (default 'dashboard')
     $root.on("click", "#sccc-dashboard-btn", function () {
       const route = this.getAttribute("data-route") || "home";
@@ -433,6 +438,10 @@
     $root.on("click", ".sccc-collapsible-item", function () {
       const route = $(this).data("route");
       if (route) frappe.set_route(route);
+      // Remove highlight from all other items
+      $('.sccc-collapsible-item').removeClass('selected');
+      // Add highlight to clicked item
+      $(this).addClass('selected');
     });
     // Accordion behavior: only one open at a time
     $root.on('click', '.sccc-collapsible .sccc-tools-head', function() {

@@ -14,6 +14,13 @@ body, * {
 body{
   text-transform: lowercase !important;
 }
+
+.sccc-tool.selected {
+  background: #FFFFFF1A; /* 10% opacity white */
+  color: #fff;
+  outline: none;
+}
+
 .page-actions .form-sidebar-items {
   display: inline-flex !important;
   align-items: center !important;
