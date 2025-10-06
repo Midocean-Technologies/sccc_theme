@@ -41,7 +41,7 @@
     
     // --- mount ----------------------------------------------------------------
     function start() {
-        setTimeout(mountSidebarElements, 500);
+        setTimeout(mountSidebarElements, 2502);
 
         // Re-mount on form refresh
         // $(document).on('form-refresh', function () {
