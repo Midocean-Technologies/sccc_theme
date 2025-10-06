@@ -31,9 +31,11 @@ app_license = "mit"
 app_include_css = [
     "/assets/sccc_theme/css/sidebar.css",
     "/assets/sccc_theme/css/navbar.css",
-    "/assets/sccc_theme/css/sccc_theme.css"
+    "/assets/sccc_theme/css/sccc_theme.css",
+    "/assets/sccc_theme/css/bootstrap.css"
 ]
 app_include_js = [
+    "/assets/sccc_theme/js/bootstrap.js",
     "/assets/sccc_theme/js/sidebar.js",
     "/assets/sccc_theme/js/navbar.js",
     "/assets/sccc_theme/js/workspace.js",

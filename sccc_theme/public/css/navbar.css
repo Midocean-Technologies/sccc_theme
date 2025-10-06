@@ -90,3 +90,63 @@ img {
 .sccc-breadcrumbs .sep {
   color: #9ca3af;
 }
+
+
+/* #preeti code */
+
+
+
+/* NAVBAR NEW */
+/* a{
+  color: unset;
+  text-decoration: unset;
+} */
+.sccc-left{
+  width: 700px;
+}
+
+
+
+
+
+/* MEDIA QUERY */
+
+/* @media screen and (max-width: 1300px){
+  .sccc-left{
+    width: auto;
+  }
+} */
+
+@media screen and (max-width: 1200px){
+  .sccc-left{
+    width: auto;
+  }
+}
+
+@media screen and (max-width: 1050px){
+  .sccc-search{
+    min-width: 200px;
+  }
+}
+
+@media screen and (max-width: 991px){
+  .sccc-left{
+    width: auto;
+  }
+
+  .sccc-search{
+    min-width: 200px;
+  }
+}
+
+@media screen and (max-width: 815px){
+  .sccc-left{
+    width: auto;
+  }
+}
+
+@media screen and (max-width: 767px){
+  .sccc-left{
+    width: 200px;
+  }
+}
