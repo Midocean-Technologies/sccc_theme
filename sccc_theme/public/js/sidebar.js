@@ -59,7 +59,7 @@
               <span class="sccc-select-item-icn">${frappe.utils.icon('image-view', "md")}</span>
 
               <span class="sccc-select-label">home</span>
-              <span class="sccc-select-caret">${ICON.chevDown}</span>
+              <span class="sccc-select-caret">${ICON.chevRight}</span>
             </button>
             <div class="sccc-select-list" role="listbox" aria-label="Modules" hidden></div>
             <select id="sccc-module-select_" hidden></select>
@@ -209,6 +209,10 @@
       // set native select and trigger existing change handler
       $sel.val(val).trigger("change");
 
+      // update selected class
+      $wrap.find(".sccc-select-list .sccc-select-item").removeClass("selected");
+      $item.addClass("selected");
+
       // close list
       $wrap.find(".sccc-select-list").attr("hidden", true);
       $wrap.find(".sccc-select-trigger").attr("aria-expanded", "false");
@@ -312,7 +316,7 @@
             <div class="sccc-tools sccc-collapsible">
               <div class="ccc-child-header sccc-tools-head">
                 <span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(type)}</span>
-                <span class="sccc-tools-caret">${ICON.chevDown}</span>
+                <span class="sccc-tools-caret">${ICON.chevRight}</span>
               </div>
               <div id="${collapseId}" class="collapse sccc-collapsible-body">
                 ${list.map(i => `
@@ -329,7 +333,7 @@
             <div class="sccc-tools sccc-collapsible">
               <div class="ccc-child-header sccc-tools-head">
                 <span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(category)}</span>
-                <span class="sccc-tools-caret">${ICON.chevDown}</span>
+                <span class="sccc-tools-caret">${ICON.chevRight}</span>
               </div>
               <div id="${collapseId}" class="collapse sccc-collapsible-body">
                 ${list.map(i => `
@@ -346,7 +350,7 @@
             <summary class="sccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${frappe.utils.escape_html(child.title)}</strong>
-              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
+              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevRight}</span>
             </summary>
             <div class="sccc-child-content">
               ${innerGroupsHtml}
@@ -386,7 +390,7 @@
             <div class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${category}</strong>
-              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
+              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevRight}</span>
             </div>
             <div id="${collapseId}" class="collapse sccc-collapsible-body">
               ${list.map(i => `
@@ -410,7 +414,7 @@
             <div class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${type}</strong>
-              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
+              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevRight}</span>
             </div>
             <div id="${collapseId}" class="collapse sccc-collapsible-body">
               ${list.map(i => `
@@ -439,6 +443,27 @@
 
         // Toggle clicked one
         $body.collapse('toggle');
+    });
+
+    // Update caret on collapse show/hide
+    $root.on('shown.bs.collapse', '.sccc-collapsible-body', function() {
+        $(this).prev('.sccc-tools-head').find('.sccc-tools-caret').html(ICON.chevDown);
+    });
+    $root.on('hidden.bs.collapse', '.sccc-collapsible-body', function() {
+        $(this).prev('.sccc-tools-head').find('.sccc-tools-caret').html(ICON.chevRight);
+    });
+
+    // Update caret on details toggle
+    $root.on('toggle', 'details', function() {
+        const caret = $(this).find('summary .sccc-tools-caret');
+        caret.html(this.open ? ICON.chevDown : ICON.chevRight);
+    });
+
+    // Update caret for sccc-select custom dropdown
+    $root.on('click', '#sccc-module-select_wrap.sccc-select.custom', function() {
+        const $caret = $(this).find('.sccc-select-caret');
+        const expanded = $(this).find('.sccc-select-trigger').attr('aria-expanded') === 'true';
+        $caret.html(expanded ? ICON.chevDown : ICON.chevRight);
     });
 
   }
@@ -519,7 +544,7 @@
             <div class="sccc-tools sccc-collapsible">
               <div class="ccc-child-header sccc-tools-head">
                 <span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(type)}</span>
-                <span class="sccc-tools-caret">${ICON.chevDown}</span>
+                <span class="sccc-tools-caret">${ICON.chevRight}</span>
               </div>
               <div id="${collapseId}" class="collapse sccc-collapsible-body">
                 ${list.map(i => `
@@ -536,7 +561,7 @@
             <div class="sccc-tools sccc-collapsible">
               <div class="ccc-child-header sccc-tools-head">
                 <span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(category)}</span>
-                <span class="sccc-tools-caret">${ICON.chevDown}</span>
+                <span class="sccc-tools-caret">${ICON.chevRight}</span>
               </div>
               <div id="${collapseId}" class="collapse sccc-collapsible-body">
                 ${list.map(i => `
@@ -553,7 +578,7 @@
             <summary class="sccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${frappe.utils.escape_html(child.title)}</strong>
-              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
+              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevRight}</span>
             </summary>
             <div class="sccc-child-content">
               ${innerGroupsHtml}
@@ -595,7 +620,7 @@
             <div class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${category}</strong>
-              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
+              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevRight}</span>
             </div>
             <div id="${collapseId}" class="collapse sccc-collapsible-body">
               ${list.map(i => `
@@ -618,7 +643,7 @@
             <div class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${type}</strong>
-              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevDown}</span>
+              <span style="margin-left:auto" class="sccc-tools-caret">${ICON.chevRight}</span>
             </div>
             <div id="${collapseId}" class="collapse sccc-collapsible-body">
               ${list.map(i => `
@@ -716,7 +741,7 @@
   setTimeout(()=>{
     const selectedText = $("#navbar-breadcrumbs li:first a").text().trim();
     $wrap.find(".sccc-select-label").text(selectedText);
-    $list.find(`.sccc-select-item[data-value="${currentSlug}"]`).attr("aria-selected", "true");
+    $list.find(`.sccc-select-item[data-value="${currentSlug}"]`).attr("aria-selected", "true").addClass("selected");
     // update trigger icon to match selected item (fallback to image-view)
     const selIconHtml = $list.find(`.sccc-select-item[data-value="${currentSlug}"] .sccc-select-item-icn`).html();
     $wrap.find(".sccc-select-trigger .sccc-select-item-icn").html(selIconHtml);
@@ -732,7 +757,7 @@
       $dash.attr("data-route", currentSlug === "home" ? "home" : currentSlug);
     }
     loadchild($root,selectedText)
-  },1502)
+  },500)
   
 
 }
