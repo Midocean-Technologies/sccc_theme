@@ -438,6 +438,10 @@ $root.on("click", ".sccc-select-trigger", function (e) {
     $root.on("click", ".sccc-collapsible-item", function () {
       const route = $(this).data("route");
       if (route) frappe.set_route(route);
+      // Remove highlight from all other items
+      $('.sccc-collapsible-item').removeClass('selected');
+      // Add highlight to clicked item
+      $(this).addClass('selected');
     });
     // Accordion behavior: only one open at a time
     $root.on('click', '.sccc-collapsible .sccc-tools-head', function() {
