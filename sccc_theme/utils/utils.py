@@ -5,9 +5,10 @@ from frappe.utils.data import sha256_hash
 from frappe import _
 # from frappe.desk.utils import get_link_to
 
+@frappe.whitelist()
 def after_migrate():
     update_currency_symbol_for_SAR()
-    transfer_workspace_shortcuts()
+    # transfer_workspace_shortcuts()
     update_website_setting_logo()
     hide_workspace()
     update_currency_in_doctypes()
