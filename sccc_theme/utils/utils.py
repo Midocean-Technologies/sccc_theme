@@ -189,9 +189,9 @@ def transfer_workspace_shortcuts():
 
 
 def slugify_doctype(name: str) -> str:
+    if not name:
+        return ""   # or return "unknown" if you want a default slug
     return name.strip().lower().replace(" ", "-")
-
-
 
 @frappe.whitelist(allow_guest=True)
 def get_sidebar_items(page=None):
