@@ -1,9 +1,10 @@
 frappe.pages['module-settings'].on_page_load = function(wrapper) {
 	var page = frappe.ui.make_app_page({
 		parent: wrapper,
-		title: 'module settings',
+		title: __('Module Settings'),
 		single_column: true
 	});
+
 	var html_content = `
 	<style>
 		.main {
@@ -28,7 +29,7 @@ frappe.pages['module-settings'].on_page_load = function(wrapper) {
 			padding: 4px 4px 5px 4px;
 			cursor: pointer;
 			transition: transform 0.3s ease, box-shadow 0.3s ease;
-			color: #5c2a9d; /* purple text */
+			color: #5c2a9d;
 			display: flex;
 			flex-direction: column;
 			align-items: flex-start;
@@ -59,38 +60,37 @@ frappe.pages['module-settings'].on_page_load = function(wrapper) {
 	<div class="main">
 	<div class="config-grid">
 		<div class="config-card" data-route="Form,Accounts Settings">
-			<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
-			<div class="config-label">Accounts Settings</div>
+			<i class="config-icon"><img src="/files/settings-purple.svg"></i>
+			<div class="config-label">${__('Accounts Settings')}</div>
 		</div>
 		<div class="config-card" data-route="Form,Buying Settings">
-			<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
-			<div class="config-label">Buying Settings</div>
+			<i class="config-icon"><img src="/files/settings-purple.svg"></i>
+			<div class="config-label">${__('Buying Settings')}</div>
 		</div>
 		<div class="config-card" data-route="Form,CRM Settings">
-			<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
-			<div class="config-label">CRM Settings</div>
+			<i class="config-icon"><img src="/files/settings-purple.svg"></i>
+			<div class="config-label">${__('CRM Settings')}</div>
 		</div>
 		<div class="config-card" data-route="Form,Manufacturing Settings">
-			<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
-			<div class="config-label">Manufacturing Settings</div>
+			<i class="config-icon"><img src="/files/settings-purple.svg"></i>
+			<div class="config-label">${__('Manufacturing Settings')}</div>
 		</div>
 		<div class="config-card" data-route="Form,Selling Settings">
-			<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
-			<div class="config-label">Selling Settings</div>
+			<i class="config-icon"><img src="/files/settings-purple.svg"></i>
+			<div class="config-label">${__('Selling Settings')}</div>
 		</div>
 		<div class="config-card" data-route="Form,Stock Settings">
-			<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
-			<div class="config-label">Stock Settings</div>
+			<i class="config-icon"><img src="/files/settings-purple.svg"></i>
+			<div class="config-label">${__('Stock Settings')}</div>
 		</div>
 		<div class="config-card" data-route="Form,Support Settings">
-			<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
-			<div class="config-label">Support Settings</div>
+			<i class="config-icon"><img src="/files/settings-purple.svg"></i>
+			<div class="config-label">${__('Support Settings')}</div>
 		</div>
 		<div class="config-card" data-route="Form,Website Settings">
-			<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
-			<div class="config-label">Website Settings</div>
+			<i class="config-icon"><img src="/files/settings-purple.svg"></i>
+			<div class="config-label">${__('Website Settings')}</div>
 		</div>
-
 	</div>
 	</div>
 	`;
@@ -101,4 +101,4 @@ frappe.pages['module-settings'].on_page_load = function(wrapper) {
 		const route = $(this).data('route').split(',');
 		frappe.set_route(route[0], route[1]);
 	});
-}
+};

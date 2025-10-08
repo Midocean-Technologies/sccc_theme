@@ -1,7 +1,7 @@
 frappe.pages['configuration'].on_page_load = function(wrapper) {
 	var page = frappe.ui.make_app_page({
 		parent: wrapper,
-		title: 'Configuration',
+		title: __('Configuration'),
 		single_column: true
 	});
 
@@ -20,7 +20,7 @@ frappe.pages['configuration'].on_page_load = function(wrapper) {
 			padding: 20px;
 		}
 		.config-card {
-			width:169px;
+			width: 169px;
 			height: 160px;
 			background: #fff;
 			border: 1px solid #ddd;
@@ -29,7 +29,7 @@ frappe.pages['configuration'].on_page_load = function(wrapper) {
 			padding: 4px 4px 5px 4px;
 			cursor: pointer;
 			transition: transform 0.3s ease, box-shadow 0.3s ease;
-			color: #5c2a9d; /* purple text */
+			color: #5c2a9d;
 			display: flex;
 			flex-direction: column;
 			align-items: flex-start;
@@ -42,9 +42,9 @@ frappe.pages['configuration'].on_page_load = function(wrapper) {
 			width: 32px;
 			height: 32px;
 			margin-bottom: 55px;
-			fill:#4F008C !important;
-			margin-left:10px;
-			margin-top:10px;
+			fill: #4F008C !important;
+			margin-left: 10px;
+			margin-top: 10px;
 		}
 		.config-label {
 			font-size: 14px;
@@ -52,46 +52,46 @@ frappe.pages['configuration'].on_page_load = function(wrapper) {
 			white-space: normal;
 			word-wrap: break-word;
 			color: #5c2a9d;
-			margin-left:10px;
-			margin-right:10px;
-			margin-bottom:10px;
+			margin-left: 10px;
+			margin-right: 10px;
+			margin-bottom: 10px;
 		}
 	</style>
 	<div class="main">
-	<div class="config-grid">
-		<div class="config-card" data-route="core-settings">
-			<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
-			<div class="config-label">core settings</div>
+		<div class="config-grid">
+			<div class="config-card" data-route="core-settings">
+				<i class="config-icon"><img src="/files/settings-purple.svg"></i>
+				<div class="config-label">${__('Core settings')}</div>
+			</div>
+			<div class="config-card" data-route="module-settings">
+				<i class="config-icon"><img src="/files/Bot.svg"></i>
+				<div class="config-label">${__('Module settings')}</div>
+			</div>
+			<div class="config-card" data-route="email-settings">
+				<i class="config-icon"><img src="/files/MailWarning.svg"></i>
+				<div class="config-label">${__('Email settings')}</div>
+			</div>
+			<div class="config-card" data-route="Form,Document Naming Rule">
+				<i class="config-icon"><img src="/files/FileCog.svg"></i>
+				<div class="config-label">${__('Document naming')}</div>
+			</div>
+			<div class="config-card" data-route="Form,Workflow">
+				<i class="config-icon"><img src="/files/LayoutPanelLeft.svg"></i>
+				<div class="config-label">${__('workflow')}</div>
+			</div>
+			<div class="config-card" data-route="printing-setting">
+				<i class="config-icon"><img src="/files/Printer.svg"></i>
+				<div class="config-label">${__('printing')}</div>
+			</div>
+			<div class="config-card" data-route="List,User">
+				<i class="config-icon"><img src="/files/Users.svg"></i>
+				<div class="config-label">${__('users')}</div>
+			</div>
+			<div class="config-card" data-route="Form,Role">
+				<i class="config-icon"><img src="/files/LockKeyholeOpen.svg"></i>
+				<div class="config-label">${__('roles & permission')}</div>
+			</div>
 		</div>
-		<div class="config-card" data-route="module-settings">
-			<i class="config-icon"><img src= "/files/Bot.svg"></i>
-			<div class="config-label">module settings</div>
-		</div>
-		<div class="config-card" data-route="email-settings">
-			<i class="config-icon"><img src= "/files/MailWarning.svg"></i>
-			<div class="config-label">email settings</div>
-		</div>
-		<div class="config-card" data-route="Form,Document Naming Rule">
-			<i class="config-icon"><img src= "/files/FileCog.svg"></i>
-			<div class="config-label">document naming</div>
-		</div>
-		<div class="config-card" data-route="Form,Workflow">
-			<i class="config-icon"><img src= "/files/LayoutPanelLeft.svg"></i>
-			<div class="config-label">workflow</div>
-		</div>
-		<div class="config-card" data-route="printing-setting">
-			<i class="config-icon"><img src= "/files/Printer.svg"></i>
-			<div class="config-label">printing</div>
-		</div>
-		<div class="config-card" data-route="List,User">
-			<i class="config-icon"><img src= "/files/Users.svg"></i>
-			<div class="config-label">users</div>
-		</div>
-		<div class="config-card" data-route="Form,Role">
-			<i class="config-icon"><img src= "/files/LockKeyholeOpen.svg"></i>
-			<div class="config-label">roles & permission</div>
-		</div>
-	</div>
 	</div>
 	`;
 
@@ -101,4 +101,4 @@ frappe.pages['configuration'].on_page_load = function(wrapper) {
 		const route = $(this).data('route').split(',');
 		frappe.set_route(route[0], route[1]);
 	});
-}
+};
