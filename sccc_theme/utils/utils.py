@@ -5,9 +5,10 @@ from frappe.utils.data import sha256_hash
 from frappe import _
 # from frappe.desk.utils import get_link_to
 
+@frappe.whitelist()
 def after_migrate():
     update_currency_symbol_for_SAR()
-    transfer_workspace_shortcuts()
+    # transfer_workspace_shortcuts()
     update_website_setting_logo()
     hide_workspace()
     update_currency_in_doctypes()
@@ -189,9 +190,9 @@ def transfer_workspace_shortcuts():
 
 
 def slugify_doctype(name: str) -> str:
+    if not name:
+        return ""   # or return "unknown" if you want a default slug
     return name.strip().lower().replace(" ", "-")
-
-
 
 @frappe.whitelist(allow_guest=True)
 def get_sidebar_items(page=None):
