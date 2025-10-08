@@ -60,37 +60,37 @@ frappe.pages['printing-setting'].on_page_load = function(wrapper) {
 	<div class="main">
 		<div class="config-grid">
 			<div class="config-card" data-route="Form,Print Format Builder">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/FileJson.svg"></i>
 				<div class="config-label">Print Format Builder</div>
 			</div>
 
 			<div class="config-card" data-route="Form,Print Style">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/LayoutList.svg"></i>
 				<div class="config-label">Print Style</div>
 			</div>
 			<div class="config-card" data-route="Form,Print Heading">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/Heading.svg"></i>
 				<div class="config-label">Print Heading</div>
 			</div>
 			<div class="config-card" data-route="Form,Letter Head">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/Heading1.svg"></i>
 				<div class="config-label">Letter Head</div>
 			</div>
 			<div class="config-card" data-route="Form,Address Template">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/LayoutTemplate.svg"></i>
 				<div class="config-label">Address Template</div>
 			</div>
 			<div class="config-card" data-route="Form,Terms And Conditions">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/BadgeCheck.svg"></i>
 				<div class="config-label">Terms And Conditions</div>
 			</div>
 
 			<div class="config-card" data-route="Form,Cheque Print Template">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/FileSpreadsheet.svg"></i>
 				<div class="config-label">Cheque Print Template</div>
 			</div>
 			<div class="config-card" data-route="Form,Print Settings">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/Printer.svg"></i>
 				<div class="config-label">Print Settings</div>
 			</div>
 			

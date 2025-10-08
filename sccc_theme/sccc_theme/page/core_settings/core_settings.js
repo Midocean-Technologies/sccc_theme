@@ -65,19 +65,19 @@ frappe.pages['core-settings'].on_page_load = function(wrapper) {
 			</div>
 
 			<div class="config-card" data-route="Form,Domain Settings">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/AtSign.svg"></i>
 				<div class="config-label">domain settings</div>
 			</div>
 			<div class="config-card" data-route="Form,Session Default Settings">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/MonitorStop.svg"></i>
 				<div class="config-label">session defaults</div>
 			</div>
 			<div class="config-card" data-route="Form,Global Defaults">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/Globe.svg"></i>
 				<div class="config-label">global defaults</div>
 			</div>
 			<div class="config-card" data-route="Form,Address Template">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/Building255c531.svg"></i>
 				<div class="config-label">address template</div>
 			</div>
 			
