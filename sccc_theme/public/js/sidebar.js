@@ -174,8 +174,13 @@ $root.on("click", ".sccc-select-trigger", function (e) {
     $list.attr("hidden", true);
   } else {
     $list.removeAttr("hidden");
-    // focus first item for keyboard users
-    $list.find(".sccc-select-item[tabindex]").first().focus();
+    // focus selected item for keyboard users, or first if none
+    const $toFocus = $list.find(".sccc-select-item.selected").first();
+    if ($toFocus.length) {
+      $toFocus.focus();
+    } else {
+      $list.find(".sccc-select-item[tabindex]").first().focus();
+    }
     // Hide the user menu when select list is toggled
     $root.find(".sccc-user-menu").hide();
   }
@@ -243,6 +248,11 @@ $root.on("click", ".sccc-select-trigger", function (e) {
       // update trigger icon to match selected/native selection (fallback)
       const selIconHtml = $root.find(`.sccc-select-item[data-value="${route}"] .sccc-select-item-icn`).html() || frappe.utils.icon('image-view', 'md');
       $root.find(".sccc-select-trigger .sccc-select-item-icn").html(selIconHtml);
+
+      // update selected class and aria-selected in the custom list
+      const $wrap = $root.find("#sccc-module-select_wrap");
+      $wrap.find(".sccc-select-list .sccc-select-item").removeClass("selected").removeAttr("aria-selected");
+      $wrap.find(`.sccc-select-list .sccc-select-item[data-value="${route}"]`).addClass("selected").attr("aria-selected", "true");
 
       // ALSO update Dashboard button to reflect current selection
       const $dash = $root.find("#sccc-dashboard-btn");
