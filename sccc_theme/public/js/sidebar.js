@@ -51,30 +51,30 @@
             </div>
           </div>
           <!-- Module selector -->
-          <div class="sccc-section-label">Module</div>
+          <div class="sccc-section-label">${__("Module")}</div>
 
           <!-- custom dropdown: visible trigger + list; hidden native select kept for route logic -->
           <div class="sccc-select custom" id="sccc-module-select_wrap" tabindex="0" aria-haspopup="listbox">
             <button type="button" class="sccc-select-trigger" aria-expanded="false">
               <span class="sccc-select-item-icn">${frappe.utils.icon('image-view', "md")}</span>
 
-              <span class="sccc-select-label">home</span>
+              <span class="sccc-select-label">${__("home")}</span>
               <span class="sccc-select-caret">${ICON.chevRight}</span>
             </button>
-            <div class="sccc-select-list" role="listbox" aria-label="Modules" hidden></div>
+            <div class="sccc-select-list" role="listbox" aria-label="${__("Modules")}" hidden></div>
             <select id="sccc-module-select_" hidden></select>
           </div>
 
           <div class="sccc-hr"></div>
           <div id="sccc-dashboard-wrap" class="sccc-dashboard-wrap" aria-hidden="false">
-            <button type="button" id="sccc-dashboard-btn" class="sccc-dashboard-btn" title="Dashboard" aria-label="Dashboard" data-route="dashboard">
+            <button type="button" id="sccc-dashboard-btn" class="sccc-dashboard-btn" title="${__("Dashboard")}" aria-label="${__("Dashboard")}" data-route="dashboard">
               <span class="sccc-select-item-icon icon">
                 <img src="/assets/sccc_theme/icon/Home.svg" alt="Home Icon" class="icon-img" />
               </span>
 
               <span>
-                <span class="sccc-dashboard-label" style="font-size:14px;">home</span>
-                <span class="" style="font-size:14px;">dashboard</span>
+                <span class="sccc-dashboard-label" style="font-size:14px;">${__("home")}</span>
+                <span class="" style="font-size:14px;">${__("dashboard")}</span>
               </span>
             </button>
           </div>
@@ -86,17 +86,17 @@
                 <span>
                   <img src ="/assets/sccc_theme/images/tools.svg" alt="tools" style="height:18px; margin-left:10px;"/>
                 </span>
-                <span class="sccc-tool-txt">tools</span>
+                <span class="sccc-tool-txt">${__("tools")}</span>
                 <span class="sccc-row-caret">${ICON.chevRight}</span>
               </div>
               <div class="sccc-tool" data-route="configuration">
                 <span>
                   <img src ="/assets/sccc_theme/images/configuration.svg" alt="configuration" style="height:18px; margin-left:10px;"/>
                 </span>
-                <span class="sccc-tool-txt">configuration</span>
+                <span class="sccc-tool-txt">${__("configuration")}</span>
                 <span class="sccc-row-caret">${ICON.chevRight}</span>
               </div>
-            
+
             <div class="sccc-hr"></div>
 
             <div class="sccc-user">
@@ -105,14 +105,14 @@
                 <div class="sccc-user-name">${frappe.utils.escape_html(user)}</div>
                 <div class="sccc-user-mail">${frappe.utils.escape_html(email)}</div>
               </div>
-              <button class="sccc-user-caret" title="Account">
+              <button class="sccc-user-caret" title="${__("Account")}">
                 <span class="sccc-user-caret-up">${ICON.userCaret}</span>
               </button>
               <div class="sccc-user-menu">
-                <button class="sccc-account-btn">My Profile</button>
-                <button class="sccc-my-settings-btn"">My Settings</button>
-                <button class="sccc-apps-btn">Apps</button>
-                <button class="sccc-logout-btn">Log out</button>
+                <button class="sccc-account-btn">${__("My Profile")}</button>
+                <button class="sccc-my-settings-btn">${__("My Settings")}</button>
+                <button class="sccc-apps-btn">${__("Apps")}</button>
+                <button class="sccc-logout-btn">${__("Log out")}</button>
               </div>
             </div>
 
@@ -258,7 +258,7 @@ $root.on("click", ".sccc-select-trigger", function (e) {
       const $dash = $root.find("#sccc-dashboard-btn");
       if ($dash.length) {
         // $dash.find(".sccc-select-item-icon").html(selIconHtml);
-        $dash.find(".sccc-dashboard-label").text(label || "home");
+        $dash.find(".sccc-dashboard-label").text(label || __("home"));
         $dash.attr("data-route", route === "home" ? "home" : route);
       }
 
@@ -764,7 +764,7 @@ $root.on("click", ".sccc-select-trigger", function (e) {
       $wrap.find(".sccc-select-label").text(selectedText);
     } else {
       // Fallback to the label of the selected option
-      const fallbackLabel = $sel.find("option:selected").text() || "home";
+      const fallbackLabel = $sel.find("option:selected").text() || __("home");
       $wrap.find(".sccc-select-label").text(fallbackLabel);
     }
     $list.find(`.sccc-select-item[data-value="${currentSlug}"]`).attr("aria-selected", "true").addClass("selected");
@@ -776,13 +776,13 @@ $root.on("click", ".sccc-select-trigger", function (e) {
     const $dash = $wrap.siblings("#sccc-dashboard-wrap").find("#sccc-dashboard-btn");
     if ($dash.length) {
       const dashIcon = selIconHtml || frappe.utils.icon('image-view', 'md');
-      const dashLabel = selectedText || $sel.find("option:selected").text() || "home";
+      const dashLabel = selectedText || $sel.find("option:selected").text() || __("home");
       $dash.find(".sccc-select-item-icn").html(dashIcon);
       // $dash.find(".sccc-select-item-icon").html(dashIcon);
       $dash.find(".sccc-dashboard-label").text(dashLabel);
       $dash.attr("data-route", currentSlug === "home" ? "home" : currentSlug);
     }
-    loadchild($root, selectedText || $sel.find("option:selected").text() || "home")
+    loadchild($root, selectedText || $sel.find("option:selected").text() || __("home"))
   },1000)
   
 
