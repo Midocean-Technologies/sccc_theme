@@ -60,37 +60,37 @@ frappe.pages['email-settings'].on_page_load = function(wrapper) {
 	<div class="main">
 		<div class="config-grid">
 			<div class="config-card" data-route="Form,Email Domain">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/MailQuestion.svg"></i>
 				<div class="config-label">Email Domain</div>
 			</div>
 
 			<div class="config-card" data-route="Form,Email Account">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/AtSign.svg"></i>
 				<div class="config-label">Email Account</div>
 			</div>
 			<div class="config-card" data-route="Form,Email Template">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/FileType.svg"></i>
 				<div class="config-label">Email Template</div>
 			</div>
 			<div class="config-card" data-route="Form,Email Digest">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/MailOpen.svg"></i>
 				<div class="config-label">Email Digest</div>
 			</div>
 			<div class="config-card" data-route="Form,Newsletter">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/Mails.svg"></i>
 				<div class="config-label">Newsletter</div>
 			</div>
 			<div class="config-card" data-route="Form,Notification">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/Bell.svg"></i>
 				<div class="config-label">Notification</div>
 			</div>
 
 			<div class="config-card" data-route="Form,Notification Settings">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/BellPlus.svg"></i>
 				<div class="config-label">Notification Settings</div>
 			</div>
 			<div class="config-card" data-route="Form,Auto Email Report">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+				<i class="config-icon"><img src= "/files/Repeat.svg"></i>
 				<div class="config-label">Auto Email Report</div>
 			</div>
 			

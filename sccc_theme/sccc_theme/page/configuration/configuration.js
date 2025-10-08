@@ -64,35 +64,31 @@ frappe.pages['configuration'].on_page_load = function(wrapper) {
 			<div class="config-label">core settings</div>
 		</div>
 		<div class="config-card" data-route="module-settings">
-			<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+			<i class="config-icon"><img src= "/files/Bot.svg"></i>
 			<div class="config-label">module settings</div>
 		</div>
 		<div class="config-card" data-route="email-settings">
-			<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+			<i class="config-icon"><img src= "/files/MailWarning.svg"></i>
 			<div class="config-label">email settings</div>
 		</div>
 		<div class="config-card" data-route="Form,Document Naming Rule">
-			<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+			<i class="config-icon"><img src= "/files/FileCog.svg"></i>
 			<div class="config-label">document naming</div>
 		</div>
 		<div class="config-card" data-route="Form,Workflow">
-			<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+			<i class="config-icon"><img src= "/files/LayoutPanelLeft.svg"></i>
 			<div class="config-label">workflow</div>
 		</div>
 		<div class="config-card" data-route="printing-setting">
-			<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+			<i class="config-icon"><img src= "/files/Printer.svg"></i>
 			<div class="config-label">printing</div>
 		</div>
-		<div class="config-card" data-route="Form,Auto Email Report">
-			<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
-			<div class="config-label">automation</div>
-		</div>
 		<div class="config-card" data-route="List,User">
-			<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+			<i class="config-icon"><img src= "/files/Users.svg"></i>
 			<div class="config-label">users</div>
 		</div>
 		<div class="config-card" data-route="Form,Role">
-			<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
+			<i class="config-icon"><img src= "/files/LockKeyholeOpen.svg"></i>
 			<div class="config-label">roles & permission</div>
 		</div>
 	</div>
