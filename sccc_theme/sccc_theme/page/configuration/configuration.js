@@ -83,10 +83,6 @@ frappe.pages['configuration'].on_page_load = function(wrapper) {
 			<i class="config-icon"><img src= "/files/Printer.svg"></i>
 			<div class="config-label">printing</div>
 		</div>
-		<div class="config-card" data-route="Form,Auto Email Report">
-			<i class="config-icon"><img src= "/files/Repeat2743f60.svg"></i>
-			<div class="config-label">automation</div>
-		</div>
 		<div class="config-card" data-route="List,User">
 			<i class="config-icon"><img src= "/files/Users.svg"></i>
 			<div class="config-label">users</div>

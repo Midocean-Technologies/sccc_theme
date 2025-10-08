@@ -60,7 +60,7 @@ frappe.pages['tools-page'].on_page_load = function(wrapper) {
 	<div class="main">
 	<div class="config-grid">
 		<div class="config-card" data-route="Form,Data Import">
-			<i class="config-icon"><img src= "/files/FolderOpenDot.svg"></i>
+			<i class="config-icon"><img src= "/files/FolderOpenDot-p.svg"></i>
 			<div class="config-label">data import</div>
 		</div>
 		<div class="config-card" data-route="Form,Todo">
@@ -68,27 +68,27 @@ frappe.pages['tools-page'].on_page_load = function(wrapper) {
 			<div class="config-label">todo</div>
 		</div>
 		<div class="config-card" data-route="Form,File">
-			<i class="config-icon"><img src= "/files/Notebook.svg"></i>
+			<i class="config-icon"><img src= "/files/FolderOpenDot-p.svg"></i>
 			<div class="config-label">file</div>
 		</div>
 		<div class="config-card" data-route="Form,Assignment Rule">
-			<i class="config-icon"><img src= "/files/ScanText.svg"></i>
+			<i class="config-icon"><img src= "/files/Shuffle-p.svg"></i>
 			<div class="config-label">assignment rule</div>
 		</div>
 		<div class="config-card" data-route="Form,Note">
-			<i class="config-icon"><img src= "/files/Notebook.svg"></i>
+			<i class="config-icon"><img src= "/files/Notebook-p.svg"></i>
 			<div class="config-label">Note</div>
 		</div>
 		<div class="config-card" data-route="Form,Calendar View">
-			<i class="config-icon"><img src= "/files/Calendar.svg"></i>
+			<i class="config-icon"><img src= "/files/Calnder-p.svg"></i>
 			<div class="config-label">calender</div>
 		</div>
 		<div class="config-card" data-route="Form,Newsletter">
-			<i class="config-icon"><img src= "/files/FolderOpenDot.svg"></i>
+			<i class="config-icon"><img src= "/files/FolderOpenDot-p.svg"></i>
 			<div class="config-label">Newsletter</div>
 		</div>
 		<div class="config-card" data-route="Form,Auto Repeat">
-			<i class="config-icon"><img src= "/files/Reply.svg"></i>
+			<i class="config-icon"><img src= "/files/Repeat2743f60.svg"></i>
 			<div class="config-label">Auto Repeat</div>
 		</div>
 		
