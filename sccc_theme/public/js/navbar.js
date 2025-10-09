@@ -199,7 +199,8 @@ body {
   }
 
   function ensureLeftOffset() {
-    const left = measureLeftSidebar();
+    const isRTL = frappe.utils.is_rtl && frappe.utils.is_rtl(frappe.boot.lang);
+    const left = isRTL ? 0 : measureLeftSidebar();
     document.documentElement.style.setProperty("--sccc-left", `${left}px`);
     document.documentElement.style.setProperty("--sccc-rightwidth", `calc(100% - ${left}px)`);
   }

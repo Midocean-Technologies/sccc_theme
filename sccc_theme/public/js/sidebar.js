@@ -790,10 +790,24 @@ $root.on("click", ".sccc-select-trigger", function (e) {
 
   function mount() {
     if (document.getElementById("sccc-rail-fixed")) return;
-    document.body.classList.add("sccc-rail-padding");
+
+    // Detect if current language is RTL
+    const isRTL = frappe.utils.is_rtl && frappe.utils.is_rtl(frappe.boot.lang);
+
+    if (isRTL) {
+      document.body.classList.add("sccc-rail-rtl-padding");
+    } else {
+      document.body.classList.add("sccc-rail-padding");
+    }
+
     const holder = document.createElement("div");
     holder.innerHTML = railHTML();
     const rail = holder.firstElementChild;
+
+    if (isRTL) {
+      rail.classList.add("sccc-rail-rtl");
+    }
+
     document.body.appendChild(rail);
     wireRail($(rail));
     loadModules($(rail));

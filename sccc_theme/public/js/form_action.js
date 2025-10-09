@@ -7,7 +7,6 @@
         const $pageHead = $('.frappe-control[data-fieldname="language"]');
         $pageHeadPrint.prepend($pageHead);
 
-        
         const moveToPageActions = [
             '.form-assignments',
             '.form-attachments',

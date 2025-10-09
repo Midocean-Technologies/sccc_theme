@@ -9,6 +9,28 @@ header.navbar.navbar-expand.sccc-hidden { display: none !important; }
 }
 body { padding-top: var(--sccc-globalbar-h); }
 
+/* RTL support for navbar */
+body.sccc-rail-rtl-padding .sccc-globalbar {
+  left: 0 !important;
+  width: 100% !important;
+}
+
+/* RTL adjustments for topbar search and icons */
+body.sccc-rail-rtl-padding .sccc-search {
+  direction: rtl;
+  padding: 8px 34px 8px 12px; /* swap left and right padding */
+}
+
+body.sccc-rail-rtl-padding .sccc-search-icn {
+  left: auto !important;
+  right: 10px !important;
+}
+
+body.sccc-rail-rtl-padding .sccc-icon {
+  margin-left: 0 !important;
+  margin-right: 8px !important;
+}
+
 /* The new bar sticks to top, but starts AFTER the sidebar width */
 .sccc-globalbar{
   position: fixed;
