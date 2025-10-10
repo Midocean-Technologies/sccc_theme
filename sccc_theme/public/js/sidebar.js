@@ -1,6 +1,6 @@
 /* global frappe */
 (function () {
-  const LOG = (...a) => console.log("%c[SCCC]", "color:#8b5cf6;font-weight:bold", ...a);
+  // const LOG = (...a) => console.log("%c[SCCC]", "color:#8b5cf6;font-weight:bold", ...a);
 
   const ICON = {
     userCaret: `
@@ -284,7 +284,7 @@ $root.on("click", ".sccc-select-trigger", function (e) {
         items = ws.message[0] || [];
         links = ws.message[1] || [];
       }
-      LOG("Workspace data:", {items, links});
+      // LOG("Workspace data:", {items, links});
 
       const selectedIsChild = selectedPageObj && selectedPageObj.parent_page;
 
@@ -448,19 +448,13 @@ $root.on("click", ".sccc-select-trigger", function (e) {
     $root.on("click", ".sccc-collapsible-item", function () {
       const route = $(this).data("route");
       if (route) frappe.set_route(route);
-      // Remove highlight from all other items
       $('.sccc-collapsible-item').removeClass('selected');
-      // Add highlight to clicked item
       $(this).addClass('selected');
     });
     // Accordion behavior: only one open at a time
     $root.on('click', '.sccc-collapsible .sccc-tools-head', function() {
         const $body = $(this).next('.sccc-collapsible-body');
-
-        // Close all other collapses
         $('.sccc-collapsible-body').not($body).collapse('hide');
-
-        // Toggle clicked one
         $body.collapse('toggle');
     });
 
@@ -472,13 +466,11 @@ $root.on("click", ".sccc-select-trigger", function (e) {
         $(this).prev('.sccc-tools-head').find('.sccc-tools-caret').html(ICON.chevRight);
     });
 
-    // Update caret on details toggle
     $root.on('toggle', 'details', function() {
         const caret = $(this).find('summary .sccc-tools-caret');
         caret.html(this.open ? ICON.chevDown : ICON.chevRight);
     });
 
-    // Update caret for sccc-select custom dropdown
     $root.on('click', '#sccc-module-select_wrap.sccc-select.custom', function() {
         const $caret = $(this).find('.sccc-select-caret');
         const expanded = $(this).find('.sccc-select-trigger').attr('aria-expanded') === 'true';
@@ -517,7 +509,7 @@ $root.on("click", ".sccc-select-trigger", function (e) {
         items = ws.message[0] || [];
         links = ws.message[1] || [];
       }
-      LOG("Workspace data:", {items, links});
+      // LOG("Workspace data:", {items, links});
 
       const selectedIsChild = selectedPageObj && selectedPageObj.parent_page;
 
@@ -709,7 +701,7 @@ $root.on("click", ".sccc-select-trigger", function (e) {
 
   // Build a lookup map of doctype → workspace
   const doctypeToWorkspace = {};
-  LOG(filteredPages)
+  // LOG(filteredPages)
   filteredPages.forEach(p => {
     if (frappe.router.slug(p.title) === "home") return;
     const slug = p.public ? frappe.router.slug(p.title) : `private/${frappe.router.slug(p.title)}`;
@@ -811,7 +803,7 @@ $root.on("click", ".sccc-select-trigger", function (e) {
     document.body.appendChild(rail);
     wireRail($(rail));
     loadModules($(rail));
-    LOG("✅ SCCC fixed rail mounted");
+    // LOG("✅ SCCC fixed rail mounted");
   }
 
   $(document).on("app_ready", mount);
