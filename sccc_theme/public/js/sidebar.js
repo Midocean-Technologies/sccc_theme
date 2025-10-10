@@ -86,14 +86,14 @@
                 <span>
                   <img src ="/assets/sccc_theme/images/tools.svg" alt="tools" style="height:18px; margin-left:10px;"/>
                 </span>
-                <span class="sccc-tool-txt">${__("tools")}</span>
+                <span class="sccc-tool-txt">${__("Tools")}</span>
                 <span class="sccc-row-caret">${ICON.chevRight}</span>
               </div>
               <div class="sccc-tool" data-route="configuration">
                 <span>
                   <img src ="/assets/sccc_theme/images/configuration.svg" alt="configuration" style="height:18px; margin-left:10px;"/>
                 </span>
-                <span class="sccc-tool-txt">${__("configuration")}</span>
+                <span class="sccc-tool-txt">${__("Configuration")}</span>
                 <span class="sccc-row-caret">${ICON.chevRight}</span>
               </div>
 
