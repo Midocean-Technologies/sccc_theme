@@ -165,26 +165,26 @@ $root.on("click", ".sccc-user", function() {
     $root.on("click", ".sccc-tool", function(){ routeGo(this.getAttribute("data-route")); });
 
     // custom dropdown trigger
-$root.on("click", ".sccc-select-trigger", function (e) {
-  const $wrap = $(this).closest("#sccc-module-select_wrap");
-  const $list = $wrap.find(".sccc-select-list");
-  const expanded = $(this).attr("aria-expanded") === "true";
-  $(this).attr("aria-expanded", !expanded);
-  if (expanded) {
-    $list.attr("hidden", true);
-  } else {
-    $list.removeAttr("hidden");
-    // focus selected item for keyboard users, or first if none
-    const $toFocus = $list.find(".sccc-select-item.selected").first();
-    if ($toFocus.length) {
-      $toFocus.focus();
-    } else {
-      $list.find(".sccc-select-item[tabindex]").first().focus();
-    }
-    // Hide the user menu when select list is toggled
-    $root.find(".sccc-user-menu").hide();
-  }
-});
+    $root.on("click", ".sccc-select-trigger", function (e) {
+      const $wrap = $(this).closest("#sccc-module-select_wrap");
+      const $list = $wrap.find(".sccc-select-list");
+      const expanded = $(this).attr("aria-expanded") === "true";
+      $(this).attr("aria-expanded", !expanded);
+      if (expanded) {
+        $list.attr("hidden", true);
+      } else {
+        $list.removeAttr("hidden");
+        // focus selected item for keyboard users, or first if none
+        const $toFocus = $list.find(".sccc-select-item.selected").first();
+        if ($toFocus.length) {
+          $toFocus.focus();
+        } else {
+          $list.find(".sccc-select-item[tabindex]").first().focus();
+        }
+        // Hide the user menu when select list is toggled
+        $root.find(".sccc-user-menu").hide();
+      }
+    });
     // dashboard button click -> go to its route (default 'dashboard')
     $root.on("click", "#sccc-dashboard-btn", function () {
       const route = this.getAttribute("data-route") || "home";
