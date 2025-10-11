@@ -77,19 +77,19 @@ frappe.pages['configuration'].on_page_load = function(wrapper) {
 			</div>
 			<div class="config-card" data-route="Form,Workflow">
 				<i class="config-icon"><img src="/files/LayoutPanelLeft.svg"></i>
-				<div class="config-label">${__('workflow')}</div>
+				<div class="config-label">${__('Workflow')}</div>
 			</div>
 			<div class="config-card" data-route="printing-setting">
 				<i class="config-icon"><img src="/files/Printer.svg"></i>
-				<div class="config-label">${__('printing')}</div>
+				<div class="config-label">${__('Printing')}</div>
 			</div>
 			<div class="config-card" data-route="List,User">
 				<i class="config-icon"><img src="/files/Users.svg"></i>
-				<div class="config-label">${__('users')}</div>
+				<div class="config-label">${__('Users')}</div>
 			</div>
 			<div class="config-card" data-route="Form,Role">
 				<i class="config-icon"><img src="/files/LockKeyholeOpen.svg"></i>
-				<div class="config-label">${__('roles & permission')}</div>
+				<div class="config-label">${__('Roles & Permission')}</div>
 			</div>
 		</div>
 	</div>
