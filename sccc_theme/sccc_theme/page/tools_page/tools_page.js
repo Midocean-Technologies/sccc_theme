@@ -1,7 +1,7 @@
 frappe.pages['tools-page'].on_page_load = function(wrapper) {
 	var page = frappe.ui.make_app_page({
 		parent: wrapper,
-		title: 'tools',
+		title: __('Tools'),
 		single_column: true
 	});
 
@@ -20,7 +20,7 @@ frappe.pages['tools-page'].on_page_load = function(wrapper) {
 			padding: 20px;
 		}
 		.config-card {
-			width:169px;
+			width: 169px;
 			height: 160px;
 			background: #fff;
 			border: 1px solid #ddd;
@@ -29,7 +29,7 @@ frappe.pages['tools-page'].on_page_load = function(wrapper) {
 			padding: 4px 4px 5px 4px;
 			cursor: pointer;
 			transition: transform 0.3s ease, box-shadow 0.3s ease;
-			color: #5c2a9d; /* purple text */
+			color: #5c2a9d;
 			display: flex;
 			flex-direction: column;
 			align-items: flex-start;
@@ -42,9 +42,9 @@ frappe.pages['tools-page'].on_page_load = function(wrapper) {
 			width: 32px;
 			height: 32px;
 			margin-bottom: 55px;
-			fill:#4F008C !important;
-			margin-left:10px;
-			margin-top:10px;
+			fill: #4F008C !important;
+			margin-left: 10px;
+			margin-top: 10px;
 		}
 		.config-label {
 			font-size: 14px;
@@ -52,49 +52,46 @@ frappe.pages['tools-page'].on_page_load = function(wrapper) {
 			white-space: normal;
 			word-wrap: break-word;
 			color: #5c2a9d;
-			margin-left:10px;
-			margin-right:10px;
-			margin-bottom:10px;
+			margin-left: 10px;
+			margin-right: 10px;
+			margin-bottom: 10px;
 		}
 	</style>
 	<div class="main">
-	<div class="config-grid">
-		<div class="config-card" data-route="Form,Data Import">
-			<i class="config-icon"><img src= "/files/FolderOpenDot-p.svg"></i>
-			<div class="config-label">data import</div>
+		<div class="config-grid">
+			<div class="config-card" data-route="Form,Data Import">
+				<i class="config-icon"><img src="/files/FolderOpenDot-p.svg"></i>
+				<div class="config-label">${__('Data Import')}</div>
+			</div>
+			<div class="config-card" data-route="Form,Todo">
+				<i class="config-icon"><img src="/files/ListOrdered.svg"></i>
+				<div class="config-label">${__('ToDo')}</div>
+			</div>
+			<div class="config-card" data-route="Form,File">
+				<i class="config-icon"><img src="/files/FolderOpenDot-p.svg"></i>
+				<div class="config-label">${__('File')}</div>
+			</div>
+			<div class="config-card" data-route="Form,Assignment Rule">
+				<i class="config-icon"><img src="/files/Shuffle-p.svg"></i>
+				<div class="config-label">${__('Assignment Rule')}</div>
+			</div>
+			<div class="config-card" data-route="Form,Note">
+				<i class="config-icon"><img src="/files/Notebook-p.svg"></i>
+				<div class="config-label">${__('Note')}</div>
+			</div>
+			<div class="config-card" data-route="Form,Calendar View">
+				<i class="config-icon"><img src="/files/Calnder-p.svg"></i>
+				<div class="config-label">${__('Calendar')}</div>
+			</div>
+			<div class="config-card" data-route="Form,Newsletter">
+				<i class="config-icon"><img src="/files/FolderOpenDot-p.svg"></i>
+				<div class="config-label">${__('Newsletter')}</div>
+			</div>
+			<div class="config-card" data-route="Form,Auto Repeat">
+				<i class="config-icon"><img src="/files/Repeat2743f60.svg"></i>
+				<div class="config-label">${__('Auto Repeat')}</div>
+			</div>
 		</div>
-		<div class="config-card" data-route="Form,Todo">
-			<i class="config-icon"><img src= "/files/ListOrdered.svg"></i>
-			<div class="config-label">todo</div>
-		</div>
-		<div class="config-card" data-route="Form,File">
-			<i class="config-icon"><img src= "/files/FolderOpenDot-p.svg"></i>
-			<div class="config-label">file</div>
-		</div>
-		<div class="config-card" data-route="Form,Assignment Rule">
-			<i class="config-icon"><img src= "/files/Shuffle-p.svg"></i>
-			<div class="config-label">assignment rule</div>
-		</div>
-		<div class="config-card" data-route="Form,Note">
-			<i class="config-icon"><img src= "/files/Notebook-p.svg"></i>
-			<div class="config-label">Note</div>
-		</div>
-		<div class="config-card" data-route="Form,Calendar View">
-			<i class="config-icon"><img src= "/files/Calnder-p.svg"></i>
-			<div class="config-label">calender</div>
-		</div>
-		<div class="config-card" data-route="Form,Newsletter">
-			<i class="config-icon"><img src= "/files/FolderOpenDot-p.svg"></i>
-			<div class="config-label">Newsletter</div>
-		</div>
-		<div class="config-card" data-route="Form,Auto Repeat">
-			<i class="config-icon"><img src= "/files/Repeat2743f60.svg"></i>
-			<div class="config-label">Auto Repeat</div>
-		</div>
-		
-
-
-	</div>
 	</div>
 	`;
 
@@ -104,4 +101,4 @@ frappe.pages['tools-page'].on_page_load = function(wrapper) {
 		const route = $(this).data('route').split(',');
 		frappe.set_route(route[0], route[1]);
 	});
-}
+};

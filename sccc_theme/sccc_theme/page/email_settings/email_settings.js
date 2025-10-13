@@ -1,7 +1,7 @@
 frappe.pages['email-settings'].on_page_load = function(wrapper) {
 	var page = frappe.ui.make_app_page({
 		parent: wrapper,
-		title: 'email settings',
+		title: __('Email Settings'),
 		single_column: true
 	});
 
@@ -29,7 +29,7 @@ frappe.pages['email-settings'].on_page_load = function(wrapper) {
 			padding: 4px 4px 5px 4px;
 			cursor: pointer;
 			transition: transform 0.3s ease, box-shadow 0.3s ease;
-			color: #5c2a9d; /* purple text */
+			color: #5c2a9d;
 			display: flex;
 			flex-direction: column;
 			align-items: flex-start;
@@ -60,40 +60,37 @@ frappe.pages['email-settings'].on_page_load = function(wrapper) {
 	<div class="main">
 		<div class="config-grid">
 			<div class="config-card" data-route="Form,Email Domain">
-				<i class="config-icon"><img src= "/files/MailQuestion.svg"></i>
-				<div class="config-label">Email Domain</div>
+				<i class="config-icon"><img src="/files/MailQuestion.svg"></i>
+				<div class="config-label">${__('Email Domain')}</div>
 			</div>
-
 			<div class="config-card" data-route="Form,Email Account">
-				<i class="config-icon"><img src= "/files/AtSign.svg"></i>
-				<div class="config-label">Email Account</div>
+				<i class="config-icon"><img src="/files/AtSign.svg"></i>
+				<div class="config-label">${__('Email Account')}</div>
 			</div>
 			<div class="config-card" data-route="Form,Email Template">
-				<i class="config-icon"><img src= "/files/FileType.svg"></i>
-				<div class="config-label">Email Template</div>
+				<i class="config-icon"><img src="/files/FileType.svg"></i>
+				<div class="config-label">${__('Email Template')}</div>
 			</div>
 			<div class="config-card" data-route="Form,Email Digest">
-				<i class="config-icon"><img src= "/files/MailOpen.svg"></i>
-				<div class="config-label">Email Digest</div>
+				<i class="config-icon"><img src="/files/MailOpen.svg"></i>
+				<div class="config-label">${__('Email Digest')}</div>
 			</div>
 			<div class="config-card" data-route="Form,Newsletter">
-				<i class="config-icon"><img src= "/files/Mails.svg"></i>
-				<div class="config-label">Newsletter</div>
+				<i class="config-icon"><img src="/files/Mails.svg"></i>
+				<div class="config-label">${__('Newsletter')}</div>
 			</div>
 			<div class="config-card" data-route="Form,Notification">
-				<i class="config-icon"><img src= "/files/Bell.svg"></i>
-				<div class="config-label">Notification</div>
+				<i class="config-icon"><img src="/files/Bell.svg"></i>
+				<div class="config-label">${__('Notification')}</div>
 			</div>
-
 			<div class="config-card" data-route="Form,Notification Settings">
-				<i class="config-icon"><img src= "/files/BellPlus.svg"></i>
-				<div class="config-label">Notification Settings</div>
+				<i class="config-icon"><img src="/files/BellPlus.svg"></i>
+				<div class="config-label">${__('Notification Settings')}</div>
 			</div>
 			<div class="config-card" data-route="Form,Auto Email Report">
-				<i class="config-icon"><img src= "/files/Repeat.svg"></i>
-				<div class="config-label">Auto Email Report</div>
+				<i class="config-icon"><img src="/files/Repeat.svg"></i>
+				<div class="config-label">${__('Auto Email Report')}</div>
 			</div>
-			
 		</div>
 	</div>
 	`;
@@ -104,4 +101,4 @@ frappe.pages['email-settings'].on_page_load = function(wrapper) {
 		const route = $(this).data('route').split(',');
 		frappe.set_route(route[0], route[1]);
 	});
-}
+};

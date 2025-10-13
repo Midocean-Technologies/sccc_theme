@@ -11,10 +11,12 @@
   const CSS = `
 /* root layout variables */
 :root {
-  --sccc-left: 0px;           /* computed from #sccc-rail-fixed */
-  --sccc-top-h: 58px;         /* bar height */
-  --sccc-rightwidth: calc(100% - var(--sccc-left));
+  --sccc-left: 0px;
+  --sccc-right: 0px;    /* ✅ new for RTL */
+  --sccc-top-h: 58px;
+  --sccc-rightwidth: calc(100% - var(--sccc-left) - var(--sccc-right));
 }
+
 
 /* remove native Frappe top navbar completely */
 header.navbar.navbar-expand { display: none; }
@@ -30,6 +32,7 @@ body {
   position: fixed;
   top: 0;
   left: var(--sccc-left);
+  right: var(--sccc-right);
   width: var(--sccc-rightwidth);
   height: var(--sccc-top-h);
   z-index: 1050; /* above content, below modals */
@@ -199,9 +202,19 @@ body {
   }
 
   function ensureLeftOffset() {
-    const left = measureLeftSidebar();
-    document.documentElement.style.setProperty("--sccc-left", `${left}px`);
-    document.documentElement.style.setProperty("--sccc-rightwidth", `calc(100% - ${left}px)`);
+    const isRTL = frappe.utils.is_rtl && frappe.utils.is_rtl(frappe.boot.lang);
+      if (isRTL) {
+        const right = measureLeftSidebar();
+        document.documentElement.style.setProperty("--sccc-right", `${right}px`);
+        document.documentElement.style.setProperty("--sccc-left", `0px`);
+        document.documentElement.style.setProperty("--sccc-rightwidth", `calc(100% - ${right}px)`);
+      } else {
+        const left = measureLeftSidebar();
+        document.documentElement.style.setProperty("--sccc-left", `${left}px`);
+        document.documentElement.style.setProperty("--sccc-right", `0px`);
+        document.documentElement.style.setProperty("--sccc-rightwidth", `calc(100% - ${left}px)`);
+      }
+
   }
 
   function observeFixedRail() {
