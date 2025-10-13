@@ -17,6 +17,85 @@ def after_migrate():
     create_custom_fields()
     # remove_reports_from_workspace_custom_link_cards()
     add_language_permission_for_ar_en()
+    add_translations()
+
+def add_translations():
+    installed_app = frappe.get_single("Installed Applications")
+    if installed_app.installed_applications:
+        for x in installed_app.installed_applications:
+            if x.app_name == "sccc_theme":
+                translations_to_add = [
+                    {"source_text": "Connections", "translated_text": "اتصالات"},
+                    {"source_text": "payable", "translated_text": "مستحق الدفع"},
+                    {"source_text": "dashboard", "translated_text": "لوحة القيادة"},
+                    {"source_text": "My Profile", "translated_text": "ملفي الشخصي"},
+                    {"source_text": "My Settings", "translated_text": "إعداداتي"},
+                    {"source_text": "Apps", "translated_text": "تطبيقات"},
+                    {"source_text": "Log out", "translated_text": "تسجيل الخروج"},
+                    {"source_text": "Change User", "translated_text": "تغيير المستخدم"},
+                    {"source_text": "Last Month", "translated_text": "الشهر الماضي"},
+                    {"source_text": "Recent Activity", "translated_text": "النشاط الأخير"},
+                    {"source_text": "No activities to show", "translated_text": "لا توجد أنشطة لعرضها."},
+                    {"source_text": "Energy Points", "translated_text": "نقاط الطاقة"},
+                    {"source_text": "Installed Applications", "translated_text": "التطبيقات المثبتة"},
+                    {"source_text": "Overview", "translated_text": "ملخص"},
+                    {"source_text": "Global Search Settings", "translated_text": "إعدادات البحث العالمية"},
+                    {"source_text": "Search", "translated_text": "بحث"},
+                    {"source_text": "home", "translated_text": "الرئيسية"},
+                    {"source_text": "Total Outgoing Bills", "translated_text": "إجمالي الفواتير الصادرة"},
+                    {"source_text": "Edit Dashboard", "translated_text": "تعديل لوحة القيادة"},
+                    {"source_text": "New Workspace", "translated_text": "مساحة عمل جديدة"},
+                    {"source_text": "Indicator color", "translated_text": "لون المؤشر"},
+                    {"source_text": "Public", "translated_text": "عام"},
+                    {"source_text": "Icon", "translated_text": "رمز"},
+                    {"source_text": "Calendar View", "translated_text": "عرض التقويم"},
+                    {"source_text": "sccc by stc", "translated_text": "sccc بواسطة stc"},
+                    {"source_text": "sccc erp", "translated_text": "sccc erp"},
+                    {"source_text": "Notifications", "translated_text": "الإشعارات"},
+                    {"source_text": "DocType", "translated_text": "نوع المستند"},
+                    {"source_text": "ZATCA ERPGulf", "translated_text": "ZATCA ERPGulf"},
+                    {"source_text": "Total Incoming Bills", "translated_text": "إجمالي الفواتير الواردة"},
+                    {"source_text": "Total Incoming Payment", "translated_text": "إجمالي المدفوعات الواردة"},
+                    {"source_text": "Total Outgoing Payment", "translated_text": "إجمالي المدفوعات الصادرة"},
+                    {"source_text": "Last Year", "translated_text": "العام الماضي"},
+                    {"source_text": "Incoming Bills (Purchase Invoice)", "translated_text": "الفواتير الواردة (فاتورة شراء)"},
+                    {"source_text": "Last synced just now", "translated_text": "تم المزامنة للتو"},
+                    {"source_text": "Budget Variance", "translated_text": "فرق الميزانية"},
+                    {"source_text": "Items & Pricing", "translated_text": "العناصر والأسعار"},
+                    {"source_text": "Selling features", "translated_text": "ميزات البيع"},
+                ]
+
+                language = "ar"  
+
+                for item in translations_to_add:
+                    source_text = item["source_text"]
+                    translated_text = item["translated_text"]
+
+                    try:
+                        existing_translation = frappe.db.exists(
+                            "Translation",
+                            {
+                                "source_text": source_text,
+                                "language": language
+                            }
+                        )
+
+                        if not existing_translation:
+                            doc = frappe.new_doc("Translation")
+                            doc.language = language
+                            doc.source_text = source_text
+                            doc.translated_text = translated_text
+                            doc.insert(ignore_permissions=True)
+                            frappe.log_error(
+                                f"Added translation for: {source_text}",
+                                "Translation Log"
+                            )
+                    except Exception as e:
+                        frappe.log_error(
+                            f"Failed to add translation for: {source_text}\nError: {str(e)}",
+                            "Translation Log Error"
+                        )
+
 
 def add_language_permission_for_ar_en():
     allowed_languages = ["ar", "en"]
