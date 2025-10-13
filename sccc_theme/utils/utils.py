@@ -187,7 +187,12 @@ def hide_workspace():
         "ERPNext Integrations",
         "ERP Settings",
         "ERP Integrations",
-        "Tools"
+        "Tools",
+        "Build",
+        "Users",
+        "Welcome Workspace",
+        "Website",
+        "Integrations",
     ]
 
     # Get all workspace docs that match and are not hidden
