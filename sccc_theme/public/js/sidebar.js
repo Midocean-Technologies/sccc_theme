@@ -804,4 +804,126 @@ $root.on("click", ".sccc-user", function() {
   $(document).on("app_ready", mount);
   if (document.readyState !== "loading") setTimeout(mount, 0);
 
+  $(document).on('page-change', () => {
+    console.log('<->')
+    try {
+    // Build a route string comparable to data-route attributes
+    let route = "";
+    if (window.frappe && typeof frappe.get_route === "function") {
+      const r = frappe.get_route() || [];
+      route = Array.isArray(r) ? r.filter(Boolean).join("/") : r.toString();
+    } else {
+      route = (location.hash || "").replace(/^#/, "").split("?")[0] || location.pathname.replace(/^\/app\//, "");
+    }
+    route = route.replace(/^\/+|\/+$/g, "");
+    console.log('>>',route)
+    if (!route) {
+      // clear selection if no route
+      $('.sccc-collapsible-item').removeClass('selected');
+      return;
+    }
+
+    // find best match and highlight
+    // normalize route for robust matching (strip /app/, trim slashes, lowercase)
+    const normalizedRoute = (route || "").toString().replace(/^\/app\/?/i, "").replace(/^\/+|\/+$/g, "").toLowerCase();
+
+    // attempt multiple matching strategies:
+    // 1) exact normalized route
+    // 2) slugified route (spaces → dashes)
+    // 3) data-route contains slugified doctype (Form/List flows)
+    // 4) match by item label == last route segment
+    const slugRoute = slugify(normalizedRoute); // uses existing slugify() in this file
+    const lastSeg = (normalizedRoute.split("/").filter(Boolean).pop() || "").trim();
+    const lastSegSlug = slugify(lastSeg);
+
+    // get doctype from frappe route array when available
+    let routeDoctype = null;
+    try {
+      const rarr = (window.frappe && typeof frappe.get_route === "function") ? (frappe.get_route() || []) : [];
+      if (Array.isArray(rarr) && rarr[0]) {
+        if (rarr[0].toString().toLowerCase() === "form" && rarr[1]) routeDoctype = rarr[1];
+        if (rarr[0].toString().toLowerCase() === "list" && rarr[1]) routeDoctype = rarr[1];
+      }
+    } catch (e) {}
+
+    let $match = $();
+
+    // exact normalized match
+    $match = $(`.sccc-collapsible-item`).filter(function () {
+      let r = ($(this).attr('data-route') || "").toString().replace(/^\/app\/?/i, "").replace(/^\/+|\/+$/g, "").toLowerCase();
+      return r === normalizedRoute;
+    }).first();
+
+    // slugified match (handles labels like "All Item Groups" -> all-item-groups)
+    if ((!$match || !$match.length) && slugRoute) {
+      $match = $(`.sccc-collapsible-item`).filter(function () {
+        const r = ($(this).attr('data-route') || "").toString();
+        const rs = slugify(r.replace(/^\/app\/?/i, "").replace(/^\/+|\/+$/g, "").toLowerCase());
+        return rs === slugRoute || rs.indexOf(slugRoute) !== -1 || slugRoute.indexOf(rs) !== -1;
+      }).first();
+    }
+
+    // match by doctype present in route (Form/List flows)
+    if ((!$match || !$match.length) && routeDoctype) {
+      const dtSlug = slugify(routeDoctype.toString().toLowerCase());
+      $match = $(`.sccc-collapsible-item`).filter(function () {
+        const r = (($(this).attr('data-route') || "") + " " + ($(this).text() || "")).toString().toLowerCase();
+        return r.indexOf(dtSlug) !== -1 || r.indexOf(routeDoctype.toString().toLowerCase()) !== -1;
+      }).first();
+    }
+
+    // final fallback: match by last label segment
+    if ((!$match || !$match.length) && lastSegSlug) {
+      $match = $(`.sccc-collapsible-item`).filter(function () {
+        const r = ($(this).attr('data-route') || "").toString();
+        const txt = ($(this).text() || "").toString().trim().toLowerCase();
+        return slugify(txt) === lastSegSlug || txt === lastSeg;
+      }).first();
+    }
+
+    console.log('route lookup', { raw: route, normalized: normalizedRoute, slug: slugRoute, last: lastSeg, doctype: routeDoctype, found: $match.length });
+
+    if ($match && $match.length) {
+      // clear selection everywhere (collapsible items, module select, tools)
+      $('.sccc-collapsible-item').removeClass('selected');
+      $match.addClass('selected');
+      console.log('---???????????',$match)
+
+     // also highlight corresponding module select item (if present)
+     try {
+       const mRoute = ($match.attr('data-route') || '').toString();
+       let $selItem = $();
+       if (mRoute) {
+         // try matching by exact value (native select uses slugs)
+         $selItem = $root.find(`.sccc-select-item[data-value="${mRoute}"], .sccc-select-item[data-value="${mRoute.replace(/^private\//,'')}"]`);
+       }
+       if (!$selItem.length) {
+         // fallback: match by label text
+         const txt = $match.find('.sccc-tool-txt').text().trim();
+         if (txt) $selItem = $root.find(`.sccc-select-item`).filter(function () { return ($(this).data('label') || '').toString().trim() === txt; }).first();
+       }
+       if ($selItem && $selItem.length) {
+         $selItem.addClass('selected').attr('aria-selected', 'true');
+         const iconHtml = $selItem.find('.sccc-select-item-icn').html() || '';
+         $root.find('.sccc-select-trigger .sccc-select-item-icn').html(iconHtml);
+          $root.find('.sccc-select-label').text($selItem.data('label') || $selItem.text().trim());
+        }
+      } catch (e) { /* ignore */ }
+       // open parent collapsible/accordion so item is visible
+       const $body = $match.closest('.sccc-collapsible-body');
+      //  if ($body.length) $body.addClass('show');
+       // Close all other collapses
+        $('.sccc-collapsible-body').not($body).collapse('hide');
+
+        // Toggle clicked one
+        $body.collapse('toggle');
+       const $details = $match.closest('details');
+       if ($details.length) $details.prop('open', true);
+       // scroll into view
+       try { $match.get(0).scrollIntoView({ block: "nearest", behavior: "auto" }); } catch (e) {}
+     }
+    } catch (e) { console.warn("SCCC highlight on page-change error", e); }
+  
+  });
+
 })();
