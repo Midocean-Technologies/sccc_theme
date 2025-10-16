@@ -160,9 +160,9 @@ after_migrate = "sccc_theme.utils.utils.after_migrate"
 # ---------------
 # Override standard doctype classes
 
-# override_doctype_class = {
-# 	"ToDo": "custom_app.overrides.CustomToDo"
-# }
+override_doctype_class = {
+	"User": "sccc_theme.overrides.user.CustomUser",
+}
 
 # Document Events
 # ---------------
