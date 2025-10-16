@@ -1,7 +1,7 @@
 frappe.pages['printing-setting'].on_page_load = function(wrapper) {
 	var page = frappe.ui.make_app_page({
 		parent: wrapper,
-		title: 'printing setting',
+		title: __('Printing Setting'),
 		single_column: true
 	});
 
@@ -29,7 +29,7 @@ frappe.pages['printing-setting'].on_page_load = function(wrapper) {
 			padding: 4px 4px 5px 4px;
 			cursor: pointer;
 			transition: transform 0.3s ease, box-shadow 0.3s ease;
-			color: #5c2a9d; /* purple text */
+			color: #5c2a9d;
 			display: flex;
 			flex-direction: column;
 			align-items: flex-start;
@@ -60,40 +60,37 @@ frappe.pages['printing-setting'].on_page_load = function(wrapper) {
 	<div class="main">
 		<div class="config-grid">
 			<div class="config-card" data-route="Form,Print Format Builder">
-				<i class="config-icon"><img src= "/files/FileJson.svg"></i>
-				<div class="config-label">Print Format Builder</div>
+				<i class="config-icon"><img src="/files/FileJson.svg"></i>
+				<div class="config-label">${__('Print Format Builder')}</div>
 			</div>
-
 			<div class="config-card" data-route="Form,Print Style">
-				<i class="config-icon"><img src= "/files/LayoutList.svg"></i>
-				<div class="config-label">Print Style</div>
+				<i class="config-icon"><img src="/files/LayoutList.svg"></i>
+				<div class="config-label">${__('Print Style')}</div>
 			</div>
 			<div class="config-card" data-route="Form,Print Heading">
-				<i class="config-icon"><img src= "/files/Heading.svg"></i>
-				<div class="config-label">Print Heading</div>
+				<i class="config-icon"><img src="/files/Heading.svg"></i>
+				<div class="config-label">${__('Print Heading')}</div>
 			</div>
 			<div class="config-card" data-route="Form,Letter Head">
-				<i class="config-icon"><img src= "/files/Heading1.svg"></i>
-				<div class="config-label">Letter Head</div>
+				<i class="config-icon"><img src="/files/Heading1.svg"></i>
+				<div class="config-label">${__('Letter Head')}</div>
 			</div>
 			<div class="config-card" data-route="Form,Address Template">
-				<i class="config-icon"><img src= "/files/LayoutTemplate.svg"></i>
-				<div class="config-label">Address Template</div>
+				<i class="config-icon"><img src="/files/LayoutTemplate.svg"></i>
+				<div class="config-label">${__('Address Template')}</div>
 			</div>
 			<div class="config-card" data-route="Form,Terms And Conditions">
-				<i class="config-icon"><img src= "/files/BadgeCheck.svg"></i>
-				<div class="config-label">Terms And Conditions</div>
+				<i class="config-icon"><img src="/files/BadgeCheck.svg"></i>
+				<div class="config-label">${__('Terms And Conditions')}</div>
 			</div>
-
 			<div class="config-card" data-route="Form,Cheque Print Template">
-				<i class="config-icon"><img src= "/files/FileSpreadsheet.svg"></i>
-				<div class="config-label">Cheque Print Template</div>
+				<i class="config-icon"><img src="/files/FileSpreadsheet.svg"></i>
+				<div class="config-label">${__('Cheque Print Template')}</div>
 			</div>
 			<div class="config-card" data-route="Form,Print Settings">
-				<i class="config-icon"><img src= "/files/Printer.svg"></i>
-				<div class="config-label">Print Settings</div>
+				<i class="config-icon"><img src="/files/Printer.svg"></i>
+				<div class="config-label">${__('Print Settings')}</div>
 			</div>
-			
 		</div>
 	</div>
 	`;
@@ -104,4 +101,4 @@ frappe.pages['printing-setting'].on_page_load = function(wrapper) {
 		const route = $(this).data('route').split(',');
 		frappe.set_route(route[0], route[1]);
 	});
-}
+};

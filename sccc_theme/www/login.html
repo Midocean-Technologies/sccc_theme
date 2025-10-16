@@ -6,11 +6,11 @@
 	<div style="text-align: center;">
 		<img width="68px" src="/assets/sccc_theme/images/logo.svg" alt="SCCC">
 	</div>
-	<h4 style="color:black !important; margin-top: 0px;">Sign in</h4><br>
+	<h4 style="color:black !important; margin-top: 0px;">{{ _("Sign in") }}</h4>
 	<div class="form-group">
 
 		<label class="form-label sr-only" for="login_email">{{ login_label or _("Email")}}</label>
-		 <label for="login_email">Email</label>
+		 <label for="login_email">{{ _("Email") }}</label>
 		<div class="email-field">
 			<input type="text" id="login_email" class="form-control"
 				placeholder="{% if login_name_placeholder %}{{ login_name_placeholder  }}{% else %}{{ _('Email') }}{% endif %}"
@@ -25,7 +25,7 @@
 
 	<div class="form-group">
 		<label class="form-label sr-only" for="login_password">{{ _("Password") }}</label>
-		<label for="login_password">Password</label>
+		<label for="login_password">{{ _("Password") }}</label>
 		<div class="password-field">
 			<input type="password" id="login_password" class="form-control" placeholder="•••••"
 				autocomplete="current-password" required>
@@ -58,8 +58,8 @@
 	{% endif %}
 </div>
 <div class="footer-text">
-	By continuing, you acknowledge that you understand and agree to the 
-	<a href="#" style="color: palevioletred;">Terms & Conditions</a> and <a href="#" style="color: palevioletred;" >Privacy Policy</a>
+	{{ _("By continuing, you acknowledge that you understand and agree to the") }}
+	<a href="#" style="color: palevioletred;">{{ _("Terms & Conditions") }}</a> {{ _("and") }} <a href="#" style="color: palevioletred;" >{{ _("Privacy Policy") }}</a>
 </div>
 {% endmacro %}
 
@@ -72,7 +72,11 @@
 	{% if title %}
 	<h4>{{ _(title)}}</h4>
 	{% else %}
-	<h2>{{ _('welcome back <br> <p style="font-size: 14px;">sign in to your sccc erp</p>') }}</h2>
+	<h2>
+		{{ _("welcome back") }} <br>
+		<p style="font-size: 14px;">{{ _("sign in to your sccc erp") }}</p>
+	</h2>
+
 	{% endif %}
 </div>
 {% endmacro %}
@@ -196,11 +200,11 @@
 					</div>
 					<br>
 					<h4 style="color: black !important; margin: 0;">{{ _("forget password?") }}</h4><br>
-					<span style="color: black;">get a verification email</span><br>
-      				<span style="font-size: 14px;">please enter your email address below and we’ll send you a reset password link</span>
+					<span style="color: black;">{{ _("get a verification email") }}</span>
+      				<span style="font-size: 14px;">{{ _("please enter your email address below and we’ll send you a reset password link") }}</span>
 					<br><br>
 					<div class="email-field">
-						<label for="">email</label>
+						<label for="forgot_email">{{ _("Email") }}</label>
 						<input type="email" id="forgot_email" class="form-control"
 							placeholder="{{ _('your email address') }}" required autofocus autocomplete="username">
 						<!-- <svg class="field-icon email-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"
@@ -404,6 +408,11 @@
 	.for-login .page-card, .for-forgot .page-card, .for-login-with-email-link .page-card, .for-signup .page-card, .for-email-login .page-card{
 		max-width: 450px !important;
 	}
+	html[lang="ar"] body {
+		direction: rtl;
+		text-align: right;
+		}
+
   </style>
 {% endblock %}
 

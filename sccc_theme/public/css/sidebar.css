@@ -25,6 +25,27 @@
 .sccc-rail-fixed.closed {
   transform: translateX(-100%);
 }
+
+/* RTL support for sidebar */
+.sccc-rail-rtl {
+  left: auto !important;
+  right: 0 !important;
+  border-right: none !important;
+  border-left: 1px solid var(--sccc-border) !important;
+  transition: padding-right 0.3s ease-in-out;
+}
+.sccc-rail-rtl.closed {
+  transform: translateX(100%);
+}
+
+/* RTL support for body padding */
+body.sccc-rail-rtl-padding .desk-container,
+body.sccc-rail-rtl-padding .page-container,
+body.sccc-rail-rtl-padding #page-desktop,
+body.sccc-rail-rtl-padding .container.page-container {
+  padding-left: 0 !important;
+  padding-right: var(--sccc-rail-w) !important;
+}
 #sccc-topbar.expanded {
   left: unset !important;
   width: 100% !important;
@@ -208,7 +229,7 @@ body.sccc-rail-padding .container.page-container{
   border: 1px solid var(--sccc-border);
   border-radius: 0;
   box-shadow: 0 10px 30px rgba(0,0,0,0.45);
-  max-height: 600px;
+  max-height: 500px;
   overflow: auto;
   z-index: 60;
   padding: 6px 6px;
@@ -277,7 +298,7 @@ body.sccc-rail-padding .container.page-container{
 .sccc-spacer{ flex: 1; }
 
 .sccc-tools-div{
-  background-color: #280444;
+  background: linear-gradient(180deg, var(--sccc-bg), var(--sccc-bg-2));
 }
 /* Tools collapsible list */
 .sccc-tools{ margin: 0 8px 0 8px; }
@@ -377,7 +398,7 @@ body.sccc-rail-padding .container.page-container{
   right: 0;
   bottom: 100%;  
   margin-bottom: 10px; 
-  background: linear-gradient(180deg, var(--sccc-bg), #1a0630 70%);
+  background: linear-gradient(180deg, var(--sccc-bg), var(--sccc-bg-2));
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 0px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.4);
@@ -402,7 +423,7 @@ body.sccc-rail-padding .container.page-container{
 }
 
 .sccc-user-menu button:hover {
-  background: rgba(255,255,255,0.08);
+  background: #FFFFFF1A;
   color: #fff;
 }
 
@@ -413,8 +434,8 @@ body.sccc-rail-padding .container.page-container{
   bottom: -6px;
   right: 14px;
   border-width: 6px;
-  border-style: solid;
-  border-color: #1e1e2d transparent transparent transparent;
+  /* border-style: solid; */
+  background: #FFFFFF1A;
 }
 .sccc-child-module{
   overflow: auto;

@@ -44,8 +44,12 @@ app_include_js = [
 
 # fixtures
 fixtures = [
-    {"dt": "Workspace"},
-    # {"dt": "File", "filters": {"file_name": "logo.svg"}}
+    {
+        "dt": "Workspace",
+        "filters": [
+            ["name", "not in", ["ZATCA ERPGulf", "Loans"]]
+        ]
+    }
 ]
 
 # include js, css files in header of web template

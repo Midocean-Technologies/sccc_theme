@@ -1,7 +1,7 @@
 frappe.pages['core-settings'].on_page_load = function(wrapper) {
 	var page = frappe.ui.make_app_page({
 		parent: wrapper,
-		title: 'Core Settings',
+		title: __('Core Settings'),
 		single_column: true
 	});
 
@@ -29,7 +29,7 @@ frappe.pages['core-settings'].on_page_load = function(wrapper) {
 			padding: 4px 4px 5px 4px;
 			cursor: pointer;
 			transition: transform 0.3s ease, box-shadow 0.3s ease;
-			color: #5c2a9d; /* purple text */
+			color: #5c2a9d;
 			display: flex;
 			flex-direction: column;
 			align-items: flex-start;
@@ -59,28 +59,32 @@ frappe.pages['core-settings'].on_page_load = function(wrapper) {
 	</style>
 	<div class="main">
 		<div class="config-grid">
+
 			<div class="config-card" data-route="Form,System Settings">
-				<i class="config-icon"><img src= "/files/settings-purple.svg"></i>
-				<div class="config-label">System Settings</div>
+				<i class="config-icon"><img src="/files/settings-purple.svg"></i>
+				<div class="config-label">${__('System Settings')}</div>
 			</div>
 
 			<div class="config-card" data-route="Form,Domain Settings">
-				<i class="config-icon"><img src= "/files/AtSign.svg"></i>
-				<div class="config-label">domain settings</div>
+				<i class="config-icon"><img src="/files/AtSign.svg"></i>
+				<div class="config-label">${__('Domain Settings')}</div>
 			</div>
+
 			<div class="config-card" data-route="Form,Session Default Settings">
-				<i class="config-icon"><img src= "/files/MonitorStop.svg"></i>
-				<div class="config-label">session defaults</div>
+				<i class="config-icon"><img src="/files/MonitorStop.svg"></i>
+				<div class="config-label">${__('Session Defaults')}</div>
 			</div>
+
 			<div class="config-card" data-route="Form,Global Defaults">
-				<i class="config-icon"><img src= "/files/Globe.svg"></i>
-				<div class="config-label">global defaults</div>
+				<i class="config-icon"><img src="/files/Globe.svg"></i>
+				<div class="config-label">${__('Global Defaults')}</div>
 			</div>
+
 			<div class="config-card" data-route="Form,Address Template">
-				<i class="config-icon"><img src= "/files/Building255c531.svg"></i>
-				<div class="config-label">address template</div>
+				<i class="config-icon"><img src="/files/Building255c531.svg"></i>
+				<div class="config-label">${__('Address Template')}</div>
 			</div>
-			
+
 		</div>
 	</div>
 	`;
@@ -91,4 +95,4 @@ frappe.pages['core-settings'].on_page_load = function(wrapper) {
 		const route = $(this).data('route').split(',');
 		frappe.set_route(route[0], route[1]);
 	});
-}
+};
