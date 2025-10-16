@@ -19,6 +19,16 @@ def after_migrate():
     # remove_reports_from_workspace_custom_link_cards()
     add_language_permission_for_ar_en()
     add_translations()
+    disable_other_languages()
+
+def disable_other_languages():
+    keep = ["en", "ar"]
+    for lang in frappe.get_all("Language", pluck="name"):
+        if lang not in keep:
+            doc = frappe.get_doc("Language", lang)
+            doc.enabled = 0
+            doc.save()
+
 
 def update_system_settings():
     system_settings = frappe.get_single("System Settings")
