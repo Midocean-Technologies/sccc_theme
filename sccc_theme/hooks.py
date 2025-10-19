@@ -40,6 +40,7 @@ app_include_js = [
     "/assets/sccc_theme/js/navbar.js",
     "/assets/sccc_theme/js/workspace.js",
     "/assets/sccc_theme/js/form_action.js"
+    # "/assets/sccc_theme/js/gender_disable.js"
 ]
 
 # fixtures
@@ -67,9 +68,18 @@ fixtures = [
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
+# doctype_js = {
+#     "User": "public/js/user.js",
+#     "Employee": "public/js/employee.js",
+#     "Contact": "public/js/contact.js"
+# }
+
 doctype_js = {
-    "User": "public/js/user.js",
-    "Employee": "public/js/employee.js"
+    "User": "public/js/gender_disable.js",
+    "Employee": "public/js/gender_disable.js",
+    "Contact": "public/js/gender_disable.js",
+    "Customer": "public/js/gender_disable.js",
+    "Lead": "public/js/gender_disable.js",
 }
 
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
