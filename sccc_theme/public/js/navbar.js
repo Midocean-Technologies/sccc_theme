@@ -504,17 +504,16 @@ body {
     return bar;
   }
   function syncBreadcrumb() {
-    setTimeout(() => {
-      const $breadcrumbs = $("#navbar-breadcrumbs");
-      
-      if ($breadcrumbs.children().length === 0) {
-        // get the page title text
-        const titleText = $(".title-text").attr("title");
-        $breadcrumbs.empty().append(
-          $("<li>").append($("<a>").attr("href", '').text(titleText))
-        );
-      }
-    }, 1500);
+    const $breadcrumbs = $("#navbar-breadcrumbs");
+    $breadcrumbs.empty(); // clear existing breadcrumbs
+
+    // get the page title text
+    const titleText = $(".title-text").attr("title");
+    if (titleText) {
+      $breadcrumbs.append(
+        $("<li>").append($("<a>").attr("href", '').text(titleText))
+      );
+    }
   }
   function onEveryShow() {
     // called on route change/page show
@@ -563,6 +562,8 @@ body {
     // small delays to catch late CSS/layout
     setTimeout(ensureLeftOffset, 16);
     setTimeout(ensureLeftOffset, 260);
+    // additional delay for breadcrumb sync on page load/refresh
+    setTimeout(syncBreadcrumb, 500);
   }
 
   // Wait until Frappe booted/DOM ready
