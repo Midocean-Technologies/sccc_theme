@@ -22,9 +22,11 @@
   }
 
   function hideWorkspaceButtons() {
+    console.log("Hiding workspace buttons in edit mode");
     if ($(".layout-main-section").hasClass("edit-mode")) {
         $(HIDDEN_SEL).hide();
     } else {
+      console.log("Showing workspace buttons");
       $(HIDDEN_SEL).show();
     }
   }
@@ -112,8 +114,8 @@
   }
 
   function handlePlacement() {
-    hideWorkspaceButtons(); // keep originals hidden by default
     if (isWorkspaceRoute()) {
+      hideWorkspaceButtons(); 
       moveWorkspaceButtonsToHeader();
     } else {
       hideMovedButtonInHeader();
