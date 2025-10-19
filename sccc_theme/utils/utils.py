@@ -18,7 +18,7 @@ def after_migrate():
     create_custom_fields()
     # remove_reports_from_workspace_custom_link_cards()
     add_language_permission_for_ar_en()
-    add_translations()
+    # add_translations() // this is commented because ar.csv file added for translation
     disable_other_languages()
 
 def disable_other_languages():
