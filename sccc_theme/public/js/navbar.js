@@ -203,8 +203,10 @@ body {
 
   function ensureLeftOffset() {
     const isRTL = frappe.utils.is_rtl && frappe.utils.is_rtl(frappe.boot.lang);
+    const sidebar = document.getElementById("sccc-rail-fixed");
+    const isClosed = sidebar && sidebar.classList.contains("closed");
       if (isRTL) {
-        const right = measureLeftSidebar();
+        const right = isClosed ? 0 : measureLeftSidebar();
         document.documentElement.style.setProperty("--sccc-right", `${right}px`);
         document.documentElement.style.setProperty("--sccc-left", `0px`);
         document.documentElement.style.setProperty("--sccc-rightwidth", `calc(100% - ${right}px)`);
@@ -244,15 +246,24 @@ body {
         setTimeout(ensureLeftOffset, 260); // typical transition end
         const sidebar = document.getElementById("sccc-rail-fixed");
         const topbar = document.getElementById("sccc-topbar");
+        const isRTL = frappe.utils.is_rtl && frappe.utils.is_rtl(frappe.boot.lang);
 
         sidebar.classList.toggle("closed");
         if(sidebar.classList.contains("closed")){
-          document.body.classList.remove("sccc-rail-padding");
+          if (isRTL) {
+            document.body.classList.remove("sccc-rail-rtl-padding");
+          } else {
+            document.body.classList.remove("sccc-rail-padding");
+          }
           topbar.classList.add("expanded");
         }
         else {
-           document.body.classList.add("sccc-rail-padding");
-           topbar.classList.remove("expanded");
+          if (isRTL) {
+            document.body.classList.add("sccc-rail-rtl-padding");
+          } else {
+            document.body.classList.add("sccc-rail-padding");
+          }
+          topbar.classList.remove("expanded");
         }
       });
     });
