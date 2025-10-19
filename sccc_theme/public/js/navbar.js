@@ -118,15 +118,15 @@ body {
 
   <div class="sccc-right">
     <button class="sccc-icon" data-route="integrations" title="Integrations" aria-label="Integrations">
-      <img src ="/files/integ.svg" alt="integration"/>
+      <img class="es-icon icon-md" src ="/files/integ.svg" alt="integration"/>
     </button>
     <button class="sccc-icon" data-route="calendar-view" title="Calendar" aria-label="Calendar">
-      <img src ="/files/calendr.svg" alt="calender"/>
+      <img class="es-icon icon-md" src ="/files/calendr.svg" alt="calender"/>
     </button>
 
     <!-- Notifications dropdown (core-compatible) -->
     
-    <div class=" dropdown dropdown-notifications dropdown-mobile">
+    <div class="sccc-icon dropdown dropdown-notifications dropdown-mobile">
         <button
           class="btn-reset nav-link notifications-icon text-muted"
           data-toggle="dropdown"
@@ -137,11 +137,11 @@ body {
         >
           <span class="notifications-seen">
             <span class="sr-only">${__("No new notifications")}</span>
-            <svg class="es-icon icon-sm" style="stroke:#2523239e;"><use href="#es-line-notifications"></use></svg>
+            <svg class="es-icon icon-md" style="stroke:#2523239e;"><use href="#es-line-notifications"></use></svg>
           </span>
           <span class="notifications-unseen">
             <span class="sr-only">${__("You have unseen notifications")}</span>
-            <svg class="es-icon icon-sm"><use href="#es-line-notifications-unseen"></use></svg>
+            <svg class="es-icon icon-md"><use href="#es-line-notifications-unseen"></use></svg>
           </span>
         </button>
         <div class="dropdown-menu notifications-list dropdown-menu-right" role="menu">
