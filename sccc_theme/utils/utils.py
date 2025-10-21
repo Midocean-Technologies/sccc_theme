@@ -213,6 +213,7 @@ def hide_workspace():
         "Welcome Workspace",
         "Website",
         "Integrations",
+        "ZATCA ERPGulf"
     ]
 
     # Get all workspace docs that match and are not hidden
