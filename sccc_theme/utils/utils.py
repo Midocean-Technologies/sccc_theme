@@ -196,7 +196,14 @@ def update_currency_in_doctypes():
     for nc_name in number_cards:
         nc = frappe.get_doc("Number Card", nc_name)
         nc.currency = "SAR"
-        nc.save(ignore_permissions=True)
+        nc.save()
+
+    dashboard_charts = frappe.get_all("Dashboard Chart", filters={"type": "Donut"}, pluck="name")
+
+    for dc_name in dashboard_charts:
+         dc = frappe.get_doc("Dashboard Chart", dc_name)
+         dc.currency = ""
+         dc.save()
 
 def hide_workspace():
     """Hide specific workspaces from the workspace list."""

@@ -7696,12 +7696,34 @@
   "title": "Financial Reports"
  },
  {
-  "charts": [],
-  "content": "[{\"id\":\"XMnWsF6low\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Home</span>\",\"col\":12}},{\"id\":\"iWEojwtiuB\",\"type\":\"custom_block\",\"data\":{\"custom_block_name\":\"Shortcuts\",\"col\":12}}]",
+  "charts": [
+   {
+    "chart_name": "Profit and Loss",
+    "label": "Profit and Loss",
+    "parent": "Home",
+    "parentfield": "charts",
+    "parenttype": "Workspace"
+   },
+   {
+    "chart_name": "Sales Order Trends",
+    "label": "Sales Order Trends",
+    "parent": "Home",
+    "parentfield": "charts",
+    "parenttype": "Workspace"
+   },
+   {
+    "chart_name": "Accounts Payable Ageing",
+    "label": "Accounts Payable Ageing",
+    "parent": "Home",
+    "parentfield": "charts",
+    "parenttype": "Workspace"
+   }
+  ],
+  "content": "[{\"id\":\"jJjufxxL3k\",\"type\":\"custom_block\",\"data\":{\"custom_block_name\":\"Welcome back\",\"col\":12}},{\"id\":\"_sbirhRdl_\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Active Customers\",\"col\":3}},{\"id\":\"M9LMXzGorB\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Annual Sales\",\"col\":3}},{\"id\":\"La3hSO2qE7\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Outgoing Payment\",\"col\":3}},{\"id\":\"h3TRrR4Tug\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Incoming Payment\",\"col\":3}},{\"id\":\"nFM9Ht11hv\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Profit and Loss\",\"col\":12}},{\"id\":\"y88Ndoeq_K\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Sales Order Trends\",\"col\":6}},{\"id\":\"TQxINJ7aeA\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Accounts Payable Ageing\",\"col\":6}}]",
   "custom_blocks": [
    {
-    "custom_block_name": "Shortcuts",
-    "label": "Shortcuts",
+    "custom_block_name": "Welcome back",
+    "label": "Welcome back",
     "parent": "Home",
     "parentfield": "custom_blocks",
     "parenttype": "Workspace"
@@ -7718,10 +7740,39 @@
   "is_hidden": 0,
   "label": "Home",
   "links": [],
-  "modified": "2025-10-06 15:20:26.612000",
+  "modified": "2025-10-21 21:02:43.073168",
   "module": null,
   "name": "Home",
-  "number_cards": [],
+  "number_cards": [
+   {
+    "label": "Active Customers",
+    "number_card_name": "Active Customers",
+    "parent": "Home",
+    "parentfield": "number_cards",
+    "parenttype": "Workspace"
+   },
+   {
+    "label": "Annual Sales",
+    "number_card_name": "Annual Sales",
+    "parent": "Home",
+    "parentfield": "number_cards",
+    "parenttype": "Workspace"
+   },
+   {
+    "label": "Total Outgoing Payment",
+    "number_card_name": "Total Outgoing Payment",
+    "parent": "Home",
+    "parentfield": "number_cards",
+    "parenttype": "Workspace"
+   },
+   {
+    "label": "Total Incoming Payment",
+    "number_card_name": "Total Incoming Payment",
+    "parent": "Home",
+    "parentfield": "number_cards",
+    "parenttype": "Workspace"
+   }
+  ],
   "parent_page": "",
   "public": 1,
   "quick_lists": [],
