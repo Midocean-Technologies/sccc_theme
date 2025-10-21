@@ -86,14 +86,15 @@ class CustomUser(User):
 
                             <!-- CTA Button -->
                             <table cellpadding="0" cellspacing="0" role="presentation" style="margin: 15px 0;">
-                            <tr>
+                              <tr>
                                 <td align="center" bgcolor="#EF4444" style="border-radius: 4px;">
-                                <a href="{{ link }}"
-                                    style="display: inline-block; padding: 12px 28px; font-size: 15px; font-weight: 600; color: #FFFFFF; text-decoration: none;">
+                                  <a href="{{ link }}" 
+                                    style="display:inline-block; padding:12px 28px; font-size:15px; font-weight:600;
+                                            color:#FFFFFF; text-decoration:none; background-color:#EF4444; border-radius:4px;">
                                     {{ _("Reset your password") }}
-                                </a>
+                                  </a>
                                 </td>
-                            </tr>
+                              </tr>
                             </table>
                         </td>
                         </tr>
@@ -120,29 +121,6 @@ class CustomUser(User):
                                     <td>
                                         <div style="font-size: 15px; font-weight: 600; color: #6C2BD9;">sccc erp</div>
                                         <div style="font-size: 12px; color: #6B7280;">sccc by stc</div>
-                                    </td>
-                                    </tr>
-                                </table>
-                                </td>
-
-                                <!-- Social Icons (hidden by default) -->
-                                <td align="right" style="display: none;">
-                                <table cellpadding="0" cellspacing="0" role="presentation">
-                                    <tr>
-                                    <td style="padding-left: 10px;">
-                                        <a href="#" style="text-decoration: none;">
-                                        <img src="https://img.icons8.com/ios-filled/24/9CA3AF/twitter.png" alt="Twitter" width="24" height="24">
-                                        </a>
-                                    </td>
-                                    <td style="padding-left: 10px;">
-                                        <a href="#" style="text-decoration: none;">
-                                        <img src="https://img.icons8.com/ios-filled/24/9CA3AF/facebook.png" alt="Facebook" width="24" height="24">
-                                        </a>
-                                    </td>
-                                    <td style="padding-left: 10px;">
-                                        <a href="#" style="text-decoration: none;">
-                                        <img src="https://img.icons8.com/ios-filled/24/9CA3AF/instagram-new.png" alt="Instagram" width="24" height="24">
-                                        </a>
                                     </td>
                                     </tr>
                                 </table>
@@ -268,14 +246,15 @@ class CustomUser(User):
 
                             <!-- CTA Button -->
                             <table cellpadding="0" cellspacing="0" role="presentation" style="margin: 15px 0;">
-                            <tr>
+                              <tr>
                                 <td align="center" bgcolor="#EF4444" style="border-radius: 4px;">
-                                <a href="{{ link }}" 
-                                    style="display: inline-block; padding: 12px 28px; font-size: 15px; font-weight: 600; color: #FFFFFF; text-decoration: none;">
-                                    {{ _("Complete Registration") }}
-                                </a>
+                                  <a href="{{ link }}" 
+                                    style="display:inline-block; padding:12px 28px; font-size:15px; font-weight:600;
+                                            color:#FFFFFF; text-decoration:none; background-color:#EF4444; border-radius:4px;">
+                                    {{ _("Set your password") }}
+                                  </a>
                                 </td>
-                            </tr>
+                              </tr>
                             </table>
                         </td>
                         </tr>
@@ -297,29 +276,6 @@ class CustomUser(User):
                                     <td>
                                         <div style="font-size: 15px; font-weight: 600; color: #6C2BD9;">sccc erp</div>
                                         <div style="font-size: 12px; color: #6B7280;">sccc by stc</div>
-                                    </td>
-                                    </tr>
-                                </table>
-                                </td>
-
-                                <!-- Social Icons (hidden by default) -->
-                                <td align="right" style="display: none;">
-                                <table cellpadding="0" cellspacing="0" role="presentation">
-                                    <tr>
-                                    <td style="padding-left: 10px;">
-                                        <a href="#" style="text-decoration: none;">
-                                        <img src="https://img.icons8.com/ios-filled/24/9CA3AF/twitter.png" alt="Twitter" width="24" height="24">
-                                        </a>
-                                    </td>
-                                    <td style="padding-left: 10px;">
-                                        <a href="#" style="text-decoration: none;">
-                                        <img src="https://img.icons8.com/ios-filled/24/9CA3AF/facebook.png" alt="Facebook" width="24" height="24">
-                                        </a>
-                                    </td>
-                                    <td style="padding-left: 10px;">
-                                        <a href="#" style="text-decoration: none;">
-                                        <img src="https://img.icons8.com/ios-filled/24/9CA3AF/instagram-new.png" alt="Instagram" width="24" height="24">
-                                        </a>
                                     </td>
                                     </tr>
                                 </table>
