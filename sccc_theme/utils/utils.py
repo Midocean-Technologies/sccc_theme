@@ -198,12 +198,16 @@ def update_currency_in_doctypes():
         nc.currency = "SAR"
         nc.save()
 
-    dashboard_charts = frappe.get_all("Dashboard Chart", filters={"type": "Donut"}, pluck="name")
+    dashboard_charts = frappe.get_all(
+        "Dashboard Chart",
+        filters={"type": "Donut", "currency": ["!=", ""]},
+        pluck="name"
+    )
 
     for dc_name in dashboard_charts:
-         dc = frappe.get_doc("Dashboard Chart", dc_name)
-         dc.currency = ""
-         dc.save()
+        dc = frappe.get_doc("Dashboard Chart", dc_name)
+        dc.currency = ""
+        dc.save()
 
 def hide_workspace():
     """Hide specific workspaces from the workspace list."""
@@ -276,12 +280,12 @@ def update_website_setting_logo():
 def update_currency_symbol_for_SAR():
     """Update currency symbol for SAR to a custom HTML."""
     currency = frappe.get_doc("Currency", "SAR")
-    html_symbol = '<img src="https://www.sama.gov.sa/ar-sa/Currency/Documents/Saudi_Riyal_Symbol-2.svg" style="height: 0.9em; vertical-align: middle;">'
-    
-    if currency.symbol != html_symbol:
-        currency.symbol = html_symbol
-        currency.save(ignore_permissions=True)
-        frappe.db.commit()
+    if currency.enabled == 0:
+        currency.enabled = 1
+        html_symbol = '<img src="https://www.sama.gov.sa/ar-sa/Currency/Documents/Saudi_Riyal_Symbol-2.svg" style="height: 0.9em; vertical-align: middle;">'
+        if currency.symbol != html_symbol:
+            currency.symbol = html_symbol
+        currency.save()
 
 
 def transfer_workspace_shortcuts():

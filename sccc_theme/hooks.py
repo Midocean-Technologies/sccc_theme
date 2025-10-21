@@ -51,6 +51,9 @@ fixtures = [
             ["name", "not in", ["ZATCA ERPGulf", "Loans"]]
         ]
     }
+    # {
+    #     "dt":"Custom HTML Block"
+    # }
 ]
 
 # include js, css files in header of web template
@@ -120,7 +123,7 @@ doctype_js = {
 # Installation
 # ------------
 
-# before_install = "sccc_theme.install.before_install"
+before_install = "sccc_theme.utils.api.unzip_files"
 # after_install = "sccc_theme.install.after_install"
 after_migrate = "sccc_theme.utils.utils.after_migrate"
 # permission_query_conditions = {
