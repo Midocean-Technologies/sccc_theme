@@ -9,5 +9,16 @@
   "roles": [],
   "script": null,
   "style": "\n.custom-move-to {\n  background: #fbefff; /* light purple background */\n  padding: 16px;\n}\n\n.custom-move-to .block-title {\n  margin-bottom: 16px;\n  font-weight: 600;\n  color: #333;\n}\n\n.move-grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));\n  gap: 12px;\n}\n\n.move-card {\n  background: #fff;\n  padding: 16px;\n  text-align: center;\n  cursor: pointer;\n  transition: all 0.2s ease-in-out;\n  color:  #4c0b74;\n  font-weight: 500;\n  box-shadow: 0 2px 6px rgba(0,0,0,0.05);\n  text-decoration: none;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n\n.move-card .icon {\n  width: 26px;\n  height: 26px;\n  margin-bottom: 8px;\n  color: #4c0b74;\n}\n\n.move-card:hover {\n  background: #f0d8ff;\n  transform: translateY(-2px);\n}"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Custom HTML Block",
+  "html": "<h2>Welcome back, <span id=\"full_name\"></span> </h2>",
+  "modified": "2025-10-21 15:43:55.071839",
+  "name": "Welcome back",
+  "private": 0,
+  "roles": [],
+  "script": " frappe.call({\n    method: \"frappe.client.get\",\n        args: {\n            doctype: \"User\",\n            name: frappe.session.user,\n             },\n             callback(r) {\n                 if(r.message) {\n                    root_element.querySelector(\"#full_name\").textContent=r.message.full_name;\n                 }\n             }\n});",
+  "style": null
  }
 ]
