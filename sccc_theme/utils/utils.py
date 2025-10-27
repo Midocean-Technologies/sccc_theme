@@ -18,7 +18,17 @@ def after_migrate():
     create_custom_fields()
     # remove_reports_from_workspace_custom_link_cards()
     add_language_permission_for_ar_en()
-    add_translations()
+    # add_translations() // this is commented because ar.csv file added for translation
+    disable_other_languages()
+
+def disable_other_languages():
+    keep = ["en", "ar"]
+    for lang in frappe.get_all("Language", pluck="name"):
+        if lang not in keep:
+            doc = frappe.get_doc("Language", lang)
+            doc.enabled = 0
+            doc.save()
+
 
 def update_system_settings():
     system_settings = frappe.get_single("System Settings")
@@ -186,7 +196,18 @@ def update_currency_in_doctypes():
     for nc_name in number_cards:
         nc = frappe.get_doc("Number Card", nc_name)
         nc.currency = "SAR"
-        nc.save(ignore_permissions=True)
+        nc.save()
+
+    dashboard_charts = frappe.get_all(
+        "Dashboard Chart",
+        filters={"type": "Donut", "currency": ["!=", ""]},
+        pluck="name"
+    )
+
+    for dc_name in dashboard_charts:
+        dc = frappe.get_doc("Dashboard Chart", dc_name)
+        dc.currency = ""
+        dc.save()
 
 def hide_workspace():
     """Hide specific workspaces from the workspace list."""
@@ -203,6 +224,7 @@ def hide_workspace():
         "Welcome Workspace",
         "Website",
         "Integrations",
+        "ZATCA ERPGulf"
     ]
 
     # Get all workspace docs that match and are not hidden
@@ -235,6 +257,9 @@ def update_website_setting_logo():
         navbar_settings.app_logo = logo_path
         navbar_settings.save(ignore_permissions=True)
     
+    if website_settings.home_page != "app":
+        website_settings.home_page = "app"
+
     if not website_settings.banner_image:
         website_settings.banner_image = logo_path
 
@@ -255,12 +280,12 @@ def update_website_setting_logo():
 def update_currency_symbol_for_SAR():
     """Update currency symbol for SAR to a custom HTML."""
     currency = frappe.get_doc("Currency", "SAR")
-    html_symbol = '<img src="https://www.sama.gov.sa/ar-sa/Currency/Documents/Saudi_Riyal_Symbol-2.svg" style="height: 0.9em; vertical-align: middle;">'
-    
-    if currency.symbol != html_symbol:
-        currency.symbol = html_symbol
-        currency.save(ignore_permissions=True)
-        frappe.db.commit()
+    if currency.enabled == 0:
+        currency.enabled = 1
+        html_symbol = '<img src="https://www.sama.gov.sa/ar-sa/Currency/Documents/Saudi_Riyal_Symbol-2.svg" style="height: 0.9em; vertical-align: middle;">'
+        if currency.symbol != html_symbol:
+            currency.symbol = html_symbol
+        currency.save()
 
 
 def transfer_workspace_shortcuts():

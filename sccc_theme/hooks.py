@@ -40,6 +40,7 @@ app_include_js = [
     "/assets/sccc_theme/js/navbar.js",
     "/assets/sccc_theme/js/workspace.js",
     "/assets/sccc_theme/js/form_action.js"
+    # "/assets/sccc_theme/js/gender_disable.js"
 ]
 
 # fixtures
@@ -50,6 +51,9 @@ fixtures = [
             ["name", "not in", ["ZATCA ERPGulf", "Loans"]]
         ]
     }
+    # {
+    #     "dt":"Custom HTML Block"
+    # }
 ]
 
 # include js, css files in header of web template
@@ -67,7 +71,20 @@ fixtures = [
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-doctype_js = {"User" : "public/js/user.js"}
+# doctype_js = {
+#     "User": "public/js/user.js",
+#     "Employee": "public/js/employee.js",
+#     "Contact": "public/js/contact.js"
+# }
+
+doctype_js = {
+    "User": "public/js/gender_disable.js",
+    "Employee": "public/js/gender_disable.js",
+    "Contact": "public/js/gender_disable.js",
+    "Customer": "public/js/gender_disable.js",
+    "Lead": "public/js/gender_disable.js",
+}
+
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -106,7 +123,7 @@ doctype_js = {"User" : "public/js/user.js"}
 # Installation
 # ------------
 
-# before_install = "sccc_theme.install.before_install"
+before_install = "sccc_theme.utils.api.unzip_files"
 # after_install = "sccc_theme.install.after_install"
 after_migrate = "sccc_theme.utils.utils.after_migrate"
 # permission_query_conditions = {
@@ -156,9 +173,9 @@ after_migrate = "sccc_theme.utils.utils.after_migrate"
 # ---------------
 # Override standard doctype classes
 
-# override_doctype_class = {
-# 	"ToDo": "custom_app.overrides.CustomToDo"
-# }
+override_doctype_class = {
+	"User": "sccc_theme.overrides.user.CustomUser",
+}
 
 # Document Events
 # ---------------

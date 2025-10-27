@@ -600,20 +600,13 @@ $root.on("click", ".sccc-user", function() {
         $childWrap.append($details);
       }
 
-      // insert child wrap if any
-      if (childModules.length) {
-        $root.find(".sccc-spacer").before($childWrap);
-        const line = $(` <div class="sccc-hr"></div>`);
-        // $childWrap.append(line);
-      }
-
       // Group and render main collapsible items (items belong to the selected page)
       const grouped = items.reduce((acc, item) => {
         if (!acc[item.type]) acc[item.type] = [];
         acc[item.type].push(item);
         return acc;
       }, {});
-      
+
       const links_grouped = links.reduce((acc, item) => {
         if (!acc[item.category]) acc[item.category] = [];
         acc[item.category].push(item);
@@ -639,7 +632,6 @@ $root.on("click", ".sccc-user", function() {
           </div>
         `);
         $childWrap.append(link_details);
-        $root.find(".sccc-spacer").before($childWrap);
       });
 
       Object.entries(grouped).forEach(([type, list],j) => {
@@ -661,8 +653,14 @@ $root.on("click", ".sccc-user", function() {
           </div>
         `);
         $childWrap.append(details);
-        $root.find(".sccc-spacer").before($childWrap);
       });
+
+      // insert child wrap if any content
+      if ($childWrap.children().length) {
+        $root.find(".sccc-spacer").before($childWrap);
+        const line = $(` <div class="sccc-hr"></div>`);
+        // $childWrap.append(line);
+      }
 
     }
   
@@ -916,7 +914,7 @@ $root.on("click", ".sccc-user", function() {
         $('.sccc-collapsible-body').not($body).collapse('hide');
 
         // Toggle clicked one
-        $body.collapse('show');
+        $body.collapse('toggle');
        const $details = $match.closest('details');
        if ($details.length) $details.prop('open', true);
        // scroll into view
