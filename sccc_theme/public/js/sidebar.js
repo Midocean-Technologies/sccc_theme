@@ -914,7 +914,7 @@ $root.on("click", ".sccc-user", function() {
         $('.sccc-collapsible-body').not($body).collapse('hide');
 
         // Toggle clicked one
-        $body.collapse('toggle');
+        $body.collapse('show');
        const $details = $match.closest('details');
        if ($details.length) $details.prop('open', true);
        // scroll into view
