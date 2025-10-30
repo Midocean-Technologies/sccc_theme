@@ -10,7 +10,7 @@ def after_migrate():
     update_currency_symbol_for_SAR()
     # transfer_workspace_shortcuts()
     update_website_setting_logo()
-    update_system_settings()
+    # update_system_settings()
     hide_workspace()
     update_currency_in_doctypes()
     PropertySetter()

@@ -21,15 +21,15 @@
     (document.head || document.documentElement).appendChild(s);
   }
 
-  function hideWorkspaceButtons() {
-    console.log("Hiding workspace buttons in edit mode");
-    if ($(".layout-main-section").hasClass("edit-mode")) {
-        $(HIDDEN_SEL).hide();
-    } else {
-      console.log("Showing workspace buttons");
-      $(HIDDEN_SEL).show();
-    }
-  }
+  // function hideWorkspaceButtons() {
+  //   console.log("Hiding workspace buttons in edit mode");
+  //   if ($(".layout-main-section").hasClass("edit-mode")) {
+  //       $(HIDDEN_SEL).hide();
+  //   } else {
+  //     console.log("Showing workspace buttons");
+  //     $(HIDDEN_SEL).show();
+  //   }
+  // }
 
   function findHeaderTarget() {
     const targets = [
@@ -115,8 +115,8 @@
 
   function handlePlacement() {
     if (isWorkspaceRoute()) {
-      hideWorkspaceButtons(); 
       moveWorkspaceButtonsToHeader();
+      // hideWorkspaceButtons(); 
     } else {
       hideMovedButtonInHeader();
     }
@@ -173,7 +173,7 @@
     $(document).on("click", ".btn-edit-workspace", function() {
       $(HIDDEN_SEL).hide();
     });
-    $(document).on("click", ".btn.btn-secondary.btn-default.btn-sm", function() {
+    $(document).on("click", ".btn.btn-secondary.btn-default", function() {
       console.log("Default button clicked");
       $(HIDDEN_SEL).show();
     });
