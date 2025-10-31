@@ -45,10 +45,16 @@ app_include_js = [
 
 # fixtures
 fixtures = [
+    # {
+    #     "dt": "Workspace",
+    #     "filters": [
+    #         ["name", "not in", ["ZATCA ERPGulf", "Loans"]]
+    #     ]
+    # },
     {
-        "dt": "Workspace",
+        "dt": "Module Profile",
         "filters": [
-            ["name", "not in", ["ZATCA ERPGulf", "Loans"]]
+            ["name", "in", ["Essential","Individual","Pro","Ultimate"]]
         ]
     }
     # {
