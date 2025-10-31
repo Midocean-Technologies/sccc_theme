@@ -51,12 +51,12 @@ fixtures = [
     #         ["name", "not in", ["ZATCA ERPGulf", "Loans"]]
     #     ]
     # },
-    {
-        "dt": "Module Profile",
-        "filters": [
-            ["name", "in", ["Essential","Individual","Pro","Ultimate"]]
-        ]
-    }
+    # {
+    #     "dt": "Module Profile",
+    #     "filters": [
+    #         ["name", "in", ["Essential","Individual","Pro","Ultimate"]]
+    #     ]
+    # }
     # {
     #     "dt":"Custom HTML Block"
     # }
