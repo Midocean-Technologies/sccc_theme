@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class Testscccsettings(FrappeTestCase):
+class Testscccthemesettings(FrappeTestCase):
 	pass

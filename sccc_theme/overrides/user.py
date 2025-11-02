@@ -21,11 +21,8 @@ class CustomUser(User):
 
         subject = _("Password Reset for SCCC ERP")
         site_url = get_url()
-        logo_url = f"{site_url}/files/logo.png"
-        header_url = f"{site_url}/files/email_tempate_header.png"
 
         html_template = """
-                {% set user_doc = frappe.get_doc("User", user) %}
                 {% set site_link = "<a href='" + site_url + "'>" + site_url + "</a>" %}
 
                 <!DOCTYPE html>
@@ -53,7 +50,7 @@ class CustomUser(User):
                             <table cellpadding="0" cellspacing="0" role="presentation">
                             <tr>
                                 <td style="padding-right: 10px;">
-                                <img src="{{ logo_url }}" alt="sccc logo" width="40" height="40" style="display: block;">
+                                <img embed="assets/sccc_theme/images/emaillogo.png" alt="sccc logo" width="40" height="40" style="display: block;"/>
                                 </td>
                                 <td style="font-family: Arial, sans-serif;">
                                 <div style="font-size: 16px; font-weight: 600; color: #6C2BD9;">sccc erp</div>
@@ -67,7 +64,7 @@ class CustomUser(User):
                         <!-- Banner -->
                         <tr>
                         <td align="center" bgcolor="#FFFFFF" style="padding: 40px 30px 0px 30px;">
-                            <img src="{{ header_url }}" alt="banner" width="640" style="display: block; max-width: 100%;">
+                            <img embed="assets/sccc_theme/images/emailheader.png" alt="banner" width="640" style="display: block; max-width: 100%;">
                         </td>
                         </tr>
 
@@ -116,7 +113,7 @@ class CustomUser(User):
                                 <table cellpadding="0" cellspacing="0" role="presentation">
                                     <tr>
                                     <td style="padding-right: 10px;">
-                                        <img src="{{ logo_url }}" alt="sccc logo" width="40" height="40" style="display: block;">
+                                        <img embed="assets/sccc_theme/images/emaillogo.png" alt="sccc logo" width="40" height="40" style="display: block;"/>
                                     </td>
                                     <td>
                                         <div style="font-size: 15px; font-weight: 600; color: #6C2BD9;">sccc erp</div>
@@ -146,8 +143,6 @@ class CustomUser(User):
             "user": self.name,
             "link": link,
             "site_url": site_url,
-            "logo_url": logo_url,
-            "header_url": header_url
         }
 
         content = frappe.render_template(html_template, context)
@@ -172,9 +167,6 @@ class CustomUser(User):
 
         subject = _("Welcome to SCCC ERP")
         site_url = get_url()
-        logo_url = f"{site_url}/files/logo.png"
-        header_url = f"{site_url}/files/email_tempate_header.png"
-        # print(logo_url,header_url)
 
         html_template = """
                 {% set user_doc = frappe.get_doc("User", user) %}
@@ -205,7 +197,7 @@ class CustomUser(User):
                             <table cellpadding="0" cellspacing="0" role="presentation">
                             <tr>
                                 <td style="padding-right: 10px;">
-                                <img src="{{ logo_url }}" alt="sccc logo" width="40" height="40" style="display: block;">
+                                <img embed="assets/sccc_theme/images/emaillogo.png" alt="sccc logo" width="40" height="40" style="display: block;"/>
                                 </td>
                                 <td style="font-family: Arial, sans-serif;">
                                 <div style="font-size: 16px; font-weight: 600; color: #6C2BD9;">sccc erp</div>
@@ -219,7 +211,7 @@ class CustomUser(User):
                         <!-- Banner -->
                         <tr>
                         <td align="center" bgcolor="#FFFFFF" style="padding: 40px 30px 0px 30px;">
-                            <img src="{{ header_url }}" alt="banner" width="640" style="display: block; max-width: 100%;">
+                            <img embed="assets/sccc_theme/images/emailheader.png" alt="banner" width="640" style="display: block; max-width: 100%;">
                         </td>
                         </tr>
 
@@ -271,7 +263,7 @@ class CustomUser(User):
                                 <table cellpadding="0" cellspacing="0" role="presentation">
                                     <tr>
                                     <td style="padding-right: 10px;">
-                                        <img src="{{ logo_url }}" alt="sccc logo" width="40" height="40" style="display: block;">
+                                        <img embed="assets/sccc_theme/images/emaillogo.png" alt="sccc logo" width="40" height="40" style="display: block;"/>
                                     </td>
                                     <td>
                                         <div style="font-size: 15px; font-weight: 600; color: #6C2BD9;">sccc erp</div>
@@ -301,8 +293,6 @@ class CustomUser(User):
             "user": self.name,
             "link": link,
             "site_url": site_url,
-            "logo_url": logo_url,
-            "header_url": header_url
         }
 
         content = frappe.render_template(html_template, context)

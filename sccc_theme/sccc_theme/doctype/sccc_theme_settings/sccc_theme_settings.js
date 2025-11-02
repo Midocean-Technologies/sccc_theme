@@ -1,7 +1,7 @@
 // Copyright (c) 2025, midocean technologies Pvt LTD and contributors
 // For license information, please see license.txt
 
-frappe.ui.form.on("sccc settings", {
+frappe.ui.form.on("sccc theme settings", {
 	refresh(frm) {
 		frm.add_custom_button(__("After Install"), function () {
 			frappe.confirm(

@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class scccsettings(Document):
+class scccthemesettings(Document):
 	pass
