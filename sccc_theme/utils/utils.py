@@ -138,11 +138,12 @@ def disable_other_languages():
 def update_system_settings():
     system_settings = frappe.get_single("System Settings")
     if system_settings:
-        system_settings.disable_standard_email_footer = 1
-        system_settings.hide_footer_in_auto_email_reports =1
-        system_settings.attach_view_link = 1
-        system_settings.email_footer_address = ""
-        system_settings.save(ignore_permissions=True)
+        if system_settings.language and system_settings.time_zone:
+            system_settings.disable_standard_email_footer = 1
+            system_settings.hide_footer_in_auto_email_reports =1
+            system_settings.attach_view_link = 1
+            system_settings.email_footer_address = ""
+            system_settings.save(ignore_permissions=True)
 
 def add_translations():
     installed_app = frappe.get_single("Installed Applications")
