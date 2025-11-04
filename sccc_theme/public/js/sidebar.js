@@ -796,7 +796,6 @@ $root.on("click", ".sccc-user", function() {
     document.body.appendChild(rail);
     wireRail($(rail));
     loadModules($(rail));
-    // LOG("✅ SCCC fixed rail mounted");
   }
 
   $(document).on("app_ready", mount);

@@ -5,27 +5,28 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "name1",
+  "plan_name",
   "shortcuts"
  ],
  "fields": [
-  {
-   "fieldname": "name1",
-   "fieldtype": "Data",
-   "label": "name"
-  },
   {
    "fieldname": "shortcuts",
    "fieldtype": "Table",
    "label": "shortcuts",
    "options": "shortcuts"
+  },
+  {
+   "fieldname": "plan_name",
+   "fieldtype": "Data",
+   "label": "Plan Name",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-10-03 12:18:30.651807",
+ "modified": "2025-11-03 16:25:01.849779",
  "modified_by": "Administrator",
  "module": "SCCC Theme",
  "name": "sccc theme settings",

@@ -1,6 +1,6 @@
 app_name = "sccc_theme"
 app_title = "SCCC Theme"
-app_publisher = "midocean technologies Pvt LTD"
+app_publisher = "Midocean Technologies Pvt LTD"
 app_description = "SCCC Theme"
 app_email = "info@midocean.tech"
 app_license = "mit"
@@ -14,10 +14,9 @@ app_license = "mit"
 # add_to_apps_screen = [
 # 	{
 # 		"name": "sccc_theme",
-# 		"logo": "/assets/sccc_theme/logo.png",
-# 		"title": "SCCC Theme",
-# 		"route": "/sccc_theme",
-# 		"has_permission": "sccc_theme.api.permission.has_app_permission"
+# 		"logo": "/assets/sccc_theme/images/logo.svg",
+# 		"title": "SCCC",
+# 		"route": "/app/home",
 # 	}
 # ]
 
@@ -42,6 +41,18 @@ app_include_js = [
     "/assets/sccc_theme/js/form_action.js"
     # "/assets/sccc_theme/js/gender_disable.js"
 ]
+
+# default_mail_footer = """
+# 	<span>
+# 		Sent via sccc
+# 	</span>
+# """
+# email_brand_image = "assets/sccc_theme/images/logo.svg"
+
+# website_context = {
+# 	"favicon": "/assets/sccc_theme/images/logo.svg",
+# 	"splash_image": "/assets/sccc_theme/images/logo.svg",
+# }
 
 # fixtures
 fixtures = [
