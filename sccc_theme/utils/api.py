@@ -21,12 +21,12 @@ def unzip_files():
         with zipfile.ZipFile(zip_file_path, "r") as zip_ref:
             zip_ref.extractall(target_dir)
 
-        print(f"✅ Extracted filesOct22.zip to {target_dir}")
+        # print(f"✅ Extracted filesOct22.zip to {target_dir}")
 
         add_to_file_manager(target_dir)
 
         frappe.logger().info("✅ filesOct22.zip extracted & added to File Manager.")
-        print("✅ Files added to File Manager successfully!")
+        # print("✅ Files added to File Manager successfully!")
 
     except Exception as e:
         frappe.log_error(title="Unzip Error", message=str(e))
@@ -60,7 +60,7 @@ def add_to_file_manager(target_dir):
                 file_doc.insert(ignore_permissions=True)
 
                 frappe.db.commit()
-                print(f"📁 Added to File Manager : {filename}")
+                # print(f"📁 Added to File Manager : {filename}")
 
             except Exception as e:
                 frappe.log_error(title="File Manager Add Error", message=str(e))

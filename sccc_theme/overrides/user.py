@@ -84,10 +84,10 @@ class CustomUser(User):
                             <!-- CTA Button -->
                             <table cellpadding="0" cellspacing="0" role="presentation" style="margin: 15px 0;">
                               <tr>
-                                <td align="center" bgcolor="#EF4444" style="border-radius: 4px;">
+                                <td align="center" bgcolor="#FF375E" style="border-radius: 4px;">
                                   <a href="{{ link }}" 
                                     style="display:inline-block; padding:12px 28px; font-size:15px; font-weight:600;
-                                            color:#FFFFFF; text-decoration:none; background-color:#EF4444; border-radius:4px;">
+                                            color:#FFFFFF; text-decoration:none; background-color:#FF375E; border-radius:4px;">
                                     {{ _("Reset your password") }}
                                   </a>
                                 </td>
@@ -239,11 +239,11 @@ class CustomUser(User):
                             <!-- CTA Button -->
                             <table cellpadding="0" cellspacing="0" role="presentation" style="margin: 15px 0;">
                               <tr>
-                                <td align="center" bgcolor="#EF4444" style="border-radius: 4px;">
+                                <td align="center" bgcolor="#FF375E" style="border-radius: 4px;">
                                   <a href="{{ link }}" 
                                     style="display:inline-block; padding:12px 28px; font-size:15px; font-weight:600;
-                                            color:#FFFFFF; text-decoration:none; background-color:#EF4444; border-radius:4px;">
-                                    {{ _("Set your password") }}
+                                            color:#FFFFFF; text-decoration:none; background-color:#FF375E; border-radius:4px;">
+                                    {{ _("Complete Registration") }}
                                   </a>
                                 </td>
                               </tr>
