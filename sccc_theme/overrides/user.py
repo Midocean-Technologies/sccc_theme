@@ -17,6 +17,7 @@ from frappe.utils import (
 
 class CustomUser(User):
     def password_reset_mail(self, link):
+        print("password reset method calling from sccc theme")
         from frappe.utils import get_url
 
         subject = _("Password Reset for SCCC ERP")
@@ -161,12 +162,14 @@ class CustomUser(User):
         )
         
     def send_welcome_mail_to_user(self):
+        print("welcome email sent method calling from sccc theme")
         from frappe.utils import get_url
 
         link = self.reset_password()
 
         subject = _("Welcome to SCCC ERP")
-        site_url = get_url()
+        # site_url = get_url()
+        site_url = get_url().replace('http://', 'https://')
 
         html_template = """
                 {% set user_doc = frappe.get_doc("User", user) %}
@@ -310,5 +313,30 @@ class CustomUser(User):
             retry=3,
         )
 
+#below code from doc events
+@frappe.whitelist()
+def validate_user_from_doc_event(doc, method=None):
+    try:
+        sccc_settings = frappe.get_single("sccc theme settings")
+        current_plan = sccc_settings.current_site_plan
 
+        if not current_plan:
+            return
+
+        if frappe.db.exists("Role Profile", current_plan):
+            doc.role_profile_name = current_plan
+            role_profile = frappe.get_doc("Role Profile", current_plan)
+            doc.set("roles", [])
+            for role in role_profile.roles:
+                doc.append("roles", {"role": role.role})
+
+        if frappe.db.exists("Module Profile", current_plan):
+            doc.module_profile = current_plan
+            module_profile = frappe.get_doc("Module Profile", current_plan)
+            doc.set("block_modules", [])
+            for d in module_profile.get("block_modules"):
+                doc.append("block_modules", {"module": d.module})
+
+    except Exception as e:
+        frappe.log_error(frappe.get_traceback(), "validate_user_from_doc_event Error")
 
