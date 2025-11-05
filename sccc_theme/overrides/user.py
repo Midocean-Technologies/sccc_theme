@@ -21,7 +21,8 @@ class CustomUser(User):
         from frappe.utils import get_url
 
         subject = _("Password Reset for SCCC ERP")
-        site_url = get_url()
+        # site_url = get_url()
+        site_url = get_url().replace('http://', 'https://')
 
         html_template = """
                 {% set site_link = "<a href='" + site_url + "'>" + site_url + "</a>" %}
