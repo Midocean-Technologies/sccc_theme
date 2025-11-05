@@ -1,6 +1,9 @@
 import frappe
 import zipfile
 import os
+from frappe.desk.page.setup_wizard.setup_wizard import setup_complete
+from frappe.utils import nowdate, getdate
+from datetime import date
 
 @frappe.whitelist()
 def unzip_files():
@@ -65,3 +68,190 @@ def add_to_file_manager(target_dir):
             except Exception as e:
                 frappe.log_error(title="File Manager Add Error", message=str(e))
                 print(f"❌ Error adding {filename}: {e}")
+
+
+#site configuration methods
+@frappe.whitelist()
+def run_setup_wizard(company_name, language, plan):
+    try:
+        if not company_name:
+            frappe.throw("Company name is required.")
+        if not language:
+            frappe.throw("Language is required.")
+        if not plan:
+            frappe.throw("Plan is required.")
+
+        fy_start, fy_end = get_fiscal_year_dates()
+
+        company_abbr = "".join([c[0] for c in company_name.split() if c]).upper()
+        company_abbr = company_abbr[:5]
+
+        args = {
+            "currency": "SAR",
+            "country": "Saudi Arabia",
+            "timezone": "Asia/Riyadh",
+            "language": language,
+            "company_name": company_name,
+            "company_abbr": company_abbr,
+            "chart_of_accounts": "Standard",
+            "fy_start_date": fy_start,
+            "fy_end_date": fy_end,
+            "setup_demo": 0
+        }
+
+        setup_complete(args)
+
+        if frappe.is_setup_complete():
+            if plan == "Individual":
+                user_limit = 1
+            elif plan == "Pro":
+                user_limit = 3
+            elif plan == "Essential":
+                user_limit = 10
+            else:
+                frappe.throw("Invalid subscription plan.")
+
+            frappe.db.set_single_value("sccc theme settings", "current_site_plan", plan)
+            frappe.db.set_single_value("sccc theme settings", "user_limitation", user_limit)
+            system_settings = frappe.get_single("System Settings")
+            if system_settings:
+                system_settings.disable_standard_email_footer = 1
+                system_settings.hide_footer_in_auto_email_reports = 1
+                system_settings.email_footer_address = ""
+                system_settings.flags.ignore_mandatory = True
+                system_settings.save(ignore_permissions=True)
+
+        frappe.db.commit()
+        frappe.clear_cache()
+
+        return {
+            "status": "success",
+            "message": f"Setup wizard completed successfully for {company_name}."
+        }
+
+    except Exception as e:
+        frappe.log_error(
+            message=frappe.get_traceback(),
+            title="Setup Wizard Failed"
+        )
+        return {
+            "status": "error",
+            "message": f"Setup wizard failed: {str(e)}"
+        }
+
+def get_fiscal_year_dates():
+	today = getdate(nowdate())
+	year = today.year
+	if today.month < 4:
+		fy_start = date(year - 1, 4, 1).isoformat()
+		fy_end = date(year, 3, 31).isoformat()
+	else:
+		fy_start = date(year, 4, 1).isoformat()
+		fy_end = date(year + 1, 3, 31).isoformat()
+	return fy_start, fy_end
+
+@frappe.whitelist()
+def setup_email_account(email, password):
+    try:
+        if not frappe.is_setup_complete():
+            frappe.throw("Setup Wizard is not completed yet.")
+        if not email:
+            frappe.throw("Email is required.")
+        if not password:
+            frappe.throw("Password is required.")
+
+        doc = frappe.new_doc("Email Account")
+        doc.email_account_name = "SCCC ERP Support"
+        doc.email_id = email
+        doc.service = ""
+        doc.auth_method = "Basic"
+        doc.password = password
+        doc.enable_outgoing = 1
+        doc.default_outgoing = 1
+        doc.use_ssl_for_outgoing = 1
+        doc.smtp_server = "andrew.ace-host.net"
+        doc.smtp_port = 465
+        doc.always_use_account_email_id_as_sender = 1
+        doc.always_use_account_name_as_sender_name = 1
+        doc.send_unsubscribe_message = 1
+        doc.track_email_status = 1
+
+        doc.insert(ignore_permissions=True)
+
+        return {
+            "status": "success",
+            "message": f"Email Account '{email}' created successfully."
+        }
+
+    except Exception as e:
+        frappe.log_error(message=frappe.get_traceback(), title="Email Account Creation Failed")
+        return {
+            "status": "error",
+            "message": f"Failed to create Email Account: {str(e)}"
+        }
+    
+
+@frappe.whitelist()
+def create_client_user(email, full_name,plan=None):
+    try:
+        if not frappe.is_setup_complete():
+            frappe.throw("Setup Wizard is not completed yet.")
+        if not email:
+            frappe.throw("Email is required.")
+        if frappe.db.exists("User", email):
+            return {
+                "status": "warning",
+                "message": f"User with email '{email}' already exists."
+            }
+        
+        if not full_name:
+            frappe.throw("Full name is required.")
+
+        sccc_theme_settings = frappe.get_single("sccc theme settings")
+        if not sccc_theme_settings.current_site_plan:
+            frappe.throw("Plan is required to create a user")
+        plan = sccc_theme_settings.current_site_plan
+        if not frappe.db.exists("Role Profile", plan):
+            frappe.throw(f"Role Profile '{plan}' not found.")
+
+        userDoc = frappe.new_doc("User")
+        userDoc.email = email
+        userDoc.first_name = full_name
+        userDoc.time_zone = "Asia/Riyadh"
+        userDoc.send_welcome_email = 1
+
+        userDoc.save(ignore_permissions=True)
+
+        role_profile = frappe.get_doc("Role Profile", plan)
+        for role in role_profile.roles:
+            userDoc.append("roles", {"role": role.role})
+
+        userDoc.module_profile = plan
+        userDoc.save(ignore_permissions=True)
+
+        return {
+            "status": "success",
+            "message": f"User '{full_name}' ({email}) created successfully with plan '{plan}'."
+        }
+
+    except Exception as e:
+        frappe.log_error(
+            message=frappe.get_traceback(),
+            title="Client User Creation Failed"
+        )
+        return {
+            "status": "error",
+            "message": f"Failed to create user: {str(e)}"
+        }
+
+
+# @frappe.whitelist()
+# def check_setup_wizard():
+#     from frappe.utils import get_url
+#     site_url = get_url().replace('http://', 'https://')
+#     print(site_url)
+    # return site_url
+    # if not frappe.is_setup_complete():
+    #     return "NA"
+    # else:
+    #     return "setup completed"
