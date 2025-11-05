@@ -10,17 +10,26 @@ def after_migrate():
     update_currency_symbol_for_SAR()
     # transfer_workspace_shortcuts()
     update_website_setting_logo()
-    # update_system_settings()
+    update_system_settings()
     hide_workspace()
     update_currency_in_doctypes()
     PropertySetter()
     remove_gender_records()
     create_custom_fields()
     # remove_reports_from_workspace_custom_link_cards()
-    add_language_permission_for_ar_en()
+    # add_language_permission_for_ar_en()
     # add_translations() // this is commented because ar.csv file added for translation
     disable_other_languages()
     create_role_profile()
+    delete_old_role_profile()
+
+def delete_old_role_profile():
+    role_profiles = ["HR", "Purchase", "Sales", "Accounts", "Manufacturing", "Inventory"]
+
+    for role in role_profiles:
+        if frappe.db.exists("Role Profile", role):
+            frappe.delete_doc("Role Profile", role, force=1)
+            frappe.db.commit()
 
 def create_role_profile():
     if not frappe.db.exists("Role Profile", "Individual"):
@@ -38,6 +47,7 @@ def create_role_profile():
                 {"role": "Accounts Manager"},
                 {"role": "Accounts User"},
                 {"role":"Auditor"},
+                {"role":"System Manager"},
             ]
         })
         doc.insert()
@@ -62,6 +72,7 @@ def create_role_profile():
                 {"role": "Customer"},
                 {"role": "HR Manager"},
                 {"role": "HR User"},
+                {"role":"System Manager"},
             ]
         })
         doc.insert()
@@ -88,6 +99,7 @@ def create_role_profile():
                 {"role": "Accounts User"},
                 {"role": "Projects Manager"},
                 {"role": "Projects User"},
+                {"role":"System Manager"},
             ]
         })
         doc.insert()
@@ -122,6 +134,7 @@ def create_role_profile():
                 {"role":"Auditor"},
                 {"role":"Maintenance Manager"},
                 {"role":"Workspace Manager"},
+                {"role":"System Manager"},
             ]
         })
         doc.insert()
@@ -138,12 +151,11 @@ def disable_other_languages():
 def update_system_settings():
     system_settings = frappe.get_single("System Settings")
     if system_settings:
-        if system_settings.language and system_settings.time_zone:
-            system_settings.disable_standard_email_footer = 1
-            system_settings.hide_footer_in_auto_email_reports =1
-            system_settings.attach_view_link = 1
-            system_settings.email_footer_address = ""
-            system_settings.save(ignore_permissions=True)
+        system_settings.disable_standard_email_footer = 1
+        system_settings.hide_footer_in_auto_email_reports = 1
+        system_settings.email_footer_address = ""
+        system_settings.flags.ignore_mandatory = True
+        system_settings.save(ignore_permissions=True)
 
 def add_translations():
     installed_app = frappe.get_single("Installed Applications")
@@ -294,6 +306,7 @@ def remove_gender_records():
 
 def PropertySetter():
     make_property_setter("Workspace","icon","read_only",0,"Check")
+    make_property_setter("User","role_profile_name","allow_in_quick_entry",0,"Check")
 
 def update_currency_in_doctypes():
     """Update currency in number card to SAR."""

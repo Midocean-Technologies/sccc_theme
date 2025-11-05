@@ -183,7 +183,8 @@ after_migrate = "sccc_theme.utils.utils.after_migrate"
 # }
 #
 # has_permission = {
-# 	"Event": "frappe.desk.doctype.event.event.has_permission",
+#     "User":"sccc_theme.utils.permission.user_has_permission"
+# 	# "Event": "frappe.desk.doctype.event.event.has_permission",
 # }
 
 # DocType Class
@@ -198,13 +199,12 @@ override_doctype_class = {
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+    "User":{
+        "validate":"sccc_theme.overrides.user.validate_user_from_doc_event",
+        # "before_insert":"sccc_theme.overrides.user.restrict_user_limitation"
+    }
+}
 
 # Scheduled Tasks
 # ---------------

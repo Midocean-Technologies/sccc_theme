@@ -5,28 +5,32 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "plan_name",
-  "shortcuts"
+  "current_site_plan",
+  "column_break_mtek",
+  "user_limitation"
  ],
  "fields": [
   {
-   "fieldname": "shortcuts",
-   "fieldtype": "Table",
-   "label": "shortcuts",
-   "options": "shortcuts"
+   "fieldname": "current_site_plan",
+   "fieldtype": "Link",
+   "label": "Current site plan",
+   "options": "Role Profile"
   },
   {
-   "fieldname": "plan_name",
-   "fieldtype": "Data",
-   "label": "Plan Name",
-   "read_only": 1
+   "fieldname": "column_break_mtek",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "user_limitation",
+   "fieldtype": "Int",
+   "label": "user limitation"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-11-03 16:25:01.849779",
+ "modified": "2025-11-05 12:43:42.736720",
  "modified_by": "Administrator",
  "module": "SCCC Theme",
  "name": "sccc theme settings",
@@ -38,7 +42,7 @@
    "email": 1,
    "print": 1,
    "read": 1,
-   "role": "System Manager",
+   "role": "Administrator",
    "share": 1,
    "write": 1
   }
