@@ -16,8 +16,28 @@ from frappe.utils import (
 
 
 class CustomUser(User):
+    def before_insert(self):
+        self.flags.in_insert = True
+        throttle_user_creation()
+        
+        # Add user limitation
+        user_limit = frappe.db.get_single_value('sccc theme settings', 'user_limitation')
+
+        user_count = frappe.db.count(
+            "User",
+            filters={
+                "enabled": 1,
+                "name": ("not in", ["Administrator", "Guest"])
+            }
+        )        
+        if user_limit > 0 and user_count >= user_limit:
+            frappe.throw(
+                f"User limit reached as per subscription plan. "
+                f"Max allowed: {user_limit}, Current: {user_count}"
+            )
+
     def password_reset_mail(self, link):
-        print("password reset method calling from sccc theme")
+        # print("password reset method calling from sccc theme")
         from frappe.utils import get_url
 
         subject = _("Password Reset for SCCC ERP")
@@ -163,7 +183,7 @@ class CustomUser(User):
         )
         
     def send_welcome_mail_to_user(self):
-        print("welcome email sent method calling from sccc theme")
+        # print("welcome email sent method calling from sccc theme")
         from frappe.utils import get_url
 
         link = self.reset_password()
@@ -341,3 +361,10 @@ def validate_user_from_doc_event(doc, method=None):
     except Exception as e:
         frappe.log_error(frappe.get_traceback(), "validate_user_from_doc_event Error")
 
+
+def throttle_user_creation():
+	if frappe.flags.in_import:
+		return
+
+	if frappe.db.get_creation_count("User", 60) > frappe.local.conf.get("throttle_user_limit", 60):
+		frappe.throw(_("Throttled"))

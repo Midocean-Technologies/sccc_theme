@@ -5,22 +5,33 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "current_site_plan"
+  "current_site_plan",
+  "column_break_mtek",
+  "user_limitation"
  ],
  "fields": [
   {
    "fieldname": "current_site_plan",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "label": "Current site plan",
-   "read_only": 1
+   "options": "Role Profile"
+  },
+  {
+   "fieldname": "column_break_mtek",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "user_limitation",
+   "fieldtype": "Int",
+   "label": "user limitation"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-11-05 07:26:39.841466",
- "modified_by": "bhaveshmahavar1312@gmail.com",
+ "modified": "2025-11-05 12:43:42.736720",
+ "modified_by": "Administrator",
  "module": "SCCC Theme",
  "name": "sccc theme settings",
  "owner": "Administrator",
@@ -31,7 +42,7 @@
    "email": 1,
    "print": 1,
    "read": 1,
-   "role": "System Manager",
+   "role": "Administrator",
    "share": 1,
    "write": 1
   }

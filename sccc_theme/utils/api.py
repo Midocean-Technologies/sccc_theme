@@ -72,7 +72,7 @@ def add_to_file_manager(target_dir):
 
 #site configuration methods
 @frappe.whitelist()
-def run_setup_wizard(company_name, language,plan):
+def run_setup_wizard(company_name, language, plan):
     try:
         if not company_name:
             frappe.throw("Company name is required.")
@@ -83,13 +83,16 @@ def run_setup_wizard(company_name, language,plan):
 
         fy_start, fy_end = get_fiscal_year_dates()
 
+        company_abbr = "".join([c[0] for c in company_name.split() if c]).upper()
+        company_abbr = company_abbr[:5]
+
         args = {
             "currency": "SAR",
             "country": "Saudi Arabia",
             "timezone": "Asia/Riyadh",
             "language": language,
             "company_name": company_name,
-            "company_abbr": "".join([p[0] for p in company_name.split()]).upper(),
+            "company_abbr": company_abbr,
             "chart_of_accounts": "Standard",
             "fy_start_date": fy_start,
             "fy_end_date": fy_end,
@@ -97,8 +100,27 @@ def run_setup_wizard(company_name, language,plan):
         }
 
         setup_complete(args)
+
         if frappe.is_setup_complete():
+            if plan == "Individual":
+                user_limit = 1
+            elif plan == "Pro":
+                user_limit = 3
+            elif plan == "Essential":
+                user_limit = 10
+            else:
+                frappe.throw("Invalid subscription plan.")
+
             frappe.db.set_single_value("sccc theme settings", "current_site_plan", plan)
+            frappe.db.set_single_value("sccc theme settings", "user_limitation", user_limit)
+            system_settings = frappe.get_single("System Settings")
+            if system_settings:
+                system_settings.disable_standard_email_footer = 1
+                system_settings.hide_footer_in_auto_email_reports = 1
+                system_settings.email_footer_address = ""
+                system_settings.flags.ignore_mandatory = True
+                system_settings.save(ignore_permissions=True)
+
         frappe.db.commit()
         frappe.clear_cache()
 

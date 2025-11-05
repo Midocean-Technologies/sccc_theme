@@ -21,6 +21,15 @@ def after_migrate():
     # add_translations() // this is commented because ar.csv file added for translation
     disable_other_languages()
     create_role_profile()
+    delete_old_role_profile()
+
+def delete_old_role_profile():
+    role_profiles = ["HR", "Purchase", "Sales", "Accounts", "Manufacturing", "Inventory"]
+
+    for role in role_profiles:
+        if frappe.db.exists("Role Profile", role):
+            frappe.delete_doc("Role Profile", role, force=1)
+            frappe.db.commit()
 
 def create_role_profile():
     if not frappe.db.exists("Role Profile", "Individual"):
@@ -142,11 +151,11 @@ def disable_other_languages():
 def update_system_settings():
     system_settings = frappe.get_single("System Settings")
     if system_settings:
-        if system_settings.language and system_settings.time_zone:
-            system_settings.disable_standard_email_footer = 1
-            system_settings.hide_footer_in_auto_email_reports =1
-            system_settings.email_footer_address = ""
-            system_settings.save(ignore_permissions=True)
+        system_settings.disable_standard_email_footer = 1
+        system_settings.hide_footer_in_auto_email_reports = 1
+        system_settings.email_footer_address = ""
+        system_settings.flags.ignore_mandatory = True
+        system_settings.save(ignore_permissions=True)
 
 def add_translations():
     installed_app = frappe.get_single("Installed Applications")
