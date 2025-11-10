@@ -1,12 +1,242 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/assets/sccc_theme/images/logo.svg">
     <title>Terms & Conditions</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: font-sans !important;
+            background: #ffffff;
+            color: #222;
+        }
+        a:-webkit-any-link {
+            color: black;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        /* Top Navigation Bar */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 50px;
+        }
+
+        /* Back Button */
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            color: #d40067;
+        }
+
+        .back-button svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .top-left-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .topbar .title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .topbar img {
+            height: 100px;
+        }
+
+        /* Page Layout */
+        .page-container {
+            display: flex;
+            padding: 40px 50px;
+            gap: 60px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            padding-top: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            padding: 10px 0;
+            font-size: 15px;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .sidebar li.active {
+            color: #4F008C;
+            font-weight: bold;
+        }
+
+        .sidebar a {
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        /* Content Area */
+        .content {
+            flex: 1;
+            max-width: 1000px;
+            margin-top: 10px;
+        }
+
+        .content h1 {
+            font-size: 38px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        .updated {
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 35px;
+        }
+
+        p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #444;
+            margin-bottom: 22px;
+        }
+    </style>
+
 </head>
 <body>
-    <h1>Terms & Conditions</h1>
-    <!-- Content goes here -->
+
+    <!-- ✅ TOP BAR -->
+    <div class="topbar">
+
+        <!-- ✅ LEFT SIDE WITH BACK BUTTON + COMPANY NAME -->
+        <div class="top-left-group">
+            <div class="title"  ><a href="/login" style="color: #4F008C;">sccc erp</a></div>
+
+        </div>
+
+        <!-- ✅ RIGHT SIDE LOGO -->
+        <!-- <img src="logo.png" alt="sccc by stc logo"> -->
+        <img src="/assets/sccc_theme/images/SCCC_logo.png" alt="sccc">
+    </div>
+
+    <!-- ✅ MAIN PAGE BODY -->
+    <div class="page-container">
+
+        <!-- ✅ SIDEBAR -->
+        <div class="sidebar">
+            <ul>
+                <li class="active"><a href="/terms-and-conditions">Terms & Conditions</a></li>
+                <li ><a href="/privacy-policy">Privacy Policy</a></li>
+            </ul>
+        </div>
+
+        <!-- ✅ CONTENT -->
+        <div class="content">
+            <h1 style="color: #4F008C;">Saudi cloud computing company platform terms of use</h1>
+            <div class="updated" style="color:red">Effective Date: 26th June 2025</div>
+
+            <p><strong>Please read these terms and conditions carefully.</strong></p>
+
+            <p>
+                These Terms of Use (“Agreement”) describe the terms and conditions applicable to your access and use of the
+                Saudi Cloud Computing Company website (www.sccc.sa and www.alibabacloud.sa) and related services. This is a legally
+                binding agreement between you (“you”, “your”) and Saudi Cloud Computing Company (“we”, “our”, “SCCC”, “SCCC by STC”).
+            </p>
+
+            <ol>
+                <li>
+                    <strong>Application and Acceptance of the Terms</strong>
+                    <ol type="a">
+                        <li>Your use of the SCCC Platform and its products/services is governed by the laws of the Kingdom of Saudi Arabia and this Agreement.</li>
+                        <li>By accessing or using the platform, you agree to these Terms and any related policies such as:</li>
+                        <ul>
+                            <li>SCCC Product Terms and Conditions</li>
+                            <li>Privacy Policy</li>
+                            <li>Marketplace End-User Agreement</li>
+                            <li>Third-party service terms</li>
+                        </ul>
+                        <li>If you disagree with any of these terms, you must stop using the services immediately.</li>
+                        <li>SCCC may amend these Terms at any time by posting updates on the platform. Continued use means you accept the updated terms.</li>
+                        <li>SCCC reserves the right to assign or transfer its rights and obligations under these Terms to any entity.</li>
+                        <li>You may not assign any part of this Agreement to another person or entity.</li>
+                    </ol>
+                </li>
+
+                <li>
+                    <strong>Provision of Services</strong>
+                    <ol type="a">
+                        <li>You must register on the SCCC Platform to access its services.</li>
+                        <li>SCCC may restrict or terminate access if you breach these Terms.</li>
+                        <li>Service availability may vary by region. Not all features are available to all users.</li>
+                        <li>Regional offerings may have additional or different terms. Review all applicable terms before using any service.</li>
+                        <li>SCCC may provide purchase credits (“virtual credits”) to use for service orders. You are responsible for accuracy of submitted orders.</li>
+                    </ol>
+                </li>
+
+                <li>
+                    <strong>Use of the SCCC Platform or Services</strong>
+                    <ol type="a">
+                        <li>You must comply with all applicable laws and avoid any fraudulent or prohibited activities.</li>
+                        <li>You must not copy, reproduce, or resell any SCCC content or services without written permission.</li>
+                        <li>You must not upload or use content that is defamatory, obscene, illegal, or infringes on intellectual property rights.</li>
+                        <li>You must not attempt to breach security systems, hack, or disrupt network operations.</li>
+                        <li>You must not send spam, conduct DoS/DDoS attacks, or misuse network resources.</li>
+                        <li>You are responsible for maintaining the confidentiality of your account and must report any unauthorized access.</li>
+                    </ol>
+                </li>
+
+                <li>
+                    <strong>Information and Data Handling</strong>
+                    <ol type="a">
+                        <li>Information you provide may be processed and stored in other jurisdictions, as permitted by law.</li>
+                        <li>Payment details are securely processed by third-party payment providers.</li>
+                        <li>SCCC may transfer non-personal data to affiliates for service purposes.</li>
+                        <li>Your data may be disclosed as required by law or government requests.</li>
+                    </ol>
+                </li>
+            </ol>
+
+            <p>
+                You agree to comply with these Terms and acknowledge that SCCC may update, amend, or discontinue its
+                services at its sole discretion and without prior notice.
+            </p>
+             <!-- <p>
+                By signing in to your SCCC ERP account, you agree to be bound by our Terms & Conditions.
+             </p> -->
+            <a href="/login" class="back-button" style="color:#4F008C">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to Login
+            </a>
+
+        </div>
+    </div>
+
 </body>
-</html>
