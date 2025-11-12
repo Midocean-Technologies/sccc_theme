@@ -156,6 +156,7 @@ def update_system_settings():
         system_settings.email_footer_address = ""
         system_settings.allow_consecutive_login_attempts = 2
         system_settings.allow_login_after_fail = 7200
+        system_settings.otp_issuer_name = "SCCC ERP"
         system_settings.flags.ignore_mandatory = True
         system_settings.save(ignore_permissions=True)
 
