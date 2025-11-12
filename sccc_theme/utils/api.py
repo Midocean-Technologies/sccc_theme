@@ -208,30 +208,36 @@ def create_client_user(email, full_name,plan=None):
             frappe.throw("Full name is required.")
 
         sccc_theme_settings = frappe.get_single("sccc theme settings")
-        if not sccc_theme_settings.current_site_plan:
-            frappe.throw("Plan is required to create a user")
-        plan = sccc_theme_settings.current_site_plan
-        if not frappe.db.exists("Role Profile", plan):
-            frappe.throw(f"Role Profile '{plan}' not found.")
+
+        if sccc_theme_settings.current_site_plan:
+            plan_to_use = sccc_theme_settings.current_site_plan
+        elif plan:
+            plan_to_use = plan
+        else:
+            frappe.throw("Plan is required to create a user.")
+
+        if not frappe.db.exists("Role Profile", plan_to_use ):
+            frappe.throw(f"Role Profile '{plan_to_use }' not found.")
 
         userDoc = frappe.new_doc("User")
         userDoc.email = email
+        userDoc.is_client_admin = 1
         userDoc.first_name = full_name
         userDoc.time_zone = "Asia/Riyadh"
         userDoc.send_welcome_email = 1
 
         userDoc.save(ignore_permissions=True)
 
-        role_profile = frappe.get_doc("Role Profile", plan)
+        role_profile = frappe.get_doc("Role Profile", plan_to_use )
         for role in role_profile.roles:
             userDoc.append("roles", {"role": role.role})
 
-        userDoc.module_profile = plan
+        userDoc.module_profile = plan_to_use 
         userDoc.save(ignore_permissions=True)
 
         return {
             "status": "success",
-            "message": f"User '{full_name}' ({email}) created successfully with plan '{plan}'."
+            "message": f"User '{full_name}' ({email}) created successfully with plan '{plan_to_use }'."
         }
 
     except Exception as e:

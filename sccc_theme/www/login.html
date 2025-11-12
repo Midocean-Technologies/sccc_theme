@@ -42,7 +42,7 @@
 	<button class="btn btn-sm btn-primary btn-login btn-color" type="submit" style="width: 170px;">
 		{{ _("Sign In") }}</button>  
 		<span class="or-separator">or</span>
-        <button type="button" class="btn btn-outline">{{ _("Login with Email link") }}</button>
+        <button type="button" class="btn btn-outline" style="width: 170px;">{{ _("Login with Email link") }}</button>
 	{% endif %}
 	{% if ldap_settings and ldap_settings.enabled %}
 	<button class="btn btn-sm {{ "btn-primary" if disable_user_pass_login else "btn-default" }} btn-block btn-login btn-ldap-login">

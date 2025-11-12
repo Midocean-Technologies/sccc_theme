@@ -154,6 +154,8 @@ def update_system_settings():
         system_settings.disable_standard_email_footer = 1
         system_settings.hide_footer_in_auto_email_reports = 1
         system_settings.email_footer_address = ""
+        system_settings.allow_consecutive_login_attempts = 2
+        system_settings.allow_login_after_fail = 7200
         system_settings.flags.ignore_mandatory = True
         system_settings.save(ignore_permissions=True)
 
@@ -291,6 +293,16 @@ def create_custom_fields():
             "fieldtype": "Attach",
             "insert_after": "is_below_divider",
             "depends_on":"eval:doc.type == 'Card Break'",
+        },
+    )
+    create_custom_field(  
+        "User",
+        {
+            "label":_("Is Client Admin"),
+            "fieldname": "is_client_admin",
+            "fieldtype": "Check",
+            "insert_after": "enabled",
+            "read_only":1,
         },
     )
 
