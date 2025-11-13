@@ -105,9 +105,9 @@ def run_setup_wizard(company_name, language, plan):
             if plan == "Individual":
                 user_limit = 1
             elif plan == "Pro":
-                user_limit = 3
+                user_limit = 50
             elif plan == "Essential":
-                user_limit = 10
+                user_limit = 20
             else:
                 frappe.throw("Invalid subscription plan.")
 
@@ -118,6 +118,9 @@ def run_setup_wizard(company_name, language, plan):
                 system_settings.disable_standard_email_footer = 1
                 system_settings.hide_footer_in_auto_email_reports = 1
                 system_settings.email_footer_address = ""
+                system_settings.allow_consecutive_login_attempts = 2
+                system_settings.allow_login_after_fail = 7200
+                system_settings.otp_issuer_name = "SCCC ERP"
                 system_settings.flags.ignore_mandatory = True
                 system_settings.save(ignore_permissions=True)
 
@@ -154,11 +157,11 @@ def get_fiscal_year_dates():
 def setup_email_account(email, password):
     try:
         if not frappe.is_setup_complete():
-            frappe.throw("Setup Wizard is not completed yet.")
+            frappe.log_error("Setup Wizard is not completed yet.")
         if not email:
-            frappe.throw("Email is required.")
+            frappe.log_error("Email is required.")
         if not password:
-            frappe.throw("Password is required.")
+            frappe.log_error("Password is required.")
 
         doc = frappe.new_doc("Email Account")
         doc.email_account_name = "SCCC ERP Support"

@@ -1,0 +1,98 @@
+<!-- {% macro table(content, table_class) %}
+<table class="{{ table_class or '' }}" cellpadding="0" cellspacing="0" width="100%" align="center">
+	<tbody>
+		<tr>
+			<td align="center">
+				{{ content }}
+			</td>
+		</tr>
+	</tbody>
+</table>
+{% endmacro %} -->
+
+{% macro body() %}
+<body style="margin: 0; padding: 0; background-color: #E5E7EB;
+                     font-family: 'STCForward', Arial, sans-serif !important;">
+            <table width="100%" cellpadding="0" cellspacing="0" role="presentation" bgcolor="#E5E7EB">
+                <tr>
+                    <td align="center">
+                        <table width="640" cellpadding="0" cellspacing="0" role="presentation" bgcolor="#FFFFFF" style="max-width: 640px; width: 100%;">
+                            
+                            <!-- Header -->
+                            <tr>
+                                <td align="left" style="padding: 32px 24px 16px 24px; background-color: #F3F4F6;">
+                                    <table cellpadding="0" cellspacing="0" role="presentation">
+                                        <tr>
+                                            <td style="padding-right: 10px;">
+                                                <img embed="assets/sccc_theme/images/emaillogo.png" alt="sccc logo" width="40" height="40" style="display: block;"/>
+                                            </td>
+                                            <td style="font-family: Arial, sans-serif;">
+                                                <div style="font-size: 16px; font-weight: 600; color: #6C2BD9;">sccc erp</div>
+                                                <div style="font-size: 12px; color: #6B7280;">sccc by stc</div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <!-- Banner -->
+                            <tr>
+                                <td align="center" bgcolor="#FFFFFF" style="padding: 40px 30px 0px 30px;">
+                                    <img embed="assets/sccc_theme/images/emailheader.png" alt="banner" width="640" style="display: block; max-width: 100%;">
+                                </td>
+                            </tr>
+
+                            <!-- Main Message -->
+							<tr>
+								<td align="center">
+									<div class="email-header-title">
+										{{ _('Click on the button to log in to {0}').format(app_name) }}
+									</div>
+									<div>{{ _('The link will expire in {0} minutes').format(minutes) }}</div>
+								</td>
+							</tr>
+							<tr>
+								<td align="center">
+									<a href="{{ link or '#'}}" class="btn btn-primary" style="background-color:#FF375E; text-decoration: none; margin-top: 30px;">
+										{{ _('Log In To {0}').format(app_name) }}
+									</a>
+								</td>
+							</tr>
+
+                            <!-- Footer -->
+                            <tr>
+                            <td bgcolor="#FFFFFF" style="padding: 24px 30px 26px 30px; text-align: left;">
+                                <p style="font-size: 13px; color: #6B7280; margin-bottom: 18px;">© 2025 sccc by stc</p>
+
+                                <!-- Footer Logo -->
+                                <table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                                <tr>
+                                    <td valign="middle">
+                                    <table cellpadding="0" cellspacing="0" role="presentation">
+                                        <tr>
+                                        <td style="padding-right: 10px;">
+                                            <img embed="assets/sccc_theme/images/emaillogo.png" alt="sccc logo" width="40" height="40" style="display: block;"/>
+                                        </td>
+                                        <td>
+                                            <div style="font-size: 15px; font-weight: 600; color: #6C2BD9;">sccc erp</div>
+                                            <div style="font-size: 12px; color: #6B7280;">sccc by stc</div>
+                                        </td>
+                                        </tr>
+                                    </table>
+                                    </td>
+                                </tr>
+                                </table>
+                            </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </body>
+{% endmacro %}
+
+<div class="body-table with-container">
+	<div class="body-content">
+		{{ table(table(body(), 'email-body'), 'email-container') }}
+	</div>
+</div>
