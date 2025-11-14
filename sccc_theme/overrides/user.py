@@ -349,6 +349,8 @@ def validate_user_from_doc_event(doc, method=None):
             role_profile = frappe.get_doc("Role Profile", current_plan)
             doc.set("roles", [])
             for role in role_profile.roles:
+                if not doc.is_client_admin and role.role == "System Manager":
+                    continue
                 doc.append("roles", {"role": role.role})
 
         if frappe.db.exists("Module Profile", current_plan):
@@ -361,7 +363,24 @@ def validate_user_from_doc_event(doc, method=None):
     except Exception as e:
         frappe.log_error(frappe.get_traceback(), "validate_user_from_doc_event Error")
 
-
+def after_insert_user(doc,method=None):
+    if not doc.is_client_admin:
+        if not frappe.db.exists(
+            "User Permission",
+            {
+                "user": doc.name,
+                "allow": "User",
+                "for_value": doc.name,
+                "apply_to_all_doctypes":1
+            },
+        ):
+            user_perm = frappe.new_doc("User Permission")
+            user_perm.user = doc.name
+            user_perm.allow = "User"
+            user_perm.for_value = doc.name
+            user_perm.apply_to_all_doctypes = 1
+            user_perm.insert(ignore_permissions=True)
+            
 def throttle_user_creation():
 	if frappe.flags.in_import:
 		return

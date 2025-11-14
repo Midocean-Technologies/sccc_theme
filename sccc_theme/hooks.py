@@ -202,6 +202,7 @@ override_doctype_class = {
 doc_events = {
     "User":{
         "validate":"sccc_theme.overrides.user.validate_user_from_doc_event",
+        "after_insert":"sccc_theme.overrides.user.after_insert_user",
         # "before_insert":"sccc_theme.overrides.user.restrict_user_limitation"
     }
 }
@@ -235,8 +236,9 @@ doc_events = {
 # Overriding Methods
 # ------------------------------
 #
+# from frappe.frappe.www.login import send_login_link
 # override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "sccc_theme.event.get_events"
+#     "frappe.www.login.send_login_link": "sccc_theme.overrides.login.custom_send_login_link"
 # }
 #
 # each overriding function accepts a `data` argument;
