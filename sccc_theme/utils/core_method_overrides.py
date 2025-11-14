@@ -5,6 +5,47 @@ from frappe.rate_limiter import rate_limit
 from frappe.utils import cint, get_url
 from frappe.www.login import get_login_with_email_link_ratelimit
 from frappe.www.login import _generate_temporary_login_link
+MAX_PASSWORD_SIZE = 512
+from frappe.twofactor import (
+	authenticate_for_2factor,
+	confirm_otp_token,
+	get_cached_user_pass,
+	should_run_2fa,
+)
+from frappe.auth import get_login_attempt_tracker
+
+def authenticate(self, user: str | None = None, pwd: str | None = None):
+    from frappe.core.doctype.user.user import User
+
+    if not (user and pwd):
+        user, pwd = frappe.form_dict.get("usr"), frappe.form_dict.get("pwd")
+    if not (user and pwd):
+        self.fail(_("Incomplete login details"), user=user)
+
+    if len(pwd) > MAX_PASSWORD_SIZE:
+        self.fail(_("Password size exceeded the maximum allowed size"), user=user)
+
+    _raw_user_name = user
+    user = User.find_by_credentials(user, pwd)
+
+    if not user:
+        self.fail("Invalid login credentials", user=_raw_user_name)
+
+    # Current login flow uses cached credentials for authentication while checking OTP.
+    # Incase of OTP check, tracker for auth needs to be disabled(If not, it can remove tracker history as it is going to succeed anyway)
+    # Tracker is activated for 2FA incase of OTP.
+    ignore_tracker = should_run_2fa(user.name) and ("otp" in frappe.form_dict)
+    user_tracker = None if ignore_tracker else get_login_attempt_tracker(user.name)
+
+    if not user.is_authenticated:
+        user_tracker and user_tracker.add_failure_attempt()
+        self.fail("Invalid login credentials", user=user.name)
+    elif not (user.name == "Administrator" or user.enabled):
+        user_tracker and user_tracker.add_failure_attempt()
+        self.fail("User disabled or missing", user=user.name)
+    else:
+        user_tracker and user_tracker.add_success_attempt()
+    self.user = user.name
 
 def send_token_via_email(user, token, otp_secret, otp_issuer, subject=None, message=None):
 	"""Send token to user as email."""
