@@ -105,9 +105,9 @@ def run_setup_wizard(company_name, language, plan):
             if plan == "Individual":
                 user_limit = 1
             elif plan == "Pro":
-                user_limit = 3
+                user_limit = 50
             elif plan == "Essential":
-                user_limit = 10
+                user_limit = 20
             else:
                 frappe.throw("Invalid subscription plan.")
 
@@ -118,6 +118,9 @@ def run_setup_wizard(company_name, language, plan):
                 system_settings.disable_standard_email_footer = 1
                 system_settings.hide_footer_in_auto_email_reports = 1
                 system_settings.email_footer_address = ""
+                system_settings.allow_consecutive_login_attempts = 1
+                system_settings.allow_login_after_fail = 7200
+                system_settings.otp_issuer_name = "SCCC ERP"
                 system_settings.flags.ignore_mandatory = True
                 system_settings.save(ignore_permissions=True)
 
@@ -154,11 +157,11 @@ def get_fiscal_year_dates():
 def setup_email_account(email, password):
     try:
         if not frappe.is_setup_complete():
-            frappe.throw("Setup Wizard is not completed yet.")
+            frappe.log_error("Setup Wizard is not completed yet.")
         if not email:
-            frappe.throw("Email is required.")
+            frappe.log_error("Email is required.")
         if not password:
-            frappe.throw("Password is required.")
+            frappe.log_error("Password is required.")
 
         doc = frappe.new_doc("Email Account")
         doc.email_account_name = "SCCC ERP Support"
@@ -208,30 +211,36 @@ def create_client_user(email, full_name,plan=None):
             frappe.throw("Full name is required.")
 
         sccc_theme_settings = frappe.get_single("sccc theme settings")
-        if not sccc_theme_settings.current_site_plan:
-            frappe.throw("Plan is required to create a user")
-        plan = sccc_theme_settings.current_site_plan
-        if not frappe.db.exists("Role Profile", plan):
-            frappe.throw(f"Role Profile '{plan}' not found.")
+
+        if sccc_theme_settings.current_site_plan:
+            plan_to_use = sccc_theme_settings.current_site_plan
+        elif plan:
+            plan_to_use = plan
+        else:
+            frappe.throw("Plan is required to create a user.")
+
+        if not frappe.db.exists("Role Profile", plan_to_use ):
+            frappe.throw(f"Role Profile '{plan_to_use }' not found.")
 
         userDoc = frappe.new_doc("User")
         userDoc.email = email
+        userDoc.is_client_admin = 1
         userDoc.first_name = full_name
         userDoc.time_zone = "Asia/Riyadh"
         userDoc.send_welcome_email = 1
 
         userDoc.save(ignore_permissions=True)
 
-        role_profile = frappe.get_doc("Role Profile", plan)
+        role_profile = frappe.get_doc("Role Profile", plan_to_use )
         for role in role_profile.roles:
             userDoc.append("roles", {"role": role.role})
 
-        userDoc.module_profile = plan
+        userDoc.module_profile = plan_to_use 
         userDoc.save(ignore_permissions=True)
 
         return {
             "status": "success",
-            "message": f"User '{full_name}' ({email}) created successfully with plan '{plan}'."
+            "message": f"User '{full_name}' ({email}) created successfully with plan '{plan_to_use }'."
         }
 
     except Exception as e:

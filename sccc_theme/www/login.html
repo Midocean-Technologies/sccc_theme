@@ -42,7 +42,7 @@
 	<button class="btn btn-sm btn-primary btn-login btn-color" type="submit" style="width: 170px;">
 		{{ _("Sign In") }}</button>  
 		<span class="or-separator">or</span>
-        <button type="button" class="btn btn-outline">{{ _("Login with Email link") }}</button>
+        <a type="button" href="#login-with-email-link" class="btn btn-outline" style="width: 170px;">{{ _("Login with Email link") }}</a>
 	{% endif %}
 	{% if ldap_settings and ldap_settings.enabled %}
 	<button class="btn btn-sm {{ "btn-primary" if disable_user_pass_login else "btn-default" }} btn-block btn-login btn-ldap-login">
@@ -51,7 +51,7 @@
 </div>
 <div class="footer-text">
 	{{ _("By continuing, you acknowledge that you understand and agree to the") }}
-	<a href="#" style="color: palevioletred;">{{ _("Terms & Conditions") }}</a> {{ _("and") }} <a href="#" style="color: palevioletred;" >{{ _("Privacy Policy") }}</a>
+	<a href="/terms-and-conditions" style="color: palevioletred;">{{ _("Terms & Conditions") }}</a> {{ _("and") }} <a href="/privacy-policy" style="color: palevioletred;" >{{ _("Privacy Policy") }}</a>
 </div>
 {% endmacro %}
 
@@ -214,11 +214,15 @@
 		</div>
 	</section>
 
-	<section class='for-login-with-email-link'>
+	<section class='for-login-with-email-link' style="margin-top:80px;">
 			{{ logo_section(_('Login with Email Link')) }}
+
 		<div class="login-content page-card">
 			<form class="form-signin form-login-with-email-link hide" role="form">
 				<div class="page-card-body">
+					<div style="text-align: center; margin-bottom: 50px;" >
+						<img width="50px" src="/assets/sccc_theme/images/logo.svg" alt="sccc">
+					</div>
 					<div class="email-field">
 						<input type="email" id="login_with_email_link_email" class="form-control"
 							placeholder="{{ _('Email Address') }}" required autofocus autocomplete="username">
@@ -235,7 +239,7 @@
 				</div>
 				<div class="page-card-actions">
 					<button class="btn btn-sm btn-primary btn-block btn-login-with-email-link"
-						type="submit">{{ _("Send login link") }}</button>
+						type="submit" style="background-color:  #FF375E !important;">{{ _("Send login link") }}</button>
 					<p class="text-center sign-up-message">
 						<a href="#login">{{ _("Back to sign in") }}</a>
 					</p>
@@ -280,6 +284,21 @@
 	.page-card li,
 	.footer-text {
 		text-transform: lowercase !important;
+	}
+	.for-login .page-card .page-card-body .field-icon, .for-forgot .page-card .page-card-body .field-icon, .for-login-with-email-link .page-card .page-card-body .field-icon, .for-signup .page-card .page-card-body .field-icon, .for-email-login .page-card .page-card-body .field-icon {
+    left: 9px;
+    top: 5px;
+    position: absolute;
+    z-index: 2;
+	display: none;
+}
+	.btn:not(.btn-md):not(.btn-lg) {
+		border-radius: 0px !important;
+		padding: 10px 10px;
+	}
+
+	.btn btn-sm btn-primary btn-block mt-3{
+		background-color:  #FF375E !important;
 	}
 
     body {
