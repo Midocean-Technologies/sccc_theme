@@ -337,31 +337,14 @@ class CustomUser(User):
 #below code from doc events
 @frappe.whitelist()
 def validate_user_from_doc_event(doc, method=None):
-    try:
-        sccc_settings = frappe.get_single("sccc theme settings")
-        current_plan = sccc_settings.current_site_plan
-
-        if not current_plan:
-            return
-
-        if frappe.db.exists("Role Profile", current_plan):
-            doc.role_profile_name = current_plan
-            role_profile = frappe.get_doc("Role Profile", current_plan)
-            doc.set("roles", [])
-            for role in role_profile.roles:
-                if not doc.is_client_admin and role.role == "System Manager":
-                    continue
-                doc.append("roles", {"role": role.role})
-
-        if frappe.db.exists("Module Profile", current_plan):
-            doc.module_profile = current_plan
-            module_profile = frappe.get_doc("Module Profile", current_plan)
+    if doc.role_profile_name and not doc.module_profile:
+        if frappe.db.exists("Module Profile", doc.role_profile_name):
+            doc.module_profile = doc.role_profile_name
+            module_profile = frappe.get_doc("Module Profile", doc.role_profile_name)
             doc.set("block_modules", [])
             for d in module_profile.get("block_modules"):
                 doc.append("block_modules", {"module": d.module})
 
-    except Exception as e:
-        frappe.log_error(frappe.get_traceback(), "validate_user_from_doc_event Error")
 
 def after_insert_user(doc,method=None):
     if not doc.is_client_admin:

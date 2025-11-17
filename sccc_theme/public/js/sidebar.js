@@ -802,7 +802,7 @@ $root.on("click", ".sccc-user", function() {
   if (document.readyState !== "loading") setTimeout(mount, 0);
 
   $(document).on('page-change', () => {
-    console.log('<->')
+    // console.log('<->')
     try {
     // Build a route string comparable to data-route attributes
     let route = "";
@@ -813,7 +813,7 @@ $root.on("click", ".sccc-user", function() {
       route = (location.hash || "").replace(/^#/, "").split("?")[0] || location.pathname.replace(/^\/app\//, "");
     }
     route = route.replace(/^\/+|\/+$/g, "");
-    console.log('>>',route)
+    // console.log('>>',route)
     if (!route) {
       // clear selection if no route
       $('.sccc-collapsible-item').removeClass('selected');
@@ -878,13 +878,13 @@ $root.on("click", ".sccc-user", function() {
       }).first();
     }
 
-    console.log('route lookup', { raw: route, normalized: normalizedRoute, slug: slugRoute, last: lastSeg, doctype: routeDoctype, found: $match.length });
+    // console.log('route lookup', { raw: route, normalized: normalizedRoute, slug: slugRoute, last: lastSeg, doctype: routeDoctype, found: $match.length });
 
     if ($match && $match.length) {
       // clear selection everywhere (collapsible items, module select, tools)
       $('.sccc-collapsible-item').removeClass('selected');
       $match.addClass('selected');
-      console.log('---???????????',$match)
+      // console.log('---???????????',$match)
 
      // also highlight corresponding module select item (if present)
      try {

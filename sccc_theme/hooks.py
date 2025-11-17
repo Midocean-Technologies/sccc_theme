@@ -1,8 +1,8 @@
 app_name = "sccc_theme"
 app_title = "SCCC Theme"
-app_publisher = "Midocean Technologies Pvt LTD"
+app_publisher = "Bhavesh Mahavar"
 app_description = "SCCC Theme"
-app_email = "info@midocean.tech"
+app_email = "bhavesh@gmail.com"
 app_license = "mit"
 
 # Apps
@@ -64,9 +64,6 @@ fixtures = [
     # },
     # {
     #     "dt": "Module Profile",
-    #     "filters": [
-    #         ["name", "in", ["Essential","Individual","Pro","Ultimate"]]
-    #     ]
     # }
     # {
     #     "dt":"Custom HTML Block"
@@ -96,6 +93,7 @@ fixtures = [
 
 doctype_js = {
     "User": "public/js/gender_disable.js",
+    "User": "public/js/user.js",
     "Employee": "public/js/gender_disable.js",
     "Contact": "public/js/gender_disable.js",
     "Customer": "public/js/gender_disable.js",
