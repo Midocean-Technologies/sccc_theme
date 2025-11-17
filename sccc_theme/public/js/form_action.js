@@ -1,5 +1,4 @@
-// sccc_topbar.js
-
+console.log("sccc_theme: form_action.js loaded");
 (function () {
   
     function mountSidebarElements() {
@@ -41,12 +40,6 @@
     // --- mount ----------------------------------------------------------------
     function start() {
         setTimeout(mountSidebarElements, 2502);
-
-        // Re-mount on form refresh
-        // $(document).on('form-refresh', function () {
-        //     console.log('----------------------------------------------')
-        //     setTimeout(mountSidebarElements, 500);
-        // });
         
     }
 
