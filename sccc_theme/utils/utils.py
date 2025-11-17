@@ -303,7 +303,7 @@ def create_custom_fields():
             "fieldname": "is_client_admin",
             "fieldtype": "Check",
             "insert_after": "enabled",
-            "read_only":1,
+            "hidden":1,
         },
     )
 

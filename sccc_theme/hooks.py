@@ -1,8 +1,8 @@
 app_name = "sccc_theme"
 app_title = "SCCC Theme"
-app_publisher = "Midocean Technologies Pvt LTD"
+app_publisher = "Bhavesh Mahavar"
 app_description = "SCCC Theme"
-app_email = "info@midocean.tech"
+app_email = "bhavesh@gmail.com"
 app_license = "mit"
 
 # Apps
@@ -201,7 +201,7 @@ override_doctype_class = {
 
 doc_events = {
     "User":{
-        "validate":"sccc_theme.overrides.user.validate_user_from_doc_event",
+        # "validate":"sccc_theme.overrides.user.validate_user_from_doc_event",
         "after_insert":"sccc_theme.overrides.user.after_insert_user",
         # "before_insert":"sccc_theme.overrides.user.restrict_user_limitation"
     }
