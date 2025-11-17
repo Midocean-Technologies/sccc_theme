@@ -64,9 +64,6 @@ fixtures = [
     # },
     # {
     #     "dt": "Module Profile",
-    #     "filters": [
-    #         ["name", "in", ["Essential","Individual","Pro","Ultimate"]]
-    #     ]
     # }
     # {
     #     "dt":"Custom HTML Block"
@@ -96,6 +93,7 @@ fixtures = [
 
 doctype_js = {
     "User": "public/js/gender_disable.js",
+    "User": "public/js/user.js",
     "Employee": "public/js/gender_disable.js",
     "Contact": "public/js/gender_disable.js",
     "Customer": "public/js/gender_disable.js",
@@ -201,7 +199,7 @@ override_doctype_class = {
 
 doc_events = {
     "User":{
-        # "validate":"sccc_theme.overrides.user.validate_user_from_doc_event",
+        "validate":"sccc_theme.overrides.user.validate_user_from_doc_event",
         "after_insert":"sccc_theme.overrides.user.after_insert_user",
         # "before_insert":"sccc_theme.overrides.user.restrict_user_limitation"
     }
