@@ -22,6 +22,23 @@ def after_migrate():
     disable_other_languages()
     create_role_profile()
     # delete_old_role_profile()
+    change_workspace_name()
+
+def change_workspace_name():
+    mapping = {
+        "Selling": "Sales",
+        "Stock": "Inventory",
+        "Buying": "Purchasing"
+    }
+
+    for old_name, new_name in mapping.items():
+        if frappe.db.exists("Workspace", old_name):
+            frappe.rename_doc("Workspace", old_name, new_name, force=True)
+            ws = frappe.get_doc("Workspace", new_name)
+            ws.title = new_name
+            ws.save(ignore_permissions=True)
+
+
 
 def delete_old_role_profile():
     role_profiles = ["HR", "Purchase", "Sales", "Accounts", "Manufacturing", "Inventory"]
