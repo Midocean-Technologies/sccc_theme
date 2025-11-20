@@ -32,13 +32,15 @@ def change_workspace_name():
     }
 
     for old_name, new_name in mapping.items():
+        if frappe.db.exists("Workspace", new_name):
+            continue
+
         if frappe.db.exists("Workspace", old_name):
             frappe.rename_doc("Workspace", old_name, new_name, force=True)
+
             ws = frappe.get_doc("Workspace", new_name)
             ws.title = new_name
             ws.save(ignore_permissions=True)
-
-
 
 def delete_old_role_profile():
     role_profiles = ["HR", "Purchase", "Sales", "Accounts", "Manufacturing", "Inventory"]
@@ -375,7 +377,16 @@ def hide_workspace():
         "Welcome Workspace",
         "Website",
         "Integrations",
-        "ZATCA ERPGulf"
+        "ZATCA ERPGulf",
+        "Buying",
+        "Stock",
+        "Assets",
+        "Manufacturing",
+        "Quality",
+        "Projects",
+        "Support",
+        "Payroll",
+        "CRM",
     ]
 
     # Get all workspace docs that match and are not hidden
