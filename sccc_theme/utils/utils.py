@@ -20,7 +20,7 @@ def after_migrate():
     # add_language_permission_for_ar_en()
     # add_translations() // this is commented because ar.csv file added for translation
     disable_other_languages()
-    create_role_profile()
+    # create_role_profile()
     # delete_old_role_profile()
     change_workspace_name()
 
