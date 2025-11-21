@@ -21,7 +21,7 @@ class CustomUser(User):
         throttle_user_creation()
         
         # Add user limitation
-        user_limit = frappe.db.get_single_value('sccc theme settings', 'user_limitation')
+        user_limit = frappe.db.get_single_value('Global Defaults', 'user_limitation')
 
         user_count = frappe.db.count(
             "User",
@@ -370,3 +370,25 @@ def throttle_user_creation():
 
 	if frappe.db.get_creation_count("User", 60) > frappe.local.conf.get("throttle_user_limit", 60):
 		frappe.throw(_("Throttled"))
+          
+
+@frappe.whitelist()
+def get_all_roles():
+    active_domains = frappe.get_active_domains()
+    current_plan = ""
+    global_defaults = frappe.get_single("Global Defaults")
+    if global_defaults.sccc_plan:
+        current_plan = global_defaults.sccc_plan
+
+    roles = frappe.get_all(
+        "Role",
+        filters={
+            "name": ("not in", frappe.permissions.AUTOMATIC_ROLES),
+            "disabled": 0,
+            "sccc_plan":current_plan,
+        },
+        or_filters={"ifnull(restrict_to_domain, '')": "", "restrict_to_domain": ("in", active_domains)},
+        order_by="name",
+    )
+    # print("role list:::::::::;",sorted([role.get("name") for role in roles]))
+    return sorted([role.get("name") for role in roles])

@@ -75,16 +75,25 @@ def add_to_file_manager(target_dir):
 def run_setup_wizard(company_name, language, plan):
     try:
         if not company_name:
-            frappe.throw("Company name is required.")
+            return {"status": "failed", "message": "Company is Required"}
+
         if not language:
-            frappe.throw("Language is required.")
+            return {"status": "failed", "message": "Language is Required"}
+
         if not plan:
-            frappe.throw("Plan is required.")
+            return {"status": "failed", "message": "Plan is Required"}
+
+        plan_list = frappe.get_all("sccc plan", fields=["name"])
+        allowed_plans = [p["name"] for p in plan_list]
+
+        if plan not in allowed_plans:
+            return {
+                "status": "failed",
+                "message": f"Invalid Plan. Choose from: {allowed_plans}"
+            }
 
         fy_start, fy_end = get_fiscal_year_dates()
-
-        company_abbr = "".join([c[0] for c in company_name.split() if c]).upper()
-        company_abbr = company_abbr[:5]
+        company_abbr = "".join([c[0] for c in company_name.split() if c]).upper()[:5]
 
         args = {
             "currency": "SAR",
@@ -102,6 +111,7 @@ def run_setup_wizard(company_name, language, plan):
         setup_complete(args)
 
         if frappe.is_setup_complete():
+            set_plan_in_role(plan)
             if plan == "Individual":
                 user_limit = 1
             elif plan == "Pro":
@@ -111,8 +121,8 @@ def run_setup_wizard(company_name, language, plan):
             else:
                 frappe.throw("Invalid subscription plan.")
 
-            frappe.db.set_single_value("sccc theme settings", "current_site_plan", plan)
-            frappe.db.set_single_value("sccc theme settings", "user_limitation", user_limit)
+            frappe.db.set_single_value("Global Defaults", "sccc_plan", plan)
+            frappe.db.set_single_value("Global Defaults", "user_limitation", user_limit)
             system_settings = frappe.get_single("System Settings")
             if system_settings:
                 system_settings.disable_standard_email_footer = 1
@@ -123,6 +133,7 @@ def run_setup_wizard(company_name, language, plan):
                 system_settings.otp_issuer_name = "SCCC ERP"
                 system_settings.flags.ignore_mandatory = True
                 system_settings.save(ignore_permissions=True)
+
 
         frappe.db.commit()
         frappe.clear_cache()
@@ -141,6 +152,48 @@ def run_setup_wizard(company_name, language, plan):
             "status": "error",
             "message": f"Setup wizard failed: {str(e)}"
         }
+    
+@frappe.whitelist()
+def set_plan_in_role(plan):
+    try:
+        if not plan:
+            return {"status": "failed", "message": "Plan is Required"}
+
+        if not frappe.db.exists("sccc plan", plan):
+            return {"status": "failed", "message": "Invalid Plan"}
+
+        sccc_plan = frappe.get_doc("sccc plan", plan)
+
+        if not sccc_plan.roles:
+            return {"status": "failed", "message": "No roles found inside this plan"}
+
+        for item in sccc_plan.roles:
+            role_name = item.role
+
+            if not frappe.db.exists("Role", role_name):
+                continue
+
+            role_doc = frappe.get_doc("Role", role_name)
+            role_doc.sccc_plan = plan
+            role_doc.save(ignore_permissions=True)
+
+        frappe.db.commit()
+
+        return {
+            "status": "success",
+            "message": f"Plan '{plan}' successfully assigned to all roles."
+        }
+
+    except Exception as e:
+        frappe.log_error(
+            message=frappe.get_traceback(),
+            title="Set Plan Failed"
+        )
+        return {
+            "status": "error",
+            "message": f"Failed to set plan: {str(e)}"
+        }
+
 
 def get_fiscal_year_dates():
 	today = getdate(nowdate())
@@ -195,63 +248,76 @@ def setup_email_account(email, password):
     
 
 @frappe.whitelist()
-def create_client_user(email, full_name,plan=None):
+def create_client_user(email, full_name, plan=None):
     try:
         if not frappe.is_setup_complete():
             frappe.throw("Setup Wizard is not completed yet.")
+
         if not email:
             frappe.throw("Email is required.")
+
         if frappe.db.exists("User", email):
             return {
                 "status": "warning",
                 "message": f"User with email '{email}' already exists."
             }
-        
+
         if not full_name:
             frappe.throw("Full name is required.")
 
-        sccc_theme_settings = frappe.get_single("sccc theme settings")
+        global_defaults = frappe.get_single("Global Defaults")
 
-        if sccc_theme_settings.current_site_plan:
-            plan_to_use = sccc_theme_settings.current_site_plan
+        if global_defaults.sccc_plan:
+            plan_to_use = global_defaults.sccc_plan
         elif plan:
+            plan_list = frappe.get_all("sccc plan", fields=["name"])
+            allowed_plans = [p["name"] for p in plan_list]
+
+            if plan not in allowed_plans:
+                return {
+                    "status": "failed",
+                    "message": f"Invalid Plan. Choose from: {allowed_plans}"
+                }
             plan_to_use = plan
         else:
             frappe.throw("Plan is required to create a user.")
 
-        if not frappe.db.exists("Role Profile", plan_to_use ):
-            frappe.throw(f"Role Profile '{plan_to_use }' not found.")
+        if not frappe.db.exists("Role Profile", plan_to_use):
+            frappe.throw(f"Role Profile '{plan_to_use}' not found.")
 
         userDoc = frappe.new_doc("User")
         userDoc.email = email
-        userDoc.is_client_admin = 1
         userDoc.first_name = full_name
         userDoc.time_zone = "Asia/Riyadh"
         userDoc.send_welcome_email = 1
 
-        userDoc.save(ignore_permissions=True)
+        if hasattr(userDoc, "is_client_admin"):
+            userDoc.is_client_admin = 1
 
-        role_profile = frappe.get_doc("Role Profile", plan_to_use )
+        role_profile = frappe.get_doc("Role Profile", plan_to_use)
         for role in role_profile.roles:
             userDoc.append("roles", {"role": role.role})
 
-        userDoc.module_profile = plan_to_use 
+        userDoc.module_profile = plan_to_use
         userDoc.save(ignore_permissions=True)
+
+        frappe.db.commit()
 
         return {
             "status": "success",
-            "message": f"User '{full_name}' ({email}) created successfully with plan '{plan_to_use }'."
+            "message": f"User '{full_name}' ({email}) created successfully with plan '{plan_to_use}'."
         }
 
-    except Exception as e:
+    except Exception:
         frappe.log_error(
             message=frappe.get_traceback(),
             title="Client User Creation Failed"
         )
         return {
             "status": "error",
-            "message": f"Failed to create user: {str(e)}"
+            "message": "Failed to create user."
         }
+
 
 
 # @frappe.whitelist()

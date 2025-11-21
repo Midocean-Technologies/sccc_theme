@@ -66,7 +66,6 @@ def create_role_profile():
                 {"role": "Accounts Manager"},
                 {"role": "Accounts User"},
                 {"role":"Auditor"},
-                {"role":"System Manager"},
             ]
         })
         doc.insert()
@@ -91,7 +90,6 @@ def create_role_profile():
                 {"role": "Customer"},
                 {"role": "HR Manager"},
                 {"role": "HR User"},
-                {"role":"System Manager"},
             ]
         })
         doc.insert()
@@ -118,7 +116,6 @@ def create_role_profile():
                 {"role": "Accounts User"},
                 {"role": "Projects Manager"},
                 {"role": "Projects User"},
-                {"role":"System Manager"},
             ]
         })
         doc.insert()
@@ -153,7 +150,6 @@ def create_role_profile():
                 {"role":"Auditor"},
                 {"role":"Maintenance Manager"},
                 {"role":"Workspace Manager"},
-                {"role":"System Manager"},
             ]
         })
         doc.insert()
@@ -325,6 +321,37 @@ def create_custom_fields():
             "hidden":1,
         },
     )
+    create_custom_field(  
+        "Global Defaults",
+        {
+            "label":_("SCCC Plan"),
+            "fieldname": "sccc_plan",
+            "fieldtype": "Link",
+            "insert_after": "default_distance_unit",
+            "options":"sccc plan",
+            "read_only":1
+        },
+    )
+    create_custom_field(  
+        "Global Defaults",
+        {
+            "label":_("User Limitation"),
+            "fieldname": "user_limitation",
+            "fieldtype": "Int",
+            "insert_after": "sccc_plan",
+            "read_only":1
+        },
+    )
+    create_custom_field(  
+        "Role",
+        {
+            "label":_("SCCC Plan"),
+            "fieldname": "sccc_plan",
+            "fieldtype": "Data",
+            "insert_after": "restrict_to_domain",
+            "read_only":1
+        },
+    )
 
 def remove_gender_records():
     gender_list = frappe.get_all(
@@ -340,7 +367,8 @@ def PropertySetter():
     make_property_setter("Workspace","icon","read_only",0,"Check")
     make_property_setter("User","role_profile_name","allow_in_quick_entry",0,"Check")
     make_property_setter("User","modules_html","hidden",1,"Check")
-    make_property_setter("User","roles_html","hidden",1,"Check")
+    make_property_setter("User","module_profile","read_only",1,"Check")
+    # make_property_setter("User","roles_html","hidden",1,"Check")
 
 def update_currency_in_doctypes():
     """Update currency in number card to SAR."""
@@ -387,6 +415,7 @@ def hide_workspace():
         "Support",
         "Payroll",
         "CRM",
+        "Selling",
     ]
 
     # Get all workspace docs that match and are not hidden
