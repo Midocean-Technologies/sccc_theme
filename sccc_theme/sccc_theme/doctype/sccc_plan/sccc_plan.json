@@ -21,16 +21,14 @@
   },
   {
    "fieldname": "role_profile",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Role Profile",
-   "options": "Role Profile",
    "read_only": 1
   },
   {
    "fieldname": "module_profile",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Module Profile",
-   "options": "Module Profile",
    "read_only": 1
   },
   {
@@ -49,7 +47,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-11-21 22:44:01.090355",
+ "modified": "2025-11-21 20:43:38.891083",
  "modified_by": "Administrator",
  "module": "SCCC Theme",
  "name": "sccc plan",

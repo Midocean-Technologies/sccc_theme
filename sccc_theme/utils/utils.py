@@ -66,6 +66,7 @@ def create_role_profile():
                 {"role": "Accounts Manager"},
                 {"role": "Accounts User"},
                 {"role":"Auditor"},
+                {"role":"System Manager"}
             ]
         })
         doc.insert()
@@ -90,6 +91,7 @@ def create_role_profile():
                 {"role": "Customer"},
                 {"role": "HR Manager"},
                 {"role": "HR User"},
+                {"role":"System Manager"}
             ]
         })
         doc.insert()
@@ -116,6 +118,7 @@ def create_role_profile():
                 {"role": "Accounts User"},
                 {"role": "Projects Manager"},
                 {"role": "Projects User"},
+                {"role":"System Manager"}
             ]
         })
         doc.insert()
@@ -150,6 +153,7 @@ def create_role_profile():
                 {"role":"Auditor"},
                 {"role":"Maintenance Manager"},
                 {"role":"Workspace Manager"},
+                {"role":"System Manager"}
             ]
         })
         doc.insert()
