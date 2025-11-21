@@ -2,7 +2,7 @@
  {
   "docstatus": 0,
   "doctype": "sccc plan",
-  "modified": "2025-11-21 22:43:28.717908",
+  "modified": "2025-11-21 21:07:01.084942",
   "module_profile": "Essential",
   "name": "Essential",
   "plan_name": "Essential",
@@ -97,6 +97,12 @@
     "parentfield": "roles",
     "parenttype": "sccc plan",
     "role": "HR User"
+   },
+   {
+    "parent": "Essential",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "System Manager"
    }
   ],
   "user_limitation": 20
@@ -104,7 +110,7 @@
  {
   "docstatus": 0,
   "doctype": "sccc plan",
-  "modified": "2025-11-21 22:42:06.096709",
+  "modified": "2025-11-21 21:07:11.394906",
   "module_profile": "Ultimate",
   "name": "Ultimate",
   "plan_name": "Ultimate",
@@ -259,6 +265,12 @@
     "parentfield": "roles",
     "parenttype": "sccc plan",
     "role": "Workspace Manager"
+   },
+   {
+    "parent": "Ultimate",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "System Manager"
    }
   ],
   "user_limitation": 0
@@ -266,7 +278,7 @@
  {
   "docstatus": 0,
   "doctype": "sccc plan",
-  "modified": "2025-11-21 22:43:05.072121",
+  "modified": "2025-11-21 21:07:30.105568",
   "module_profile": "Pro",
   "name": "Pro",
   "plan_name": "Pro",
@@ -373,6 +385,12 @@
     "parentfield": "roles",
     "parenttype": "sccc plan",
     "role": "Projects User"
+   },
+   {
+    "parent": "Pro",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "System Manager"
    }
   ],
   "user_limitation": 50
@@ -380,7 +398,7 @@
  {
   "docstatus": 0,
   "doctype": "sccc plan",
-  "modified": "2025-11-21 22:42:32.839685",
+  "modified": "2025-11-21 21:07:20.198913",
   "module_profile": "Individual",
   "name": "Individual",
   "plan_name": "Individual",
@@ -445,6 +463,12 @@
     "parentfield": "roles",
     "parenttype": "sccc plan",
     "role": "Auditor"
+   },
+   {
+    "parent": "Individual",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "System Manager"
    }
   ],
   "user_limitation": 1
