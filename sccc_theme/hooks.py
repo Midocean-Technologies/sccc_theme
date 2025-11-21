@@ -56,14 +56,20 @@ app_include_js = [
 
 # fixtures
 fixtures = [
-    {
-        "dt": "Workspace",
-        "filters": [
-            ["name", "not in", ["ZATCA ERPGulf", "Loans"]]
-        ]
-    },
+    # {
+    #     "dt": "Workspace",
+    #     "filters": [
+    #         ["name", "not in", ["ZATCA ERPGulf", "Loans"]]
+    #     ]
+    # },
     # {
     #     "dt": "Module Profile",
+    # }
+    # {
+    #     "dt": "sccc plan",
+    # },
+    # {
+    #     "dt": "Role Profile",
     # }
     # {
     #     "dt":"Custom HTML Block"
@@ -235,9 +241,9 @@ doc_events = {
 # ------------------------------
 #
 # from frappe.frappe.www.login import send_login_link
-# override_whitelisted_methods = {
-#     "frappe.www.login.send_login_link": "sccc_theme.overrides.login.custom_send_login_link"
-# }
+override_whitelisted_methods = {
+    "frappe.core.doctype.user.user.get_all_roles": "sccc_theme.overrides.user.get_all_roles"
+}
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
