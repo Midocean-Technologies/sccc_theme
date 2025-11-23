@@ -176,6 +176,8 @@ def update_system_settings():
         system_settings.allow_consecutive_login_attempts = 1
         system_settings.allow_login_after_fail = 7200
         system_settings.otp_issuer_name = "SCCC ERP"
+        system_settings.disable_system_update_notification = 1
+        system_settings.disable_change_log_notification = 1
         system_settings.flags.ignore_mandatory = True
         system_settings.save(ignore_permissions=True)
 

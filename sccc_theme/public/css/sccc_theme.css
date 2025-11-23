@@ -2,14 +2,12 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap'); */
 
  @font-face {
-    /* font-family: 'STCForward'; */
-    font-family: font-sans !important;
+    font-family: 'STCForward';
     src: local('STCForward'), local('STCForward-Regular'),
          url('/assets/sccc_theme/font/STCForward-Regular.otf') format('opentype');
     }
 body, * {
-      /* font-family: 'STCForward' !important; */
-      font-family: font-sans !important;
+      font-family: 'STCForward' !important;
       text-transform: lowercase !important;
 }  
 
