@@ -254,6 +254,12 @@
     <img src="/assets/sccc_theme/images/SCCC Logo - white.png" alt="sccc">
   </div>
 <style>
+	@font-face {
+		font-family: 'STCForward';
+		src: local('STCForward'), local('STCForward-Regular'),
+			url('/assets/sccc_theme/font/STCForward-Regular.otf') format('opentype');
+	}
+
 	/* force lowercase first letter for headings, labels, buttons, links, etc. */
 	.page-card h1::first-letter,
 	.page-card h2::first-letter,
@@ -300,11 +306,13 @@
 	.btn btn-sm btn-primary btn-block mt-3{
 		background-color:  #FF375E !important;
 	}
+	body,*{
+	  font-family: 'STCForward';
+    }
 
-    body {
-	  font-family: font-sans !important;
+    body{
+	  font-family: 'STCForward';
 	  font-weight: bold !important;
-      /* font-family: "HelveticaNowMTText", "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", sans-serif; */
       background-color :#4F008C;
     }
     .login-content, input, button{
