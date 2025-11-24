@@ -112,12 +112,12 @@ def run_setup_wizard(company_name, language, plan):
 
         if frappe.is_setup_complete():
             set_plan_in_role(plan)
-            if plan == "Individual":
-                user_limit = 1
-            elif plan == "Pro":
-                user_limit = 50
-            elif plan == "Essential":
+            if plan == "Starter":
                 user_limit = 20
+            # elif plan == "Pro":
+            #     user_limit = 50
+            # elif plan == "Starter":
+            #     user_limit = 20
             else:
                 frappe.throw("Invalid subscription plan.")
 
