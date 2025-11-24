@@ -72,7 +72,7 @@ def add_to_file_manager(target_dir):
 
 #site configuration methods
 @frappe.whitelist()
-def run_setup_wizard(company_name, language, plan):
+def run_setup_wizard(company_name, language, plan, user_limit=None):
     try:
         if not company_name:
             return {"status": "failed", "message": "Company is Required"}
@@ -83,7 +83,7 @@ def run_setup_wizard(company_name, language, plan):
         if not plan:
             return {"status": "failed", "message": "Plan is Required"}
 
-        plan_list = frappe.get_all("sccc plan", fields=["name"])
+        plan_list = frappe.get_all("sccc plan", filters={"enabled": 1}, fields=["name"])
         allowed_plans = [p["name"] for p in plan_list]
 
         if plan not in allowed_plans:
@@ -111,18 +111,19 @@ def run_setup_wizard(company_name, language, plan):
         setup_complete(args)
 
         if frappe.is_setup_complete():
-            set_plan_in_role(plan)
-            if plan == "Individual":
-                user_limit = 1
-            elif plan == "Pro":
-                user_limit = 50
-            elif plan == "Essential":
-                user_limit = 20
-            else:
-                frappe.throw("Invalid subscription plan.")
 
+            set_plan_in_role(plan)
+
+            if user_limit is None:
+                if plan == "Starter":
+                    user_limit = 20
+                else:
+                    frappe.throw("Invalid subscription plan.")
+            
             frappe.db.set_single_value("Global Defaults", "sccc_plan", plan)
             frappe.db.set_single_value("Global Defaults", "user_limitation", user_limit)
+
+            # System settings update
             system_settings = frappe.get_single("System Settings")
             if system_settings:
                 system_settings.disable_standard_email_footer = 1
@@ -135,7 +136,6 @@ def run_setup_wizard(company_name, language, plan):
                 system_settings.disable_change_log_notification = 1
                 system_settings.flags.ignore_mandatory = True
                 system_settings.save(ignore_permissions=True)
-
 
         frappe.db.commit()
         frappe.clear_cache()
@@ -154,6 +154,7 @@ def run_setup_wizard(company_name, language, plan):
             "status": "error",
             "message": f"Setup wizard failed: {str(e)}"
         }
+
     
 @frappe.whitelist()
 def set_plan_in_role(plan):
@@ -272,7 +273,7 @@ def create_client_user(email, full_name, plan=None):
         if global_defaults.sccc_plan:
             plan_to_use = global_defaults.sccc_plan
         elif plan:
-            plan_list = frappe.get_all("sccc plan", fields=["name"])
+            plan_list = frappe.get_all("sccc plan", filters={"enabled": 1}, fields=["name"])
             allowed_plans = [p["name"] for p in plan_list]
 
             if plan not in allowed_plans:

@@ -64,7 +64,7 @@ fixtures = [
     # },
     # {
     #     "dt": "Module Profile",
-    # }
+    # },
     # {
     #     "dt": "sccc plan",
     # },
