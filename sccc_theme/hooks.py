@@ -38,7 +38,8 @@ app_include_js = [
     "/assets/sccc_theme/js/sidebar.js",
     "/assets/sccc_theme/js/navbar.js",
     "/assets/sccc_theme/js/workspace.js",
-    "/assets/sccc_theme/js/form_action.js"
+    "/assets/sccc_theme/js/form_action.js",
+    "/assets/sccc_theme/js/force_home.js"
     # "/assets/sccc_theme/js/gender_disable.js"
 ]
 

@@ -455,7 +455,6 @@ def update_website_setting_logo():
     favicon_path = "/files/logo.svg"
 
     website_settings.app_name = "SCCC"
-    print("website_settings.home_page",website_settings.home_page)
     website_settings.home_page = "app"
 
     if not navbar_settings.app_logo:
