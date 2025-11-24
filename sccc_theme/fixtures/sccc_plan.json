@@ -2,6 +2,7 @@
  {
   "docstatus": 0,
   "doctype": "sccc plan",
+  "enabled": 0,
   "modified": "2025-11-21 21:07:01.084942",
   "module_profile": "Essential",
   "name": "Essential",
@@ -110,6 +111,7 @@
  {
   "docstatus": 0,
   "doctype": "sccc plan",
+  "enabled": 0,
   "modified": "2025-11-21 21:07:11.394906",
   "module_profile": "Ultimate",
   "name": "Ultimate",
@@ -278,6 +280,7 @@
  {
   "docstatus": 0,
   "doctype": "sccc plan",
+  "enabled": 0,
   "modified": "2025-11-21 21:07:30.105568",
   "module_profile": "Pro",
   "name": "Pro",
@@ -398,6 +401,7 @@
  {
   "docstatus": 0,
   "doctype": "sccc plan",
+  "enabled": 0,
   "modified": "2025-11-21 21:07:20.198913",
   "module_profile": "Individual",
   "name": "Individual",
@@ -472,5 +476,114 @@
    }
   ],
   "user_limitation": 1
+ },
+ {
+  "docstatus": 0,
+  "doctype": "sccc plan",
+  "enabled": 1,
+  "modified": "2025-11-24 08:27:05.791851",
+  "module_profile": null,
+  "name": "Starter",
+  "plan_name": "Starter",
+  "role_profile": null,
+  "roles": [
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "HR Manager"
+   },
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "HR User"
+   },
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "Item Manager"
+   },
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "Purchase Manager"
+   },
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "Purchase User"
+   },
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "Stock User"
+   },
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "Sales User"
+   },
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "Auditor"
+   },
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "Customer"
+   },
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "Purchase Master Manager"
+   },
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "Sales Master Manager"
+   },
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "System Manager"
+   }
+  ],
+  "user_limitation": 20
  }
 ]
