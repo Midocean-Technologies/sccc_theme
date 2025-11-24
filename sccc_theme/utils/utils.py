@@ -454,8 +454,8 @@ def update_website_setting_logo():
         navbar_settings.app_logo = logo_path
         navbar_settings.save(ignore_permissions=True)
     
-    if website_settings.home_page != "app":
-        website_settings.home_page = "app"
+    if website_settings.home_page != "/app/home":
+        website_settings.home_page = "/app/home"
 
     if not website_settings.banner_image:
         website_settings.banner_image = logo_path
