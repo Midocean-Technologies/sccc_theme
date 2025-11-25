@@ -411,11 +411,23 @@
     "parent": "Sales",
     "parentfield": "block_modules",
     "parenttype": "Module Profile"
+   },
+   {
+    "module": "CRM",
+    "parent": "Sales",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile"
+   },
+   {
+    "module": "Stock",
+    "parent": "Sales",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile"
    }
   ],
   "docstatus": 0,
   "doctype": "Module Profile",
-  "modified": "2025-11-17 20:06:42.618824",
+  "modified": "2025-11-24 20:16:39.322670",
   "module_profile_name": "Sales",
   "name": "Sales"
  },
@@ -624,11 +636,17 @@
     "parent": "Accounts",
     "parentfield": "block_modules",
     "parenttype": "Module Profile"
+   },
+   {
+    "module": "Stock",
+    "parent": "Accounts",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile"
    }
   ],
   "docstatus": 0,
   "doctype": "Module Profile",
-  "modified": "2025-11-17 20:06:31.271175",
+  "modified": "2025-11-24 20:16:20.153498",
   "module_profile_name": "Accounts",
   "name": "Accounts"
  },
@@ -844,219 +862,6 @@
   "modified": "2025-11-17 20:06:27.526320",
   "module_profile_name": "Purchase",
   "name": "Purchase"
- },
- {
-  "block_modules": [
-   {
-    "module": "Accounts",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Assets",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Automation",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Bulk Transaction",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Communication",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Contacts",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Core",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "CRM",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Custom",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Desk",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "EDI",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Email",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "ERPNext Integrations",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Geo",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "HR",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Integrations",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Maintenance",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Payroll",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Portal",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Printing",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Projects",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Quality Management",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Regional",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "SCCC Theme",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Selling",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Setup",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Social",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Subcontracting",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Support",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Telephony",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Utilities",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Website",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Workflow",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   },
-   {
-    "module": "Buying",
-    "parent": "Manufacturing",
-    "parentfield": "block_modules",
-    "parenttype": "Module Profile"
-   }
-  ],
-  "docstatus": 0,
-  "doctype": "Module Profile",
-  "modified": "2025-11-17 20:06:22.202696",
-  "module_profile_name": "Manufacturing",
-  "name": "Manufacturing"
  },
  {
   "block_modules": [

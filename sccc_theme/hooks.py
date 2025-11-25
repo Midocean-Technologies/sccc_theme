@@ -38,7 +38,8 @@ app_include_js = [
     "/assets/sccc_theme/js/sidebar.js",
     "/assets/sccc_theme/js/navbar.js",
     "/assets/sccc_theme/js/workspace.js",
-    "/assets/sccc_theme/js/form_action.js"
+    "/assets/sccc_theme/js/form_action.js",
+    "/assets/sccc_theme/js/force_home.js"
     # "/assets/sccc_theme/js/gender_disable.js"
 ]
 
@@ -182,12 +183,12 @@ after_migrate = "sccc_theme.utils.utils.after_migrate"
 # -----------
 # Permissions evaluated in scripted ways
 
-# permission_query_conditions = {
-# 	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
-# }
+permission_query_conditions = {
+    "User":"sccc_theme.utils.permission.user_permission_query_conditions"
+}
 #
 # has_permission = {
-#     "User":"sccc_theme.utils.permission.user_has_permission"
+#     "User":"sccc_theme.utils.permission.has_user_permission"
 # 	# "Event": "frappe.desk.doctype.event.event.has_permission",
 # }
 
@@ -206,7 +207,7 @@ override_doctype_class = {
 doc_events = {
     "User":{
         "validate":"sccc_theme.overrides.user.validate_user_from_doc_event",
-        "after_insert":"sccc_theme.overrides.user.after_insert_user",
+        # "after_insert":"sccc_theme.overrides.user.after_insert_user",
         # "before_insert":"sccc_theme.overrides.user.restrict_user_limitation"
     }
 }
