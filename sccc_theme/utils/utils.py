@@ -13,9 +13,9 @@ def after_migrate():
     update_system_settings()
     hide_workspace()
     update_currency_in_doctypes()
+    create_custom_fields()
     PropertySetter()
     remove_gender_records()
-    create_custom_fields()
     # remove_reports_from_workspace_custom_link_cards()
     # add_language_permission_for_ar_en()
     # add_translations() // this is commented because ar.csv file added for translation
@@ -324,7 +324,7 @@ def create_custom_fields():
             "fieldname": "is_client_admin",
             "fieldtype": "Check",
             "insert_after": "enabled",
-            "hidden":1,
+            "read_only":1,
         },
     )
     create_custom_field(  
@@ -375,6 +375,12 @@ def PropertySetter():
     make_property_setter("User","modules_html","hidden",1,"Check")
     make_property_setter("User","module_profile","read_only",1,"Check")
     # make_property_setter("User","roles_html","hidden",1,"Check")
+    make_property_setter("User","is_client_admin","hidden",0,"Check")
+    make_property_setter("User","is_client_admin","read_only",1,"Check")
+    make_property_setter("User","is_client_admin","in_list_view",1,"Check")
+    make_property_setter("User","is_client_admin","in_standard_filter",1,"Check")
+    make_property_setter("User","user_type","in_list_view",0,"Check")
+    make_property_setter("User","user_type","in_standard_filter",0,"Check")
 
 def update_currency_in_doctypes():
     """Update currency in number card to SAR."""
@@ -449,14 +455,12 @@ def update_website_setting_logo():
     favicon_path = "/files/logo.svg"
 
     website_settings.app_name = "SCCC"
+    website_settings.home_page = "app"
 
     if not navbar_settings.app_logo:
         navbar_settings.app_logo = logo_path
         navbar_settings.save(ignore_permissions=True)
     
-    if website_settings.home_page != "/app/home":
-        website_settings.home_page = "/app/home"
-
     if not website_settings.banner_image:
         website_settings.banner_image = logo_path
 

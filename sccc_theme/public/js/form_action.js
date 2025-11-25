@@ -9,22 +9,20 @@ console.log("sccc_theme: form_action.js loaded");
         const moveToPageActions = [
             '.form-assignments',
             '.form-attachments',
-            '.form-tags',
-            '.form-shared',
-            '.form-sidebar-stats' // for likes and comments
+            // '.form-tags',
+            // '.form-shared',
+            // '.form-sidebar-stats' // for likes and comments
         ];
 
         const $pageActions = $('.page-actions');
 
         if ($pageActions.length) {
-            // create a wrapper div inside page-actions
             let $wrapper = $pageActions.find('.page-actions .custom-sidebar-wrapper');
             if (!$wrapper.length) {
                 $wrapper = $('<div class="custom-sidebar-wrapper"></div>');
                 $pageActions.prepend($wrapper);
             }
 
-            // move elements into the wrapper
             moveToPageActions.forEach(selector => {
                 const $element = $('.form-sidebar').find(selector);
                 if ($element.length) {
@@ -32,18 +30,15 @@ console.log("sccc_theme: form_action.js loaded");
                 }
             });
 
-            // hide follow button
             $('.form-sidebar-stats .form-follow').hide();
         }
     }
     
-    // --- mount ----------------------------------------------------------------
     function start() {
         setTimeout(mountSidebarElements, 2502);
         
     }
 
-    // Wait until Frappe booted/DOM ready
     if (document.readyState === "complete" || document.readyState === "interactive") {
         start();
     } else {
