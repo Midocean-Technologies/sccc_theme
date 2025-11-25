@@ -29,34 +29,7 @@
  {
   "docstatus": 0,
   "doctype": "Role Profile",
-  "modified": "2025-11-21 22:49:32.377056",
-  "name": "Manufacturing",
-  "role_profile": "Manufacturing",
-  "roles": [
-   {
-    "parent": "Manufacturing",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Stock User"
-   },
-   {
-    "parent": "Manufacturing",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Manufacturing User"
-   },
-   {
-    "parent": "Manufacturing",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Manufacturing Manager"
-   }
-  ]
- },
- {
-  "docstatus": 0,
-  "doctype": "Role Profile",
-  "modified": "2025-11-21 22:49:32.390683",
+  "modified": "2025-11-25 13:20:58.880812",
   "name": "Accounts",
   "role_profile": "Accounts",
   "roles": [
@@ -71,6 +44,12 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Accounts Manager"
+   },
+   {
+    "parent": "Accounts",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Auditor"
    }
   ]
  },
@@ -170,7 +149,7 @@
  {
   "docstatus": 0,
   "doctype": "Role Profile",
-  "modified": "2025-11-24 08:34:07.735831",
+  "modified": "2025-11-25 13:32:25.511417",
   "name": "Starter",
   "role_profile": "Starter",
   "roles": [

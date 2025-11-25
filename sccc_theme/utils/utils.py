@@ -19,11 +19,40 @@ def after_migrate():
     # remove_reports_from_workspace_custom_link_cards()
     # add_language_permission_for_ar_en()
     # add_translations() // this is commented because ar.csv file added for translation
+    create_translations_for_module_def()
     disable_other_languages()
     # create_role_profile()
     # delete_old_role_profile()
     change_workspace_name()
+    setup_planbased_roles()
 
+def setup_planbased_roles():
+    from sccc_theme.utils.api import set_plan_in_role
+    global_defaults = frappe.get_single("Global Defaults")
+
+    if global_defaults.sccc_plan:
+        set_plan_in_role(global_defaults.sccc_plan)
+
+def create_translations_for_module_def():
+    translations = {
+        "Buying": "Purchasing",
+        "Selling": "Sales",
+        "Stock": "Inventory",
+    }
+
+    for src, target in translations.items():
+        try:
+            if not frappe.db.exists("Translation", {"source_text": src, "language": "en"}):
+                frappe.get_doc({
+                    "doctype": "Translation",
+                    "language": "en",
+                    "source_text": src,
+                    "translated_text": target
+                }).insert(ignore_permissions=True)
+        except Exception:
+            frappe.log_error(frappe.get_traceback(), f"Translation Failed: {src}")
+
+    
 def change_workspace_name():
     mapping = {
         "Selling": "Sales",
@@ -355,7 +384,6 @@ def create_custom_fields():
             "fieldname": "sccc_plan",
             "fieldtype": "Data",
             "insert_after": "restrict_to_domain",
-            "read_only":1
         },
     )
 
@@ -372,15 +400,16 @@ def remove_gender_records():
 def PropertySetter():
     make_property_setter("Workspace","icon","read_only",0,"Check")
     make_property_setter("User","role_profile_name","allow_in_quick_entry",0,"Check")
-    make_property_setter("User","modules_html","hidden",1,"Check")
-    make_property_setter("User","module_profile","read_only",1,"Check")
-    # make_property_setter("User","roles_html","hidden",1,"Check")
+    make_property_setter("User","modules_html","hidden",0,"Check")
+    make_property_setter("User","module_profile","read_only",0,"Check")
+    make_property_setter("User","roles_html","hidden",0,"Check")
     make_property_setter("User","is_client_admin","hidden",0,"Check")
     make_property_setter("User","is_client_admin","read_only",1,"Check")
     make_property_setter("User","is_client_admin","in_list_view",1,"Check")
     make_property_setter("User","is_client_admin","in_standard_filter",1,"Check")
     make_property_setter("User","user_type","in_list_view",0,"Check")
     make_property_setter("User","user_type","in_standard_filter",0,"Check")
+    make_property_setter("Role","sccc_plan","read_only",0,"Check")
 
 def update_currency_in_doctypes():
     """Update currency in number card to SAR."""

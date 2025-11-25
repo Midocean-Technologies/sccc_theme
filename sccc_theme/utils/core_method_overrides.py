@@ -273,3 +273,4 @@ def send_login_link(email: str):
     except Exception as e:
         frappe.log_error(frappe.get_traceback(), "Login Link Error")
         return {"status": "failed", "message": str(e)}
+
