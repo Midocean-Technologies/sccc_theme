@@ -24,7 +24,14 @@ def after_migrate():
     # create_role_profile()
     # delete_old_role_profile()
     change_workspace_name()
+    setup_planbased_roles()
 
+def setup_planbased_roles():
+    from sccc_theme.utils.api import set_plan_in_role
+    global_defaults = frappe.get_single("Global Defaults")
+
+    if global_defaults.sccc_plan:
+        set_plan_in_role(global_defaults.sccc_plan)
 
 def create_translations_for_module_def():
     translations = {
@@ -377,7 +384,6 @@ def create_custom_fields():
             "fieldname": "sccc_plan",
             "fieldtype": "Data",
             "insert_after": "restrict_to_domain",
-            "read_only":1
         },
     )
 
@@ -403,6 +409,7 @@ def PropertySetter():
     make_property_setter("User","is_client_admin","in_standard_filter",1,"Check")
     make_property_setter("User","user_type","in_list_view",0,"Check")
     make_property_setter("User","user_type","in_standard_filter",0,"Check")
+    make_property_setter("Role","sccc_plan","read_only",0,"Check")
 
 def update_currency_in_doctypes():
     """Update currency in number card to SAR."""
