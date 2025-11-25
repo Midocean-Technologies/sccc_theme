@@ -337,7 +337,7 @@ class CustomUser(User):
 #below code from doc events
 @frappe.whitelist()
 def validate_user_from_doc_event(doc, method=None):
-    if doc.role_profile_name and not doc.module_profile:
+    if doc.role_profile_name:
         if frappe.db.exists("Module Profile", doc.role_profile_name):
             doc.module_profile = doc.role_profile_name
             module_profile = frappe.get_doc("Module Profile", doc.role_profile_name)
