@@ -66,12 +66,12 @@ fixtures = [
     # {
     #     "dt": "Module Profile",
     # },
-    {
-        "dt": "sccc plan",
-    },
     # {
-    #     "dt": "Role Profile",
-    # }
+    #     "dt": "sccc plan",
+    # },
+    {
+        "dt": "Role Profile",
+    }
     # {
     #     "dt":"Custom HTML Block"
     # }
