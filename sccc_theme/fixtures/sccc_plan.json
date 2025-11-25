@@ -481,7 +481,7 @@
   "docstatus": 0,
   "doctype": "sccc plan",
   "enabled": 1,
-  "modified": "2025-11-24 08:27:05.791851",
+  "modified": "2025-11-25 14:54:18.124166",
   "module_profile": null,
   "name": "Starter",
   "plan_name": "Starter",
@@ -582,6 +582,18 @@
     "parentfield": "roles",
     "parenttype": "sccc plan",
     "role": "System Manager"
+   },
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "Workspace Manager"
+   },
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "sccc plan",
+    "role": "Desk User"
    }
   ],
   "user_limitation": 20

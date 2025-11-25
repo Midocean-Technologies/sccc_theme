@@ -19,11 +19,33 @@ def after_migrate():
     # remove_reports_from_workspace_custom_link_cards()
     # add_language_permission_for_ar_en()
     # add_translations() // this is commented because ar.csv file added for translation
+    create_translations_for_module_def()
     disable_other_languages()
     # create_role_profile()
     # delete_old_role_profile()
     change_workspace_name()
 
+
+def create_translations_for_module_def():
+    translations = {
+        "Buying": "Purchasing",
+        "Selling": "Sales",
+        "Stock": "Inventory",
+    }
+
+    for src, target in translations.items():
+        try:
+            if not frappe.db.exists("Translation", {"source_text": src, "language": "en"}):
+                frappe.get_doc({
+                    "doctype": "Translation",
+                    "language": "en",
+                    "source_text": src,
+                    "translated_text": target
+                }).insert(ignore_permissions=True)
+        except Exception:
+            frappe.log_error(frappe.get_traceback(), f"Translation Failed: {src}")
+
+    
 def change_workspace_name():
     mapping = {
         "Selling": "Sales",
@@ -372,9 +394,9 @@ def remove_gender_records():
 def PropertySetter():
     make_property_setter("Workspace","icon","read_only",0,"Check")
     make_property_setter("User","role_profile_name","allow_in_quick_entry",0,"Check")
-    make_property_setter("User","modules_html","hidden",1,"Check")
-    make_property_setter("User","module_profile","read_only",1,"Check")
-    # make_property_setter("User","roles_html","hidden",1,"Check")
+    make_property_setter("User","modules_html","hidden",0,"Check")
+    make_property_setter("User","module_profile","read_only",0,"Check")
+    make_property_setter("User","roles_html","hidden",0,"Check")
     make_property_setter("User","is_client_admin","hidden",0,"Check")
     make_property_setter("User","is_client_admin","read_only",1,"Check")
     make_property_setter("User","is_client_admin","in_list_view",1,"Check")

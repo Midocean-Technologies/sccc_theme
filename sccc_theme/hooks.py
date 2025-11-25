@@ -63,15 +63,15 @@ fixtures = [
     #         ["name", "not in", ["ZATCA ERPGulf", "Loans"]]
     #     ]
     # },
-    {
-        "dt": "Module Profile",
-    },
     # {
-    #     "dt": "sccc plan",
+    #     "dt": "Module Profile",
     # },
     {
-        "dt": "Role Profile",
-    }
+        "dt": "sccc plan",
+    },
+    # {
+    #     "dt": "Role Profile",
+    # }
     # {
     #     "dt":"Custom HTML Block"
     # }
@@ -198,6 +198,7 @@ permission_query_conditions = {
 
 override_doctype_class = {
 	"User": "sccc_theme.overrides.user.CustomUser",
+    "Module Profile": "sccc_theme.overrides.module_profile.CustomModuleProfile"
 }
 
 # Document Events
