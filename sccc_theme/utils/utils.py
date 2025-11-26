@@ -522,24 +522,24 @@ def update_currency_symbol_for_SAR():
             currency.symbol = html_symbol
         currency.save()
 
-def transfer_workspace_shortcuts():
-    """Transfer all workspace shortcuts to custom_custom__shortcuts table."""
-    workspaces = frappe.get_all("Workspace", pluck="name")
+# def transfer_workspace_shortcuts():
+#     """Transfer all workspace shortcuts to custom_custom__shortcuts table."""
+#     workspaces = frappe.get_all("Workspace", pluck="name")
 
-    for ws_name in workspaces:
-        ws = frappe.get_doc("Workspace", ws_name)
+#     for ws_name in workspaces:
+#         ws = frappe.get_doc("Workspace", ws_name)
 
-        if ws.get("shortcuts"):
-            ws.custom_custom__shortcuts = []
-            for sc in ws.shortcuts:
-                new_row = sc.as_dict()
-                new_row["name"] = None 
-                ws.append("custom_custom__shortcuts", new_row)
-            ws.shortcuts = []
-            ws.links = []
-        ws.save(ignore_permissions=True)
+#         if ws.get("shortcuts"):
+#             ws.custom_custom__shortcuts = []
+#             for sc in ws.shortcuts:
+#                 new_row = sc.as_dict()
+#                 new_row["name"] = None 
+#                 ws.append("custom_custom__shortcuts", new_row)
+#             ws.shortcuts = []
+#             ws.links = []
+#         ws.save(ignore_permissions=True)
 
-    frappe.db.commit()
+#     frappe.db.commit()
 
 
 def slugify_doctype(name: str) -> str:
