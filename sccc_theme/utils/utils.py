@@ -559,30 +559,7 @@ def get_sidebar_items(page=None):
         
         items = []
         link_cards = []
-        for sc in workspace.custom_custom__shortcuts:
-            # default
-            route = None
-
-            # if sc.type == "Page":
-            #     route = f"/app/{sc.link_to}"
-            if sc.type == "DocType":
-                route = f"/app/{slugify_doctype(sc.link_to)}"
-                
-            # elif sc.type == "Report":
-            #     route = f"/app/query-report/{sc.link_to}"
-            # elif sc.type == "Dashboard":
-            #     route = f"/app/dashboard-view/{sc.link_to}"
-            
-            if route:
-                items.append({
-                    "label": sc.label,
-                    "icon": sc.icon,
-                    "type": 'Features' if sc.type == 'DocType' else 'Reports',
-                    "link_to": sc.link_to,
-                    "url": sc.url,
-                    "route": route,
-                })
-
+        
         category = None
         category_icon = None
         for lc in workspace.custom_custom_link_cards_:
