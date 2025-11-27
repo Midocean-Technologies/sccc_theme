@@ -74,7 +74,7 @@
 
               <span>
                 <span class="sccc-dashboard-label" style="font-size:14px; font-weight:normal;">${__("home")}</span>
-                <span class="" style="font-size:14px; font-weight:normal;">${__("dashboard")}</span>
+                <span class="" style="font-size:14px;">${__("dashboard")}</span>
               </span>
             </button>
           </div>

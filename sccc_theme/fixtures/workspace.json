@@ -14354,11 +14354,11 @@
   "custom_blocks": [],
   "custom_custom_link_cards_": [
    {
-    "custom_icon": "/files/UserPlus.svg",
+    "custom_icon": "/files/User41fd28b1f4fa956b62731266.svg",
     "dependencies": "",
     "description": "",
     "hidden": 0,
-    "icon": "",
+    "icon": " /files/User41fd28b1f4fa956b62731266.svg",
     "is_below_divider": 0,
     "is_below_reports_divider": 0,
     "is_query_report": 0,
@@ -14396,7 +14396,7 @@
     "type": "Link"
    },
    {
-    "custom_icon": "/files/Stamp.svg",
+    "custom_icon": "/files/WalletCards9322669322667263d4e1779eeb20b8.svg",
     "dependencies": "",
     "description": "",
     "hidden": 0,
@@ -14522,7 +14522,7 @@
     "type": "Link"
    },
    {
-    "custom_icon": "/files/Fingerprint.svg",
+    "custom_icon": "/files/Stamp904f7e.svg",
     "dependencies": "",
     "description": "",
     "hidden": 0,
@@ -14648,7 +14648,7 @@
     "type": "Link"
    },
    {
-    "custom_icon": "/files/Banknote.svg",
+    "custom_icon": "/files/Walletd036c38008660e9df60ff9e3.svg",
     "dependencies": "",
     "description": "",
     "hidden": 0,
@@ -14711,7 +14711,7 @@
     "type": "Link"
    },
    {
-    "custom_icon": "/files/DiamondPercent.svg",
+    "custom_icon": "/files/Stamp904f7e.svg",
     "dependencies": "",
     "description": "",
     "hidden": 0,
@@ -15728,7 +15728,7 @@
   "is_hidden": 0,
   "label": "HR",
   "links": [],
-  "modified": "2025-11-27 14:29:15.229198",
+  "modified": "2025-11-27 15:46:51.908230",
   "module": "HR",
   "name": "HR",
   "number_cards": [
