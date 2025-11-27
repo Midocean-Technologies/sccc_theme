@@ -2,6 +2,19 @@ import frappe
 from frappe.desk.desktop import Workspace
 from frappe import _
 
+def validate(doc, method):
+    if not doc.custom_custom_link_cards_:
+        return
+
+    for item in doc.custom_custom_link_cards_:
+        has_below_divider = hasattr(item, "is_below_divider")
+        has_below_reports = hasattr(item, "is_below_reports_divider")
+
+        if has_below_divider and has_below_reports:
+            if item.type == "Card Break":
+                if item.is_below_divider and item.is_below_reports_divider:
+                    frappe.throw(_("A card cannot be below both dividers."))
+
 
 @frappe.whitelist()
 def get_workspace_sidebar_items():
