@@ -73,8 +73,8 @@
               </span>
 
               <span>
-                <span class="sccc-dashboard-label" style="font-size:14px;">${__("home")}</span>
-                <span class="" style="font-size:14px;">${__("dashboard")}</span>
+                <span class="sccc-dashboard-label" style="font-size:14px; font-weight:normal;">${__("home")}</span>
+                <span class="" style="font-size:14px; font-weight:normal;">${__("dashboard")}</span>
               </span>
             </button>
           </div>
@@ -352,6 +352,7 @@ $root.on("click", ".sccc-user", function() {
           </div>
           <div id="${collapseId}" class="collapse sccc-collapsible-body">
             ${list.map(i => `
+              ${i.is_below_divider ? '<div class="sccc-hr"></div>' : ''}
               <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
                 <span class="sccc-tool-txt">${frappe.utils.escape_html(__(i.label))}</span>
               </div>`).join("")}
@@ -397,10 +398,16 @@ $root.on("click", ".sccc-user", function() {
         return acc;
       }, {});
 
-      Object.entries(links_grouped).forEach(([category, list],j) => {
-        const iconHtml = list[0] && list[0].category_icon ? `<img src="${list[0].category_icon}" style="height:18px; width:18px;" />` : frappe.utils.icon('menu', "sm");
+      Object.entries(links_grouped).forEach(([category, list], j) => {
+        const iconHtml = list[0] && list[0].category_icon
+          ? `<img src="${list[0].category_icon}" style="height:18px; width:18px;" />`
+          : frappe.utils.icon('menu', "sm");
         const collapseId = `collapse-links-${j}`;
-        const link_details = $(`
+        // Only add HR if the first item in this group has is_below_divider
+        const needsDivider = list[0] && list[0].is_below_divider;
+
+        // Build the group HTML
+        const groupHtml = `
           <div class="sccc-tools sccc-collapsible details-child">
             <div class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
@@ -414,8 +421,9 @@ $root.on("click", ".sccc-user", function() {
                 </div>`).join("")}
             </div>
           </div>
-        `);
-        $childWrap.append(link_details);
+          ${needsDivider ? '<div class="sccc-hr"></div>' : ''}
+        `;
+        $childWrap.append(groupHtml);
         $root.find(".sccc-spacer").before($childWrap);
       });
 
@@ -571,6 +579,7 @@ $root.on("click", ".sccc-user", function() {
               <div class="ccc-child-header sccc-tools-head">
                 <span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(__(category))}</span>
                 <span class="sccc-tools-caret">${ICON.chevRight}</span>
+                 ${i.is_below_divider ? '<div class="sccc-hr"></div>' : ''}
               </div>
               <div id="${collapseId}" class="collapse sccc-collapsible-body">
                 ${list.map(i => `
@@ -613,11 +622,17 @@ $root.on("click", ".sccc-user", function() {
         return acc;
       }, {});
 
-      Object.entries(links_grouped).forEach(([category, list],j) => {
-        const iconHtml = list[0] && list[0].category_icon ? `<img src="${list[0].category_icon}" style="height:18px; width:18px;" />` : frappe.utils.icon('menu', "sm");
+      Object.entries(links_grouped).forEach(([category, list], j) => {
+        const iconHtml = list[0] && list[0].category_icon
+          ? `<img src="${list[0].category_icon}" style="height:18px; width:18px;" />`
+          : frappe.utils.icon('menu', "sm");
         const collapseId = `collapse-links-${j}`;
-        const link_details = $(`
-          <div class="sccc-tools sccc-collapsible details-child" '>
+        // Only add HR if the first item in this group has is_below_divider
+        const needsDivider = list[0] && list[0].is_below_divider;
+
+        // Build the group HTML
+        const groupHtml = `
+          <div class="sccc-tools sccc-collapsible details-child">
             <div class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${__(category)}</strong>
@@ -630,8 +645,10 @@ $root.on("click", ".sccc-user", function() {
                 </div>`).join("")}
             </div>
           </div>
-        `);
-        $childWrap.append(link_details);
+          ${needsDivider ? '<div class="sccc-hr"></div>' : ''}
+        `;
+        $childWrap.append(groupHtml);
+        $root.find(".sccc-spacer").before($childWrap);
       });
 
       Object.entries(grouped).forEach(([type, list],j) => {

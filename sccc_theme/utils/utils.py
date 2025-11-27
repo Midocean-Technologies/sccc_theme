@@ -358,16 +358,16 @@ def create_custom_fields():
             "depends_on":"eval:doc.type == 'Card Break'",
         },
     )
-    create_custom_field(  
-        "Workspace Link",
-        {
-            "label":_("Is Below Reports Divider"),
-            "fieldname": "is_below_reports_divider",
-            "fieldtype": "Check",
-            "insert_after": "custom_icon",
-            "depends_on":"eval:doc.type == 'Card Break'",
-        },
-    )
+    # create_custom_field(  
+    #     "Workspace Link",
+    #     {
+    #         "label":_("Is Below Reports Divider"),
+    #         "fieldname": "is_below_reports_divider",
+    #         "fieldtype": "Check",
+    #         "insert_after": "custom_icon",
+    #         "depends_on":"eval:doc.type == 'Card Break'",
+    #     },
+    # )
     create_custom_field(  
         "User",
         {

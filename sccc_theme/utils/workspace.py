@@ -90,44 +90,63 @@ def slugify_doctype(name: str) -> str:
 def get_sidebar_items(page=None):
     """Get sidebar items"""
     try:
-        if not frappe.db.exists('Workspace',{'name':page}):
-            return [],[]
+        if not frappe.db.exists('Workspace', {'name': page}):
+            return [], []
+
         workspace = frappe.get_doc("Workspace", page)
+
         if workspace.is_hidden:
             return [], []
-        
+
         items = []
         link_cards = []
-        
+
+        # default values
         category = None
         category_icon = None
+        is_below_divider = 0
+
         for lc in workspace.custom_custom_link_cards_:
-            if getattr(lc, "is_below_divider", 0):
-                continue
-            # default
-            route = None
+
+            # If Card Break — update category set
             if lc.type == "Card Break":
                 category = lc.label
                 category_icon = lc.custom_icon
+
+                # assign divider flags properly
+                is_below_divider = getattr(lc, "is_below_divider", 0)
                 continue
+
+            # skip items without link
+            if lc.type != "Link":
+                continue
+
+            route = None
+
+            # DocType Routes
             if lc.link_type == "DocType":
                 route = f"/app/{slugify_doctype(lc.link_to)}"
 
+            # Report Routes
             elif lc.link_type == "Report":
                 route = f"/app/query-report/{lc.link_to}"
 
-            if route and lc.type == "Link":
-                link_cards.append({
-                    "label": lc.label,
-                    "icon": lc.custom_icon,
-                    "link_type": lc.link_type,
-                    "category": category,
-                    "category_icon": category_icon,
-                    "link_to": lc.link_to,
-                    "route": route,
-                })
-        print(link_cards)
+            if not route:
+                continue
+
+            link_cards.append({
+                "label": lc.label,
+                "icon": lc.custom_icon or "",
+                "link_type": lc.link_type,
+                "category": category,
+                "category_icon": category_icon,
+                "link_to": lc.link_to,
+                "route": route,
+                "is_below_divider": is_below_divider,
+            })
+
         return items, link_cards
-    except ImportError:
-        frappe.log_error("Could not find get_sidebar_items ", "Error")
+
+    except Exception as e:
+        frappe.log_error(f"Error in get_sidebar_items: {frappe.get_traceback()}", "Sidebar Exception")
         return []
