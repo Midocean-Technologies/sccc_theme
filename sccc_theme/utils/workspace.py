@@ -79,3 +79,55 @@ def get_workspace_sidebar_items():
         "has_access": has_access,
         "has_create_access": frappe.has_permission(doctype="Workspace", ptype="create"),
     }
+
+
+def slugify_doctype(name: str) -> str:
+    if not name:
+        return ""   # or return "unknown" if you want a default slug
+    return name.strip().lower().replace(" ", "-")
+
+@frappe.whitelist(allow_guest=True)
+def get_sidebar_items(page=None):
+    """Get sidebar items"""
+    try:
+        if not frappe.db.exists('Workspace',{'name':page}):
+            return [],[]
+        workspace = frappe.get_doc("Workspace", page)
+        if workspace.is_hidden:
+            return [], []
+        
+        items = []
+        link_cards = []
+        
+        category = None
+        category_icon = None
+        for lc in workspace.custom_custom_link_cards_:
+            if getattr(lc, "is_below_divider", 0):
+                continue
+            # default
+            route = None
+            if lc.type == "Card Break":
+                category = lc.label
+                category_icon = lc.custom_icon
+                continue
+            if lc.link_type == "DocType":
+                route = f"/app/{slugify_doctype(lc.link_to)}"
+
+            elif lc.link_type == "Report":
+                route = f"/app/query-report/{lc.link_to}"
+
+            if route and lc.type == "Link":
+                link_cards.append({
+                    "label": lc.label,
+                    "icon": lc.custom_icon,
+                    "link_type": lc.link_type,
+                    "category": category,
+                    "category_icon": category_icon,
+                    "link_to": lc.link_to,
+                    "route": route,
+                })
+        print(link_cards)
+        return items, link_cards
+    except ImportError:
+        frappe.log_error("Could not find get_sidebar_items ", "Error")
+        return []

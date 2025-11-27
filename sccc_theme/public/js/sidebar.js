@@ -280,7 +280,7 @@ $root.on("click", ".sccc-user", function() {
 
   let items = [], links = [];
   if (selectedPageObj) {
-    const ws = await frappe.call("sccc_theme.utils.utils.get_sidebar_items", { page });
+    const ws = await frappe.call("sccc_theme.utils.workspace.get_sidebar_items", { page });
     items = ws.message[0] || [];
     links = ws.message[1] || [];
   }
@@ -308,7 +308,7 @@ $root.on("click", ".sccc-user", function() {
     const iconHtml = child.icon ? ( (typeof child.icon === 'string' && child.icon.trim().startsWith('<svg')) ? child.icon : frappe.utils.icon(child.icon, "md") ) : frappe.utils.icon('image-view', "md");
 
     // fetch items for this child
-    const childWs = await frappe.call("sccc_theme.utils.utils.get_sidebar_items", { page: child.title });
+    const childWs = await frappe.call("sccc_theme.utils.workspace.get_sidebar_items", { page: child.title });
     const childItems = childWs.message[0] || [];
     const childlinks = childWs.message[1] || [];
     // group child items by type
@@ -502,7 +502,7 @@ $root.on("click", ".sccc-user", function() {
 
       let items = [], links = [];
       if (selectedPageObj) {
-        const ws = await frappe.call("sccc_theme.utils.utils.get_sidebar_items", { page });
+        const ws = await frappe.call("sccc_theme.utils.workspace.get_sidebar_items", { page });
         items = ws.message[0] || [];
         links = ws.message[1] || [];
       }
@@ -530,7 +530,7 @@ $root.on("click", ".sccc-user", function() {
         const iconHtml = child.icon ? ( (typeof child.icon === 'string' && child.icon.trim().startsWith('<svg')) ? child.icon : frappe.utils.icon(child.icon, "md") ) : frappe.utils.icon('image-view', "md");
 
         // fetch items for this child
-        const childWs = await frappe.call("sccc_theme.utils.utils.get_sidebar_items", { page: child.title });
+        const childWs = await frappe.call("sccc_theme.utils.workspace.get_sidebar_items", { page: child.title });
         const childItems = childWs.message[0] || [];
         const childlinks = childWs.message[1] || [];
         // group child items by type
