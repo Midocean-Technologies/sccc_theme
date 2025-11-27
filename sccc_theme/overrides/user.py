@@ -44,7 +44,6 @@ class CustomUser(User):
         modules_list = []
         for app in frappe.get_installed_apps():
             modules_list += self.get_modules_from_app(app)
-        print("Custom Module List:", modules_list)
         return modules_list
 
     def get_modules_from_app(self, app):

@@ -248,6 +248,18 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "System Manager"
+   },
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Report Manager"
+   },
+   {
+    "parent": "Starter",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Workspace Manager"
    }
   ]
  }

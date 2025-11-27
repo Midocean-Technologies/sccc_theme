@@ -22,7 +22,7 @@ def after_migrate():
     create_translations_for_module_def()
     disable_other_languages()
     # create_role_profile()
-    # delete_old_role_profile()
+    delete_old_role_profile()
     change_workspace_name()
     setup_planbased_roles()
 
@@ -30,14 +30,19 @@ def setup_planbased_roles():
     from sccc_theme.utils.api import set_plan_in_role
     global_defaults = frappe.get_single("Global Defaults")
 
-    if global_defaults.sccc_plan:
-        set_plan_in_role(global_defaults.sccc_plan)
+    # check if field exists
+    if hasattr(global_defaults, "sccc_plan"):
+        # check if field has data
+        if global_defaults.sccc_plan:
+            set_plan_in_role(global_defaults.sccc_plan)
+
 
 def create_translations_for_module_def():
     translations = {
         "Buying": "Purchasing",
         "Selling": "Sales",
         "Stock": "Inventory",
+        "Workspace Manager":"Report Viewer"
     }
 
     for src, target in translations.items():
@@ -72,11 +77,18 @@ def change_workspace_name():
             ws.save(ignore_permissions=True)
 
 def delete_old_role_profile():
-    role_profiles = ["HR", "Purchase", "Sales", "Accounts", "Manufacturing", "Inventory"]
+    role_profiles = ["Manufacturing"]
 
     for role in role_profiles:
         if frappe.db.exists("Role Profile", role):
             frappe.delete_doc("Role Profile", role, force=1)
+            frappe.db.commit()
+        
+    module_profiles = ["Manufacturing"]
+
+    for module in module_profiles:
+        if frappe.db.exists("Module Profile", module):
+            frappe.delete_doc("Module Profile", module, force=1)
             frappe.db.commit()
 
 def create_role_profile():
@@ -522,24 +534,24 @@ def update_currency_symbol_for_SAR():
             currency.symbol = html_symbol
         currency.save()
 
-def transfer_workspace_shortcuts():
-    """Transfer all workspace shortcuts to custom_custom__shortcuts table."""
-    workspaces = frappe.get_all("Workspace", pluck="name")
+# def transfer_workspace_shortcuts():
+#     """Transfer all workspace shortcuts to custom_custom__shortcuts table."""
+#     workspaces = frappe.get_all("Workspace", pluck="name")
 
-    for ws_name in workspaces:
-        ws = frappe.get_doc("Workspace", ws_name)
+#     for ws_name in workspaces:
+#         ws = frappe.get_doc("Workspace", ws_name)
 
-        if ws.get("shortcuts"):
-            ws.custom_custom__shortcuts = []
-            for sc in ws.shortcuts:
-                new_row = sc.as_dict()
-                new_row["name"] = None 
-                ws.append("custom_custom__shortcuts", new_row)
-            ws.shortcuts = []
-            ws.links = []
-        ws.save(ignore_permissions=True)
+#         if ws.get("shortcuts"):
+#             ws.custom_custom__shortcuts = []
+#             for sc in ws.shortcuts:
+#                 new_row = sc.as_dict()
+#                 new_row["name"] = None 
+#                 ws.append("custom_custom__shortcuts", new_row)
+#             ws.shortcuts = []
+#             ws.links = []
+#         ws.save(ignore_permissions=True)
 
-    frappe.db.commit()
+#     frappe.db.commit()
 
 
 def slugify_doctype(name: str) -> str:
@@ -559,30 +571,7 @@ def get_sidebar_items(page=None):
         
         items = []
         link_cards = []
-        for sc in workspace.custom_custom__shortcuts:
-            # default
-            route = None
-
-            # if sc.type == "Page":
-            #     route = f"/app/{sc.link_to}"
-            if sc.type == "DocType":
-                route = f"/app/{slugify_doctype(sc.link_to)}"
-                
-            # elif sc.type == "Report":
-            #     route = f"/app/query-report/{sc.link_to}"
-            # elif sc.type == "Dashboard":
-            #     route = f"/app/dashboard-view/{sc.link_to}"
-            
-            if route:
-                items.append({
-                    "label": sc.label,
-                    "icon": sc.icon,
-                    "type": 'Features' if sc.type == 'DocType' else 'Reports',
-                    "link_to": sc.link_to,
-                    "url": sc.url,
-                    "route": route,
-                })
-
+        
         category = None
         category_icon = None
         for lc in workspace.custom_custom_link_cards_:
@@ -629,68 +618,3 @@ def get_user(key, old_password):
         user = frappe.session.user
         
     return user
-
-@frappe.whitelist()
-def get_workspace_sidebar_items():
-	"""Get list of sidebar items for desk"""
-	has_access = "Workspace Manager" in frappe.get_roles()
-
-	# don't get domain restricted pages
-	blocked_modules = frappe.get_cached_doc("User", frappe.session.user).get_blocked_modules()
-	blocked_modules.append("Dummy Module")
-
-	# adding None to allowed_domains to include pages without domain restriction
-	allowed_domains = [None, *frappe.get_active_domains()]
-
-	filters = {
-		"restrict_to_domain": ["in", allowed_domains],
-		"module": ["not in", blocked_modules],
-	}
-
-	if has_access:
-		filters = []
-
-	# pages sorted based on sequence id
-	order_by = "sequence_id asc"
-	fields = [
-		"name",
-		"title",
-		"for_user",
-		"parent_page",
-		"content",
-		"public",
-		"module",
-		"icon",
-		"indicator_color",
-		"is_hidden",
-	]
-	all_pages = frappe.get_all(
-		"Workspace", fields=fields, filters=filters, order_by=order_by, ignore_permissions=True
-	)
-	pages = []
-	private_pages = []
-
-	# Filter Page based on Permission
-	for page in all_pages:
-		try:
-			workspace = Workspace(page, True)
-			if has_access or workspace.is_permitted():
-				if page.public and (has_access or not page.is_hidden) and page.title != "Welcome Workspace":
-					pages.append(page)
-				elif page.for_user == frappe.session.user:
-					private_pages.append(page)
-				page["label"] = _(page.get("name"))
-		except frappe.PermissionError:
-			pass
-	if private_pages:
-		pages.extend(private_pages)
-
-	if len(pages) == 0:
-		pages = [frappe.get_doc("Workspace", "Welcome Workspace").as_dict()]
-		pages[0]["label"] = _("Welcome Workspace")
-
-	return {
-		"pages": pages,
-		"has_access": has_access,
-		"has_create_access": frappe.has_permission(doctype="Workspace", ptype="create"),
-	}
