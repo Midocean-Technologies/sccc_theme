@@ -791,6 +791,12 @@ $root.on("click", ".sccc-user", function() {
 }
 
   function mount() {
+    // Remove sidebar if on main-onboarding
+    if (frappe.get_route && frappe.get_route()[0] === "main-onboarding") {
+      $('.sccc-rail-fixed').remove();
+      return;
+    }
+    // Only mount if not already present and not on main-onboarding
     if (document.getElementById("sccc-rail-fixed")) return;
 
     // Detect if current language is RTL
@@ -819,6 +825,15 @@ $root.on("click", ".sccc-user", function() {
   if (document.readyState !== "loading") setTimeout(mount, 0);
 
   $(document).on('page-change', () => {
+    // Remove sidebar if on main-onboarding
+    if (frappe.get_route && frappe.get_route()[0] === "main-onboarding") {
+      $('.sccc-rail-fixed').remove();
+      return;
+    }
+    // If sidebar is missing and not on main-onboarding, re-mount it
+    if (!document.getElementById("sccc-rail-fixed")) {
+      mount();
+    }
     // console.log('<->')
     try {
     // Build a route string comparable to data-route attributes
