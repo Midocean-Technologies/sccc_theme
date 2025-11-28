@@ -10,16 +10,24 @@
 	margin-bottom: 40px;
 }
 
-.user-header h1 {
-	font-size: 36px;
-	font-weight: 600;
-	margin: 0;
+.user-header a {
+	font-style: normal;
+	font-weight: 400;
+	font-size: 40px;
+	line-height: 52px;
+	text-align: center;
+	letter-spacing: -1px;
+	text-transform: lowercase;
 }
 
 .user-header p {
-	font-size: 14px;
-	color: #7d7d7d;
-	margin-top: 4px;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 20px;
+	line-height: 28px;
+	text-align: center;
+	letter-spacing: -0.4px;
+	text-transform: lowercase;
 }
 
 /* Panel Design */

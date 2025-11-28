@@ -1,4 +1,5 @@
 frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
+
 	const page = frappe.ui.make_app_page({
 		parent: wrapper,
 		single_column: true
@@ -17,58 +18,76 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 			const data = r.message;
 			container.html(data.html);
 
-			// combine lists
 			const steps = [...data.mandatory_steps, ...data.optional_steps];
 
-			// default select first step
+			// =============== STEP LOCKING LOGIC ==================
+			let unlockedIndex = steps.findIndex(s => !s.completed);
+			if (unlockedIndex === -1) unlockedIndex = steps.length - 1; // all done
+
 			showStepDescription(steps[0]);
 
-			let mandatoryHtml = "";
-			let optionalHtml = "";
+			renderSteps(data, steps);
 
-			data.mandatory_steps.forEach((step, i) => {
-				mandatoryHtml += `
-					<div class="step-row ${step.completed ? 'done' : ''}" data-index="${i}">
-						<div class="checkbox">${step.completed ? '✔' : ''}</div>
-						<span>${step.step}</span>
-					</div>`;
-			});
-
-			data.optional_steps.forEach((step, i) => {
-				const idx = data.mandatory_steps.length + i;
-				optionalHtml += `
-					<div class="step-row ${step.completed ? 'done' : ''}" data-index="${idx}">
-						<div class="checkbox">${step.completed ? '✔' : ''}</div>
-						<span>${step.step}</span>
-					</div>`;
-			});
-
-			$("#mandatory-list").html(mandatoryHtml);
-			$("#optional-list").html(optionalHtml);
-
-			// Click actions
 			$(".step-row").on("click", function () {
 				const index = $(this).data("index");
+
+				// USER CANNOT CLICK A LOCKED STEP
+				if (index > unlockedIndex) {
+					frappe.msgprint({
+						title: "Complete previous step",
+						message: "You must finish earlier steps before continuing.",
+						indicator: "red"
+					});
+					return;
+				}
+
+				// change description
 				showStepDescription(steps[index]);
 
+				// Update active UI
 				$(".step-row").removeClass("active");
 				$(this).addClass("active");
 			});
 
-			// Progress bar
-			const p = data.total_steps > 0 ? (data.completed_steps / data.total_steps) * 100 : 0;
-			$("#progress-inner").css("width", `${p}%`);
+			// PROGRESS BAR
+			const P = (data.completed_steps / data.total_steps) * 100;
+			$("#progress-inner").css("width", `${P}%`);
 			$("#progress-text").text(`${data.completed_steps}/${data.total_steps} steps completed`);
 		}
 	});
+
+	function renderSteps(data, steps) {
+
+		let mandatoryHtml = "";
+		let optionalHtml = "";
+
+		data.mandatory_steps.forEach((step, i) => {
+			mandatoryHtml += renderStep(step, i);
+		});
+		data.optional_steps.forEach((step, i) => {
+			optionalHtml += renderStep(step, data.mandatory_steps.length + i);
+		});
+
+		$("#mandatory-list").html(mandatoryHtml);
+		$("#optional-list").html(optionalHtml);
+	}
+
+	function renderStep(step, index) {
+		return `
+			<div class="step-row ${step.completed ? 'done' : ''}" data-index="${index}">
+				<div class="checkbox">${step.completed ? '✔' : ''}</div>
+				<span>${step.step}</span>
+			</div>`;
+	}
 
 	function showStepDescription(step) {
 		$("#desc-title").text(step.step);
 		$("#desc-content").text(step.description);
 
-		if (step.step.toLowerCase().includes("chart"))
-			$("#desc-button").text("view chart of account");
-		else
-			$("#desc-button").text(step.completed ? "Completed" : "Continue");
+		const label = step.step.toLowerCase().includes("chart") ?
+			"view chart of account" :
+			step.completed ? "Completed" : "Continue";
+
+		$("#desc-button").text(label);
 	}
 };

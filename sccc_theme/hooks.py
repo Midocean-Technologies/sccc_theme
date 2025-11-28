@@ -41,7 +41,7 @@ app_include_js = [
     "/assets/sccc_theme/js/workspace.js",
     "/assets/sccc_theme/js/form_action.js",
     "/assets/sccc_theme/js/force_home.js",
-    "assets/sccc_theme/js/main_onboarding.js"
+    # "assets/sccc_theme/js/main_onboarding.js"
     # "/assets/sccc_theme/js/gender_disable.js"
 ]
 
