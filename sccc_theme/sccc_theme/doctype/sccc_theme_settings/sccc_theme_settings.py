@@ -6,10 +6,11 @@ from frappe.model.document import Document
 
 
 class scccthemesettings(Document):
-	def validate(self):
-		if self.current_site_plan and self.user_limitation:
-			frappe.msgprint(
-				msg = f"Current Plan is <b>{self.current_site_plan}</b> with User Limitation <b>{self.user_limitation}</b>",
-				indicator = "green",
-			)
+    pass
+	# def validate(self):
+	# 	if self.current_site_plan and self.user_limitation:
+	# 		frappe.msgprint(
+	# 			msg = f"Current Plan is <b>{self.current_site_plan}</b> with User Limitation <b>{self.user_limitation}</b>",
+	# 			indicator = "green",
+	# 		)
 
