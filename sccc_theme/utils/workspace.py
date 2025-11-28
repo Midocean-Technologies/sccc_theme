@@ -2,6 +2,19 @@ import frappe
 from frappe.desk.desktop import Workspace
 from frappe import _
 
+def validate(doc, method):
+    if not doc.custom_custom_link_cards_:
+        return
+
+    for item in doc.custom_custom_link_cards_:
+        has_below_divider = hasattr(item, "is_below_divider")
+        has_below_reports = hasattr(item, "is_below_reports_divider")
+
+        if has_below_divider and has_below_reports:
+            if item.type == "Card Break":
+                if item.is_below_divider and item.is_below_reports_divider:
+                    frappe.throw(_("A card cannot be below both dividers."))
+
 
 @frappe.whitelist()
 def get_workspace_sidebar_items():
@@ -66,3 +79,74 @@ def get_workspace_sidebar_items():
         "has_access": has_access,
         "has_create_access": frappe.has_permission(doctype="Workspace", ptype="create"),
     }
+
+
+def slugify_doctype(name: str) -> str:
+    if not name:
+        return ""   # or return "unknown" if you want a default slug
+    return name.strip().lower().replace(" ", "-")
+
+@frappe.whitelist(allow_guest=True)
+def get_sidebar_items(page=None):
+    """Get sidebar items"""
+    try:
+        if not frappe.db.exists('Workspace', {'name': page}):
+            return [], []
+
+        workspace = frappe.get_doc("Workspace", page)
+
+        if workspace.is_hidden:
+            return [], []
+
+        items = []
+        link_cards = []
+
+        # default values
+        category = None
+        category_icon = None
+        is_below_divider = 0
+
+        for lc in workspace.custom_custom_link_cards_:
+
+            # If Card Break — update category set
+            if lc.type == "Card Break":
+                category = lc.label
+                category_icon = lc.custom_icon
+
+                # assign divider flags properly
+                is_below_divider = getattr(lc, "is_below_divider", 0)
+                continue
+
+            # skip items without link
+            if lc.type != "Link":
+                continue
+
+            route = None
+
+            # DocType Routes
+            if lc.link_type == "DocType":
+                route = f"/app/{slugify_doctype(lc.link_to)}"
+
+            # Report Routes
+            elif lc.link_type == "Report":
+                route = f"/app/query-report/{lc.link_to}"
+
+            if not route:
+                continue
+
+            link_cards.append({
+                "label": lc.label,
+                "icon": lc.custom_icon or "",
+                "link_type": lc.link_type,
+                "category": category,
+                "category_icon": category_icon,
+                "link_to": lc.link_to,
+                "route": route,
+                "is_below_divider": is_below_divider,
+            })
+
+        return items, link_cards
+
+    except Exception as e:
+        frappe.log_error(f"Error in get_sidebar_items: {frappe.get_traceback()}", "Sidebar Exception")
+        return []

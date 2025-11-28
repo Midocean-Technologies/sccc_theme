@@ -358,6 +358,16 @@ def create_custom_fields():
             "depends_on":"eval:doc.type == 'Card Break'",
         },
     )
+    # create_custom_field(  
+    #     "Workspace Link",
+    #     {
+    #         "label":_("Is Below Reports Divider"),
+    #         "fieldname": "is_below_reports_divider",
+    #         "fieldtype": "Check",
+    #         "insert_after": "custom_icon",
+    #         "depends_on":"eval:doc.type == 'Card Break'",
+    #     },
+    # )
     create_custom_field(  
         "User",
         {
@@ -553,57 +563,6 @@ def update_currency_symbol_for_SAR():
 
 #     frappe.db.commit()
 
-
-def slugify_doctype(name: str) -> str:
-    if not name:
-        return ""   # or return "unknown" if you want a default slug
-    return name.strip().lower().replace(" ", "-")
-
-@frappe.whitelist(allow_guest=True)
-def get_sidebar_items(page=None):
-    """Get sidebar items"""
-    try:
-        if not frappe.db.exists('Workspace',{'name':page}):
-            return [],[]
-        workspace = frappe.get_doc("Workspace", page)
-        if workspace.is_hidden:
-            return [], []
-        
-        items = []
-        link_cards = []
-        
-        category = None
-        category_icon = None
-        for lc in workspace.custom_custom_link_cards_:
-            if getattr(lc, "is_below_divider", 0):
-                continue
-            # default
-            route = None
-            if lc.type == "Card Break":
-                category = lc.label
-                category_icon = lc.custom_icon
-                continue
-            if lc.link_type == "DocType":
-                route = f"/app/{slugify_doctype(lc.link_to)}"
-
-            elif lc.link_type == "Report":
-                route = f"/app/query-report/{lc.link_to}"
-
-            if route and lc.type == "Link":
-                link_cards.append({
-                    "label": lc.label,
-                    "icon": lc.custom_icon,
-                    "link_type": lc.link_type,
-                    "category": category,
-                    "category_icon": category_icon,
-                    "link_to": lc.link_to,
-                    "route": route,
-                })
-        # print(link_cards)
-        return items, link_cards
-    except ImportError:
-        frappe.log_error("Could not find get_sidebar_items ", "Error")
-        return []
 
 @frappe.whitelist(allow_guest=True, methods=["GET"])
 def get_user(key, old_password):

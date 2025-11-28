@@ -92,6 +92,8 @@ body {
 /* avatar look */
 .sccc-avatar { border-radius: 0px; }
 
+
+
 /* ensure page-head comes AFTER the bar in visual flow */
 .page-head { margin-top: 0; } /* body padding already shifts everything */
 `;
@@ -117,6 +119,9 @@ body {
   </div>
 
   <div class="sccc-right">
+    <button class="sccc-icon" id="sccc-lang-btn" data-act="lang" title="Language" aria-label="Language">
+        <span id="sccc-lang-display" style="font-size:12px;">En</span>
+      </button>
     <button class="sccc-icon" data-route="integrations" title="Integrations" aria-label="Integrations">
       <img class="es-icon icon-md" src ="/files/integ.svg" alt="integration"/>
     </button>
@@ -440,6 +445,162 @@ body {
         if (window.frappe && frappe.set_route) frappe.set_route(route);
       });
     });
+
+    // ...existing code...
+    // language switcher
+    const langBtn = $root.querySelector('[data-act="lang"]');
+    if (langBtn) {
+      // set initial label from frappe boot if available
+      const disp = $root.querySelector("#sccc-lang-display");
+      if (disp && window.frappe && frappe.boot && frappe.boot.lang) {
+        disp.textContent = String(frappe.boot.lang).slice(0,2).toUpperCase();
+      }
+
+      // helper: fetch enabled languages from Language doctype
+      function fetchEnabledLanguages() {
+        if (!window.frappe || !frappe.call) {
+          return Promise.resolve([]);
+        }
+
+        // determine current user's language (prefer User.language, fallback to boot.lang)
+        const currentUserLang =
+          (frappe.boot && frappe.boot.user && frappe.boot.user.language) ||
+          (frappe.boot && frappe.boot.lang) ||
+          "";
+        const norm = (s) => String(s || "").trim().toLowerCase();
+
+        return new Promise((resolve) => {
+          frappe.call({
+            method: "frappe.client.get_list",
+            args: {
+              doctype: "Language",
+              filters: [["Language", "enabled", "=", 1]],
+              fields: ["name", "language_code", "language_name"],
+              limit_page_length: 0,
+              order_by: "name",
+            },
+            callback: (r) => {
+              const list = (r && r.message) || [];
+              // normalize to [{code, label}] and exclude current user's language
+              const langs = list
+                .map((L) => {
+                  const code = (L.language_code || L.name || "").toString();
+                  const label = (L.language_name || L.name || code).toString();
+                  return { code, label };
+                })
+                .filter((L) => norm(L.code) !== norm(currentUserLang));
+              resolve(langs);
+            },
+            error: () => resolve([]),
+          });
+        });
+      }
+
+      langBtn.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        const MENU_ID = "sccc-lang-menu";
+        let menu = document.getElementById(MENU_ID);
+        if (menu) {
+          menu.remove();
+          return;
+        }
+
+        // build a simple floating menu
+        menu = document.createElement("div");
+        menu.id = MENU_ID;
+        menu.className = "sccc-lang-menu";
+        Object.assign(menu.style, {
+          position: "absolute",
+          top: (langBtn.getBoundingClientRect().bottom + window.scrollY) + "px",
+          right: (window.innerWidth - langBtn.getBoundingClientRect().right + 12) + "px",
+          background: "#fff",
+          border: "1px solid var(--border-color, #e5e7eb)",
+          boxShadow: "0 6px 12px rgba(0,0,0,0.08)",
+          zIndex: 2000,
+          minWidth: "160px",
+          padding: "6px 4px",
+        });
+
+        // load languages from server (fallback to frappe.boot.available_languages)
+        let langs = [];
+        try {
+          langs = await fetchEnabledLanguages();
+        } catch (err) {
+          langs = [];
+        }
+        if (!langs || langs.length === 0) {
+          const bootLangs = (window.frappe && frappe.boot && (frappe.boot.available_languages || frappe.boot.langs)) || ["en"];
+          langs = bootLangs.map((L) => {
+            const code = typeof L === "string" ? L : (L.code || L.value || L.name || "");
+            const label = typeof L === "string" ? L.toUpperCase() : (L.label || code).toString();
+            return { code, label };
+          });
+        }
+
+        // render items
+        langs.forEach((L) => {
+          const code = (L.code || "").toString();
+          const label = (L.label || L.name || code).toString();
+          const item = document.createElement("div");
+          item.textContent = label;
+          item.style.padding = "8px 12px";
+          item.style.cursor = "pointer";
+          item.style.fontSize = "13px";
+
+          item.addEventListener("click", async () => {
+            // Set current user's language field and reload to apply
+            const currentUser = (window.frappe && (frappe.session && frappe.session.user)) || (frappe && frappe.boot && frappe.boot.user && frappe.boot.user.name) || null;
+            if (!currentUser) {
+              // fallback: set cookie and reload
+              document.cookie = "home_language=" + encodeURIComponent(code) + "; path=/";
+              window.location.reload();
+              return;
+            }
+
+            // try to set user's language via server
+            try {
+              await new Promise((resolve) => {
+                frappe.call({
+                  method: "frappe.client.set_value",
+                  args: {
+                    doctype: "User",
+                    name: currentUser,
+                    fieldname: "language",
+                    value: code
+                  },
+                  callback: (r) => {
+                    resolve(r);
+                  },
+                  error: () => resolve(null)
+                });
+              });
+            } catch (err) {
+              // ignore and fallback
+            }
+
+            // update display and reload to apply language
+            const dispNode = document.getElementById("sccc-lang-display");
+            if (dispNode) dispNode.textContent = code.slice(0,2).toUpperCase();
+            // cleanup menu then reload
+            const m = document.getElementById(MENU_ID);
+            if (m) m.remove();
+            window.location.reload();
+          });
+
+          menu.appendChild(item);
+        });
+
+        document.body.appendChild(menu);
+      });
+
+      // close menu when clicking elsewhere
+      document.addEventListener("click", () => {
+        const m = document.getElementById("sccc-lang-menu");
+        if (m) m.remove();
+      });
+    }
+ // ...existing code...
+    
 
     // clear / reload
     const clearBtn = $root.querySelector('[data-act="clear"]');

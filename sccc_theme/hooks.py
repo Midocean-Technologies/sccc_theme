@@ -210,7 +210,12 @@ doc_events = {
         "validate":"sccc_theme.overrides.user.validate_user_from_doc_event",
         # "after_insert":"sccc_theme.overrides.user.after_insert_user",
         # "before_insert":"sccc_theme.overrides.user.restrict_user_limitation"
+    },
+
+    "Workspace": {
+        "validate": "sccc_theme.utils.workspace.validate"
     }
+
 }
 
 # Scheduled Tasks
