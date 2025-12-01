@@ -8,9 +8,10 @@ def get_onboarding_data():
     for row in settings.onboarding_steps:
         steps.append({
             "step": row.onboarding_step,
-            "description": getattr(row, "description", ""),
+            "description": row.description or "",
             "mandatory": row.is_mandatory,
-            "completed": row.is_completed
+            "completed": row.is_completed,
+            "route": row.route or ""
         })
 
     mandatory_steps = [s for s in steps if s["mandatory"]]
@@ -51,6 +52,7 @@ def get_onboarding_page():
             "description": row.description or "",
             "mandatory": row.is_mandatory,
             "completed": row.is_completed,
+            "route": row.route or ""
         })
 
     mandatory = [x for x in steps if x["mandatory"]]

@@ -1,5 +1,8 @@
 frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 
+	let currentStep = null;
+	let steps = [];
+
 	const page = frappe.ui.make_app_page({
 		parent: wrapper,
 		single_column: true
@@ -7,207 +10,194 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 
 	let container = $('<div class="onboard-wrap"></div>').appendTo(page.main);
 
+	// =========================
+	// LOAD DATA
+	// =========================
 	frappe.call({
-		method: 'sccc_theme.utils.main_onboarding.get_onboarding_page',
+		method: "sccc_theme.utils.main_onboarding.get_onboarding_page",
 		callback: function (r) {
-			if (!r.message) {
-				container.html('<p>No onboarding data found</p>');
-				return;
-			}
 
 			const data = r.message;
 			container.html(data.html);
 
-			const steps = [...data.mandatory_steps, ...data.optional_steps];
+			steps = [...data.mandatory_steps, ...data.optional_steps];
 
-			// =============== STEP LOCKING LOGIC ==================
-			let unlockedIndex = steps.findIndex(s => !s.completed);
-			if (unlockedIndex === -1) unlockedIndex = steps.length - 1; // all done
+			// STEP 1: check if mandatory finished
+			checkMandatory(data);
 
-			showStepDescription(steps[0]);
+			// STEP 2: find first incomplete step
+			currentStep = steps.find(s => !s.completed) || steps[0];
 
-			renderSteps(data, steps);
+			showStep(currentStep);
+			renderList(data);
+			highlight(currentStep);
 
 			$(".step-row").on("click", function () {
-				const index = $(this).data("index");
+				const s = steps[$(this).data("index")];
 
-				// USER CANNOT CLICK A LOCKED STEP
-				if (index > unlockedIndex) {
-					frappe.msgprint({
-						title: "Complete previous step",
-						message: "You must finish earlier steps before continuing.",
-						indicator: "red"
-					});
-					return;
-				}
-
-				// change description
-				showStepDescription(steps[index]);
-
-				// Update active UI
-				$(".step-row").removeClass("active");
-				$(this).addClass("active");
+				if (s.completed) return;
+				currentStep = s;
+				showStep(s);
+				highlight(s);
 			});
 
-			// PROGRESS BAR
-			const P = (data.completed_steps / data.total_steps) * 100;
-			$("#progress-inner").css("width", `${P}%`);
-			$("#progress-text").text(`${data.completed_steps}/${data.total_steps} steps completed`);
+			updateProgress(data);
 
-			// show Chart of Accounts modal when the button indicates "view chart"
+			// Continue
 			$("#desc-button").on("click", function () {
-				const label = ($(this).text() || "").toLowerCase();
-				if (label.includes("view chart")) {
-					openCoaModal();
-					return;
-				}
-				// other button actions can be handled here (e.g., Continue)
+				if (currentStep.completed) return;
+				openStep(currentStep);
+			});
+
+			// Skip (optional only)
+			$("#skip-button").on("click", function () {
+				skipStep(currentStep);
 			});
 		}
 	});
 
-	// Open Chart of Accounts modal (adapted from setup_wizard.charts_modal)
-	function openCoaModal() {
-		const country = frappe.defaults.get_default("country") || "";
+	// ================================
+	// CORE FUNCTIONS
+	// ================================
 
+	function checkMandatory(data) {
+		const incomplete = data.mandatory_steps.filter(x => !x.completed);
+		if (incomplete.length === 0 && data.mandatory_steps.length > 0) {
+			// go to optional steps
+			return;
+		}
+	}
+
+	function skipStep(step) {
+
+		if (step.mandatory) {
+			frappe.msgprint("You cannot skip a required step.");
+			return;
+		}
+
+		const index = steps.indexOf(step);
+		const next = steps[index + 1];
+
+		if (next) {
+			currentStep = next;
+			showStep(next);
+			highlight(next);
+		} else {
+			// last optional
+			window.location.href = "/app/home";
+		}
+	}
+
+	function highlight(step) {
+		$(".step-row").removeClass("active");
+		$(`.step-row[data-step="${step.step}"]`).addClass("active");
+	}
+
+	function updateProgress(data) {
+		let val = (data.completed_steps / data.total_steps) * 100;
+		$("#progress-inner").css("width", val + "%");
+		$("#progress-text").text(`${data.completed_steps}/${data.total_steps} steps completed`);
+	}
+
+	// =========================
+	// MODAL OPEN
+	// =========================
+	function openStep(step) {
+
+		if (!step.route) {
+			frappe.msgprint("No page defined for this step.");
+			return;
+		}
+
+		const dialog = new frappe.ui.Dialog({
+			title: step.step,
+			fields: [],
+			primary_action_label: __("Save"),
+			primary_action: function () {
+				complete(step.step, dialog);
+			},
+			secondary_action_label: __("Cancel"),
+			secondary_action: () => dialog.hide(),
+		});
+
+		const frame = $(
+			`<iframe src="${step.route}" style="width:760px;height:360px;border:0;"
+			sandbox="allow-same-origin allow-scripts allow-forms allow-popups"></iframe>`
+		);
+
+		$(dialog.body).empty().append(frame);
+		dialog.show();
+	}
+
+	// =========================
+	// MARK COMPLETE
+	// =========================
+	function complete(stepName, dialog) {
 		frappe.call({
-			method: "erpnext.accounts.doctype.account.chart_of_accounts.chart_of_accounts.get_charts_for_country",
-			args: { country: country, with_standard: true },
-			callback: function (r) {
-				const charts = r.message || [];
-				if (!charts.length) {
-					frappe.msgprint({ message: "No chart templates found for your country" });
+			method: "sccc_theme.utils.main_onboarding.mark_step_completed",
+			args: { step: stepName },
+			callback: function () {
+				dialog.hide();
+
+				const index = steps.findIndex(s => s.step === stepName);
+				const next = steps[index + 1];
+
+				// If no next step → redirect
+				if (!next) {
+					window.location.href = "/app/home";
 					return;
 				}
 
-				let current = charts[0];
-				let parent_label = "All Accounts";
-				let coa_tree;
-
-				const dialog = new frappe.ui.Dialog({
-					title: current,
-					fields: [
-						{
-							fieldname: "expand_all",
-							label: "Expand All",
-							fieldtype: "Button",
-							click: function () {
-								if (coa_tree) coa_tree.load_children(coa_tree.root_node, true);
-							},
-						},
-						{
-							fieldname: "collapse_all",
-							label: "Collapse All",
-							fieldtype: "Button",
-							click: function () {
-								if (!coa_tree) return;
-								coa_tree
-									.get_all_nodes(coa_tree.root_node.data.value, coa_tree.root_node.is_root)
-									.then((data_list) => {
-										data_list.map((d) => {
-											coa_tree.toggle_node(coa_tree.nodes[d.parent]);
-										});
-									});
-							},
-						},
-					],
-				});
-
-				const body = $(dialog.body);
-				const selectRow = $(
-					'<div style="margin-bottom:10px;"><select id="coa-select" style="width:100%;padding:6px;"></select></div>'
-				);
-				body.prepend(selectRow);
-				const sel = selectRow.find("#coa-select");
-				charts.forEach((ch) => sel.append(`<option value="${ch}">${ch}</option>`));
-				sel.val(current);
-
-				const treeContainer = $('<div class="coa-tree-container"></div>').appendTo(body);
-
-				function renderTree(chart_name) {
-					treeContainer.empty();
-					coa_tree = new frappe.ui.Tree({
-						parent: treeContainer,
-						label: parent_label,
-						expandable: true,
-						method: "erpnext.accounts.utils.get_coa",
-						args: {
-							chart: chart_name,
-							parent: parent_label,
-							doctype: "Account",
-						},
-						onclick: function (node) {
-							parent_label = node.value;
-						},
-					});
-					coa_tree.load_children(coa_tree.root_node, true);
-				}
-
-				// initial render
-				renderTree(current);
-
-				// switch chart on select change
-				sel.on("change", function () {
-					current = $(this).val();
-					dialog.set_title(current);
-					renderTree(current);
-				});
-
-				// layout tweaks for buttons (same as setup_wizard)
-				const form_container = $(dialog.body).find("form");
-				const buttons = $(form_container).find(".frappe-control");
-				form_container.addClass("flex");
-				buttons.map((index, button) => {
-					$(button).css({ "margin-right": "1em" });
-				});
-
-				dialog.show();
-			},
+				// Go to next
+				currentStep = next;
+				location.reload();
+			}
 		});
 	}
 
-	function renderSteps(data, steps) {
+	// =========================
+	// UI BUILDING
+	// =========================
+	function renderList(data) {
+		let req = "", opt = "";
 
-		let mandatoryHtml = "";
-		let optionalHtml = "";
-
-		// pass isMandatory flag so renderStep can add "*" for required steps
-		data.mandatory_steps.forEach((step, i) => {
-			mandatoryHtml += renderStep(step, i, true);
-		});
-		data.optional_steps.forEach((step, i) => {
-			optionalHtml += renderStep(step, data.mandatory_steps.length + i, false);
+		data.mandatory_steps.forEach((s, i) => {
+			req += htmlStep(s, i, true);
 		});
 
-		$("#mandatory-list").html(mandatoryHtml);
-		$("#optional-list").html(optionalHtml);
+		data.optional_steps.forEach((s, i) => {
+			opt += htmlStep(s, data.mandatory_steps.length + i, false);
+		});
+
+		$("#mandatory-list").html(req);
+		$("#optional-list").html(opt);
 	}
 
-	function renderStep(step, index, isMandatory) {
-		// number: show step position (1., 2., ...)
-		const numberLabel = `${index + 1}.`;
-		// star for required steps only
+	function htmlStep(step, idx, isMandatory) {
 		const star = isMandatory ? '<span class="mandatory-star">*</span>' : '';
-		// right arrow (simple chevron to match figma)
-		const arrow = '<span class="step-arrow" aria-hidden="true">&rsaquo;</span>';
 
 		return `
-			<div class="step-row ${step.completed ? 'done' : ''}" data-index="${index}">
-				<div class="checkbox">${step.completed ? '✔' : ''}</div>
-				<span class="step-number">${numberLabel}</span>
-				<span class="step-label">${step.step}${star}</span>
-				${arrow}
-			</div>`;
+		<div class="step-row ${step.completed ? "done" : ""}"
+			data-step="${step.step}"
+			data-index="${idx}">
+			<div class="checkbox">${step.completed ? "✔" : ""}</div>
+			<span class="step-number">${idx + 1}.</span>
+			<span class="step-label">${step.step}${star}</span>
+			<span class="step-arrow">&rsaquo;</span>
+		</div>`;
 	}
 
-	function showStepDescription(step) {
+	function showStep(step) {
 		$("#desc-title").text(step.step);
 		$("#desc-content").text(step.description);
 
-		const label = step.step.toLowerCase().includes("chart") ?
-			"view chart of account" :
-			step.completed ? "Completed" : "Continue";
-
-		$("#desc-button").text(label);
+		// Show buttons based on optional/mandatory
+		if (step.mandatory) {
+			$("#skip-button").hide();
+			$("#desc-button").text("Continue");
+		} else {
+			$("#skip-button").show();
+			$("#desc-button").text("Continue");
+		}
 	}
 };

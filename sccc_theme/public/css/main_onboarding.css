@@ -243,3 +243,10 @@
 	font-size: 12px;
 	text-decoration: underline;
 }
+
+.modal .modal-content {
+    border-color: var(--border-color);
+    border-radius: 0px;
+    width: 813px;
+    height: 505px;
+}
