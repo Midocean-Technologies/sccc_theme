@@ -93,10 +93,10 @@
 
 /* Step Row */
 .step-row {
+	/* keep alignment but allow label to take remaining space so arrow sits right */
 	display: flex;
 	align-items: center;
-	gap: 10px;
-	padding: 10px 8px;
+	padding: 12px 8px; /* slightly increased vertical padding for better tap target */
 	cursor: pointer;
 	border-radius: 0px;
 	border-bottom: 1px solid #f3f3f4;
@@ -121,6 +121,7 @@
 
 /* Checkbox */
 .step-row .checkbox {
+	/* keep size but make checkbox visually lighter to match figma */
 	width: 18px;
 	height: 18px;
 	border: 1px solid #dedede;
@@ -129,7 +130,61 @@
 	align-items: center;
 	font-size: 12px;
 	color: #FF375E;
-	border-radius: 0px;
+	border-radius: 3px;
+	flex: 0 0 auto;
+}
+
+/* numeric label (e.g. "1.") */
+.step-row .step-number {
+	font-weight: 600;
+	font-size: 13px;
+	min-width: 24px;
+	text-align: right;
+	flex: 0 0 auto;
+	margin-left: 4px;
+}
+
+/* main text label: grows to fill space so arrow stays at right */
+.step-row .step-label {
+	font-size: 14px;
+	margin-left: 8px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	flex: 1 1 auto;
+}
+
+/* mandatory star shown for required steps */
+.step-row .mandatory-star {
+	margin-left: 6px;
+	font-weight: 700;
+	font-size: 14px;
+}
+
+/* right arrow/chevron */
+.step-row .step-arrow {
+	color: #BDBDBD;
+	font-size: 18px;
+	margin-left: 12px;
+	flex: 0 0 auto;
+	transition: color .15s, transform .15s;
+}
+
+/* hover / active states: emphasize arrow color */
+.step-row:hover .step-arrow,
+.step-row.active .step-arrow {
+	transform: translateX(2px);
+}
+
+/* done state: keep arrow faded */
+.step-row.done .step-arrow {
+	opacity: .55;
+}
+
+/* small responsive tweak: reduce gaps on tiny screens */
+@media (max-width: 480px) {
+	.step-row .step-number { min-width: 20px; font-size: 12px; }
+	.step-row .step-label { font-size: 13px; }
 }
 
 /* RIGHT SIDE */

@@ -38,7 +38,7 @@ def mark_step_completed(step):
 
 @frappe.whitelist()
 def get_onboarding_page():
-    user_fullname = frappe.session.user_fullname or frappe.session.user
+    user = frappe.db.get_value("User", frappe.session.user, "full_name")
     company = frappe.defaults.get_user_default("Company") or ""
     company_abbr = frappe.get_value("Company", company, "abbr") or ""
 
@@ -60,7 +60,7 @@ def get_onboarding_page():
         <div class="main-onboard">
             
             <div class="user-header">
-                <a>hello {user_fullname}</a>
+                <a>hello {user}</a>
                 <p><span style="background-color:#F4F4F5; margin-right:10px;">{company_abbr}</span>  {company}</p>
             </div>
 
