@@ -95,16 +95,32 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 	// OPEN STEP IN IFRAME
 	// ---------------------------
 	function openStep(step) {
-
 		if (!step.route) {
 			frappe.msgprint("No page defined for this step.");
 			return;
 		}
 
+		if (step.route === "Tree/Account") {
+			openAccountTree(step);
+			return;
+		}
+
+		// fallback
+		openIframeDialog(step);
+	}
+
+
+	function openAccountTree(step) {
 		const dialog = new frappe.ui.Dialog({
-			title: step.step,
-			fields: [],
-			primary_action_label: __("Save"),
+			title: __("Chart of Accounts"),
+			size: "extra-large",
+			fields: [
+				{
+					fieldtype: "HTML",
+					fieldname: "account_tree",
+				}
+			],
+			primary_action_label: __("Done"),
 			primary_action: function () {
 				complete(step.step, dialog);
 			},
@@ -112,14 +128,28 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 			secondary_action: () => dialog.hide(),
 		});
 
-		const frame = $(
-			`<iframe src="${step.route}" style="width:760px;height:360px;border:0;"
-			sandbox="allow-same-origin allow-scripts allow-forms allow-popups"></iframe>`
-		);
-
-		$(dialog.body).empty().append(frame);
 		dialog.show();
+
+		let wrapper = dialog.get_field("account_tree").$wrapper[0];
+
+		let company = frappe.defaults.get_default("company");
+
+		new frappe.ui.Tree({
+			parent: wrapper,
+			label: __("Accounts"),
+			root_label: __("Accounts"),
+			expandable: true,
+			method: "erpnext.accounts.utils.get_children",
+			args: {
+				doctype: "Account",
+				company: company,
+			},
+		});
 	}
+
+
+
+
 
 	// ---------------------------
 	// MARK COMPLETE
