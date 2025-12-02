@@ -2,12 +2,12 @@
 	max-width: 1050px;
 	margin: 0 auto;
 	padding: 30px;
-	font-family: Inter, sans-serif;
 }
 
 .user-header {
 	text-align: center;
 	margin-bottom: 40px;
+	width: 768px;
 }
 
 .user-header a {
@@ -34,21 +34,23 @@
 .panel {
 	border: 1px solid #e6e6e6;
 	background: #fff;
+	width: 768px;
+	height: 621px;
 }
 
 /* Head */
-.panel-head {
+/* .panel-head {
 	display: flex;
 	justify-content: space-between;
 	padding: 22px;
 	border-bottom: 1px solid #f2f2f2;
-}
-
+} */
+/* 
 .panel-head h3 {
 	margin: 0;
 	font-size: 18px;
 	font-weight: 500;
-}
+} */
 
 /* Progress Bar */
 .progress {
@@ -56,11 +58,15 @@
 	background: #e3dcff;
 }
 
-#progress-inner {
+/* #progress-inner {
+	font-size: 14px;
 	height: 4px;
 	background: #7a4eff;
 	transition: .3s;
-}
+} */
+/* #progress-text {
+	font-size: 14px;
+} */
 
 /* 2 Column Layout */
 .split {
@@ -71,8 +77,7 @@
 
 /* LEFT SIDE */
 .step-left {
-	padding: 20px 24px;
-	border-right: 1px solid #f1f1f1;
+	padding: 20px 10px;
 }
 
 .label-sec {
@@ -115,6 +120,10 @@
 	opacity: .55;
 }
 
+.step-row.done .step-label {
+	text-decoration-line: line-through;
+}
+
 .step-row span {
 	font-size: 14px;
 }
@@ -146,7 +155,7 @@
 
 /* main text label: grows to fill space so arrow stays at right */
 .step-row .step-label {
-	font-size: 14px;
+	font-size: 16px;
 	margin-left: 8px;
 	white-space: nowrap;
 	overflow: hidden;
@@ -244,9 +253,73 @@
 	text-decoration: underline;
 }
 
-.modal .modal-content {
+/* .modal .modal-content {
     border-color: var(--border-color);
     border-radius: 0px;
     width: 813px;
     height: 505px;
+} */
+
+/* Panel Header */
+.panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 22px 26px;
+    border-bottom: 1px solid #f3f3f4;
+}
+
+/* Left group: title + progress */
+.left-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.panel-head h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    text-transform: lowercase;
+}
+
+/* Step counter text */
+#progress-text {
+    font-size: 13px;
+    color: #7c7c7c;
+}
+
+/* Progress bar background */
+#progress-bar-bg {
+    width: 130px;
+    height: 4px;
+    background: #e1dcff;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 2px;
+}
+
+/* Purple fill */
+#progress-inner {
+    height: 4px;
+    background: #7a42ff;
+    width: 0%;
+    transition: width .3s ease-out;
+}
+
+/* Tag on right side */
+#step-type-text {
+    font-size: 14px;
+    color: #9c9c9c;
+    text-transform: lowercase;
+    white-space: nowrap;
+}
+
+
+.container, .container-fluid, .container-xl, .container-lg, .container-md, .container-sm {
+    width: 100%;
+    padding-right: 00px;
+    padding-left: 200px;
+    margin-right: auto;
+    margin-left: auto;
 }

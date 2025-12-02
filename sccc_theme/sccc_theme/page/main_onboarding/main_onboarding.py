@@ -69,20 +69,24 @@ def get_onboarding_page():
             <div class="panel">
 
                 <div class="panel-head">
-                    <h3>let's setup your account</h3>
-                    <span id="progress-text"></span>
+                    <div class="left-wrap">
+                        <h3>let’s setup your account</h3>
+                        
+                        <div id="progress-bar-bg">
+                            <div id="progress-inner"></div>
+                        </div><span id="progress-text"></span>
+                    </div>
+
+                    <p id="step-type-text" class="label-head"></p>
                 </div>
 
-                <div class="progress">
-                    <div id="progress-inner"></div>
-                </div>
+
 
                 <div class="split">
                     
                     <div class="step-left">
 
                         <div class="label-sec">
-                            <p class="label-head">required</p>
                             <div id="mandatory-list"></div>
                         </div>
 

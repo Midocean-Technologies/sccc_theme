@@ -14,7 +14,7 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 	// LOAD DATA
 	// =========================
 	frappe.call({
-		method: "sccc_theme.utils.main_onboarding.get_onboarding_page",
+		method: "sccc_theme.sccc_theme.page.main_onboarding.main_onboarding.get_onboarding_page",
 		callback: function (r) {
 
 			const data = r.message;
@@ -22,10 +22,8 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 
 			steps = [...data.mandatory_steps, ...data.optional_steps];
 
-			// STEP 1: check if mandatory finished
 			checkMandatory(data);
 
-			// STEP 2: find first incomplete step
 			currentStep = steps.find(s => !s.completed) || steps[0];
 
 			showStep(currentStep);
@@ -34,7 +32,6 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 
 			$(".step-row").on("click", function () {
 				const s = steps[$(this).data("index")];
-
 				if (s.completed) return;
 				currentStep = s;
 				showStep(s);
@@ -43,33 +40,28 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 
 			updateProgress(data);
 
-			// Continue
 			$("#desc-button").on("click", function () {
 				if (currentStep.completed) return;
 				openStep(currentStep);
 			});
 
-			// Skip (optional only)
 			$("#skip-button").on("click", function () {
 				skipStep(currentStep);
 			});
 		}
 	});
 
-	// ================================
-	// CORE FUNCTIONS
-	// ================================
-
+	// ---------------------------
+	// MANDATORY CHECK
+	// ---------------------------
 	function checkMandatory(data) {
 		const incomplete = data.mandatory_steps.filter(x => !x.completed);
 		if (incomplete.length === 0 && data.mandatory_steps.length > 0) {
-			// go to optional steps
 			return;
 		}
 	}
 
 	function skipStep(step) {
-
 		if (step.mandatory) {
 			frappe.msgprint("You cannot skip a required step.");
 			return;
@@ -83,7 +75,6 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 			showStep(next);
 			highlight(next);
 		} else {
-			// last optional
 			window.location.href = "/app/home";
 		}
 	}
@@ -94,14 +85,15 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 	}
 
 	function updateProgress(data) {
-		let val = (data.completed_steps / data.total_steps) * 100;
-		$("#progress-inner").css("width", val + "%");
+		let ratio = (data.completed_steps / data.total_steps) * 100;
+		$("#progress-inner").css("width", ratio + "%");
 		$("#progress-text").text(`${data.completed_steps}/${data.total_steps} steps completed`);
 	}
 
-	// =========================
-	// MODAL OPEN
-	// =========================
+
+	// ---------------------------
+	// OPEN STEP IN IFRAME
+	// ---------------------------
 	function openStep(step) {
 
 		if (!step.route) {
@@ -129,12 +121,12 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 		dialog.show();
 	}
 
-	// =========================
+	// ---------------------------
 	// MARK COMPLETE
-	// =========================
+	// ---------------------------
 	function complete(stepName, dialog) {
 		frappe.call({
-			method: "sccc_theme.utils.main_onboarding.mark_step_completed",
+			method: "sccc_theme.sccc_theme.page.main_onboarding.main_onboarding.mark_step_completed",
 			args: { step: stepName },
 			callback: function () {
 				dialog.hide();
@@ -142,22 +134,20 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 				const index = steps.findIndex(s => s.step === stepName);
 				const next = steps[index + 1];
 
-				// If no next step → redirect
 				if (!next) {
 					window.location.href = "/app/home";
 					return;
 				}
 
-				// Go to next
 				currentStep = next;
 				location.reload();
 			}
 		});
 	}
 
-	// =========================
-	// UI BUILDING
-	// =========================
+	// ---------------------------
+	// STEP LIST DESIGN
+	// ---------------------------
 	function renderList(data) {
 		let req = "", opt = "";
 
@@ -187,11 +177,17 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 		</div>`;
 	}
 
+	// ---------------------------
+	// 🌟 SHOW STEP + DYNAMIC TEXT
+	// ---------------------------
 	function showStep(step) {
 		$("#desc-title").text(step.step);
 		$("#desc-content").text(step.description);
 
-		// Show buttons based on optional/mandatory
+		// **** DYNAMIC HEADER HERE ****
+		$("#step-type-text").text(step.mandatory ? "Required" : "Optional");
+
+		// button control
 		if (step.mandatory) {
 			$("#skip-button").hide();
 			$("#desc-button").text("Continue");

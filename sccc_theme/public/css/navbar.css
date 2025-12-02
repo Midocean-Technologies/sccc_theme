@@ -187,3 +187,13 @@ body[data-route="main-onboarding"] #sccc-topbar.sccc-topbar {
   height: var(--sccc-top-h);
 }
 
+body[data-route="main-onboarding"] #sccc-icon,
+body[data-route="main-onboarding"] .dropdown.dropdown-notifications.dropdown-mobile {
+    display: none !important;
+}
+
+body[data-route="integrations"] button.sccc-icon img[src="/files/integ.svg"] {
+    display: none !important;
+}
+
+
