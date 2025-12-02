@@ -124,3 +124,15 @@ def get_onboarding_page():
         "total_steps": len(steps),
         "completed_steps": len([x for x in steps if x["completed"]]),
     }
+
+
+from frappe.model.rename_doc import rename_doc
+
+@frappe.whitelist()
+def rename_account(old_name=None, new_name=None):
+    """Rename an Account safely from JS."""
+    if not old_name or not new_name:
+        frappe.throw("old_name and new_name are required")
+
+    rename_doc("Account", old_name, new_name, force=True, merge=False)
+    return True

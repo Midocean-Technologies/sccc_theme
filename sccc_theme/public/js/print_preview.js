@@ -1,3 +1,5 @@
+console.log("Custom Print Header JS Loaded..,");
+
 function moveLanguageFieldAfterSpan() {
     
     const body = document.querySelector("body[data-route]");
@@ -6,13 +8,14 @@ function moveLanguageFieldAfterSpan() {
         return;
     }
     const route = body.getAttribute("data-route") || "";
-    if (!route.startsWith("print/Item")) {
+    if (!route.startsWith("print/")) {
         return;
     }
 
     
     const langDiv = document.querySelector(
         'div.frappe-control.input-max-width[data-fieldname="language"]'
+        
     );
 
     
@@ -59,7 +62,23 @@ function moveLanguageFieldAfterSpan() {
     } else {
         headerActions.appendChild(langDiv);
     }
+
+     const leftSidebar = document.querySelector(
+        "div.col-lg-2.layout-side-section.print-preview-sidebar"
+    );
+
+    if (leftSidebar) {
+        const leftLangField = leftSidebar.querySelector(
+            'div.frappe-control.input-max-width[data-fieldname="language"]'
+        );
+
+        if (leftLangField) {
+            leftLangField.style.display = "none";
+        }
+    }
 }
+
+
 
 
 document.addEventListener("DOMContentLoaded", function () {

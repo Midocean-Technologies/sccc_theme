@@ -314,12 +314,3 @@
     text-transform: lowercase;
     white-space: nowrap;
 }
-
-
-.container, .container-fluid, .container-xl, .container-lg, .container-md, .container-sm {
-    width: 100%;
-    padding-right: 00px;
-    padding-left: 200px;
-    margin-right: auto;
-    margin-left: auto;
-}
