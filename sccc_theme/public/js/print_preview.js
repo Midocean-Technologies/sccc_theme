@@ -1,7 +1,4 @@
-console.log("Custom Print Header JS Loaded..,");
-
 function moveLanguageFieldAfterSpan() {
-    
     const body = document.querySelector("body[data-route]");
     if (!body) {
         setTimeout(moveLanguageFieldAfterSpan, 200);
@@ -12,13 +9,10 @@ function moveLanguageFieldAfterSpan() {
         return;
     }
 
-    
     const langDiv = document.querySelector(
         'div.frappe-control.input-max-width[data-fieldname="language"]'
-        
     );
 
-    
     const allActions = document.querySelectorAll(
         "div.custom-actions.hidden-xs.hidden-md"
     );
@@ -40,7 +34,6 @@ function moveLanguageFieldAfterSpan() {
         return;
     }
 
-    
     if (
         langDiv.id === "lang-moved" &&
         langDiv.parentElement === headerActions
@@ -56,33 +49,36 @@ function moveLanguageFieldAfterSpan() {
     langDiv.style.verticalAlign = "middle";
     langDiv.style.width = "120px";
 
-    
     if (firstSpan.nextSibling) {
         headerActions.insertBefore(langDiv, firstSpan.nextSibling);
     } else {
         headerActions.appendChild(langDiv);
     }
 
-     const leftSidebar = document.querySelector(
+    
+    const url = new URL(window.location.href);
+    const alreadyReloaded = url.searchParams.get("reload_lang") === "1";
+
+    if (!alreadyReloaded) {
+        url.searchParams.set("reload_lang", "1");
+        window.location.replace(url.toString());
+        return;
+    }
+
+    const leftSidebar = document.querySelector(
         "div.col-lg-2.layout-side-section.print-preview-sidebar"
     );
-
     if (leftSidebar) {
         const leftLangField = leftSidebar.querySelector(
             'div.frappe-control.input-max-width[data-fieldname="language"]'
         );
-
         if (leftLangField) {
             leftLangField.style.display = "none";
         }
     }
 }
 
-
-
-
 document.addEventListener("DOMContentLoaded", function () {
-    
     setTimeout(moveLanguageFieldAfterSpan, 400);
     setInterval(moveLanguageFieldAfterSpan, 800);
 });

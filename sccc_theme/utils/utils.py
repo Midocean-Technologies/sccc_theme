@@ -577,3 +577,33 @@ def get_user(key, old_password):
         user = frappe.session.user
         
     return user
+
+def boot_session(bootinfo):
+    print(">>> Boot Session Hook Triggered")
+
+    user = frappe.session.user
+    bootinfo.sccc_onboarding_required = False  # default
+
+    # ✅ Check by role instead of get_system_managers() list format
+    user_roles = frappe.get_roles(user)
+    print("User:", user)
+    print("User roles:", user_roles)
+
+    if "System Manager" not in user_roles:
+        print("User is NOT System Manager")
+        return
+
+    print("User IS System Manager")
+
+    settings = frappe.get_single("sccc theme settings")
+    print("Loaded settings:", settings.name)
+
+    for step in settings.onboarding_steps:
+        print("Step:", getattr(step, "step_name", ""), 
+              "Mandatory:", step.is_mandatory, 
+              "Completed:", step.is_completed)
+
+        if step.is_mandatory and not step.is_completed:
+            bootinfo.sccc_onboarding_required = True
+            print("Mandatory onboarding found → setting = True")
+            break
