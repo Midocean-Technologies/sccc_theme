@@ -94,38 +94,41 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 		}
 
 		// special case: chart of accounts
-		if (step.route === "Tree/Account") {
+		if (step.route.toLowerCase() === "tree/account" || step.route.toLowerCase() === "tree/Account") {
 			openAccountTree(step);
 			return;
 		}
 
-		// fallback: open in iframe dialog
-		openIframeDialog(step);
+		// All other steps → Open custom blank dialog
+		openBlankDialog(step);
 	}
 
-	function openIframeDialog(step) {
+	// =============== NEW DIALOG (NO IFRAME) ===============
+	function openBlankDialog(step) {
+
 		const dialog = new frappe.ui.Dialog({
 			title: step.step,
-			fields: [],
-			primary_action_label: __("Save"),
+			size: "extra-large", 
+			fields: [
+				{
+					fieldtype: "HTML",
+					fieldname: "info_box",
+					options: `<div style="padding:20px;font-size:16px;">
+					</div>`
+				}
+			],
+			primary_action_label: __("Done"),
 			primary_action: function () {
 				complete(step.step, dialog);
 			},
-			secondary_action_label: __("Cancel"),
+			secondary_action_label: __("Close"),
 			secondary_action: () => dialog.hide(),
 		});
 
-		const frame = $(`
-			<iframe src="${step.route}" style="width:760px;height:360px;border:0;"
-				sandbox="allow-same-origin allow-scripts allow-forms allow-popups">
-			</iframe>
-		`);
-
-		$(dialog.body).empty().append(frame);
 		dialog.show();
 	}
 
-	//  ACCOUNT TREE IN DIALOG
+	// =============== CHART OF ACCOUNT DIALOG UNTOUCHED ===============
 	function openAccountTree(step) {
 		const dialog = new frappe.ui.Dialog({
 			title: __("Chart of Accounts"),
@@ -182,10 +185,8 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 		return tree;
 	}
 
-
-	//  ADD CHILD ()
+	//  ADD CHILD 
 	function show_add_child_dialog(node, company, tree) {
-		console.log("Adding child to:", node, company);
 
 		const d = new frappe.ui.Dialog({
 			title: __("Add Child Account"),
@@ -205,13 +206,12 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 							doctype: "Account",
 							account_name: values.account_name,
 							is_group: values.is_group ? 1 : 0,
-							parent_account: parent_account,   
-							root_type: values.root_type,
+							parent_account: parent_account,
 							company: company
 						}
 					},
 					callback: function (res) {
-						// ✅ now tree really is a frappe.ui.Tree instance
+
 						if (tree && typeof tree.expand_node === "function") {
 							tree.expand_node(node);
 						}
@@ -232,7 +232,6 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 
 		d.show();
 	}
-
 
 	// RENAME ACCOUNT
 	function show_rename_dialog(node, tree) {
@@ -275,7 +274,8 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 								tree.expand_node(parentNode);
 								tree.load_children(parentNode);
 							}
-						}, 400); 
+						}, 400);
+
 						frappe.show_alert({
 							message: __("Account Renamed Successfully"),
 							indicator: "green"
@@ -287,8 +287,6 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 
 		d.show();
 	}
-
-
 
 	// MARK COMPLETE
 	function complete(stepName, dialog) {
@@ -312,7 +310,7 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 		});
 	}
 
-	// STEP LIST DESIGN
+	// STEP LIST 
 	function renderList(data) {
 		let req = "", opt = "";
 
@@ -342,7 +340,6 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 		</div>`;
 	}
 
-	// SHOW STEP + TEXT
 	function showStep(step) {
 		$("#desc-title").text(step.step);
 		$("#desc-content").text(step.description);
