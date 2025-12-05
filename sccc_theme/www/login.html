@@ -393,9 +393,26 @@
 	font-size: var(--text-xl);
 	font-weight: 600;
 	}
-	.navbar {
+	/* .navbar {
 		display: none !important;
-		}
+		} */
+
+	.navbar-light {
+		border-bottom: none !important;
+		background: #4F008C;
+	}
+	.navbar-light .navbar-brand {
+		display: none !important;
+	}
+	.navbar .navbar-nav .nav-item.active {
+		display: none;
+	}
+
+	.mb-0, .my-0 {
+		margin-bottom: -20px !important;
+		margin-top: 15px;
+	}
+
 
 
     .footer-text a {
