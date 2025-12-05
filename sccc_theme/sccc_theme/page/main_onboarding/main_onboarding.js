@@ -20,9 +20,7 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 
 			steps = [...data.mandatory_steps, ...data.optional_steps];
 
-			checkMandatory(data);
-
-			currentStep = steps.find(s => !s.completed) || steps[0];
+			currentStep = steps.find(s => s.completed == 0) || steps[0];
 
 			showStep(currentStep);
 			renderList(data);
@@ -30,7 +28,7 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 
 			$(".step-row").on("click", function () {
 				const s = steps[$(this).data("index")];
-				if (s.completed) return;
+				if (s.completed == 1) return;
 				currentStep = s;
 				showStep(s);
 				highlight(s);
@@ -39,41 +37,40 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 			updateProgress(data);
 
 			$("#desc-button").on("click", function () {
-				if (currentStep.completed) return;
+				if (currentStep.completed == 1) return;
 				openStep(currentStep);
-			});
-
-			$("#skip-button").on("click", function () {
-				skipStep(currentStep);
 			});
 		}
 	});
 
-	// MANDATORY CHECK
-	function checkMandatory(data) {
-		const incomplete = data.mandatory_steps.filter(x => !x.completed);
-		if (incomplete.length === 0 && data.mandatory_steps.length > 0) {
-			return;
-		}
-	}
+	// ---------------------------
+	// SKIP BUTTON LOGIC (NEW)
+	// ---------------------------
+	$(document).on("click", "#step-type-button", function () {
 
-	function skipStep(step) {
-		if (step.mandatory) {
-			frappe.msgprint("You cannot skip a required step.");
+		// If CURRENT step is mandatory → block
+		if (currentStep && currentStep.mandatory == 1) {
+			frappe.msgprint("This is a required step. Please complete it.");
 			return;
 		}
 
-		const index = steps.indexOf(step);
-		const next = steps[index + 1];
+		// Check if ANY mandatory step is incomplete
+		let mandatory_incomplete = steps
+			.filter(s => s.mandatory == 1)
+			.some(s => s.completed == 0);
 
-		if (next) {
-			currentStep = next;
-			showStep(next);
-			highlight(next);
-		} else {
-			window.location.href = "/app/home";
+		if (mandatory_incomplete) {
+			frappe.msgprint("Please complete all required steps before skipping.");
+			return;
 		}
-	}
+
+		// All mandatory steps completed → go home
+		window.location.href = "/app/home";
+	});
+
+	// ---------------------------
+	// HELPER FUNCTIONS
+	// ---------------------------
 
 	function highlight(step) {
 		$(".step-row").removeClass("active");
@@ -94,27 +91,24 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 		}
 
 		// special case: chart of accounts
-		if (step.route.toLowerCase() === "tree/account" || step.route.toLowerCase() === "tree/Account") {
+		if (step.route.toLowerCase() === "tree/account") {
 			openAccountTree(step);
 			return;
 		}
 
-		// All other steps → Open custom blank dialog
 		openBlankDialog(step);
 	}
 
-	// =============== NEW DIALOG (NO IFRAME) ===============
 	function openBlankDialog(step) {
 
 		const dialog = new frappe.ui.Dialog({
 			title: step.step,
-			size: "extra-large", 
+			size: "extra-large",
 			fields: [
 				{
 					fieldtype: "HTML",
 					fieldname: "info_box",
-					options: `<div style="padding:20px;font-size:16px;">
-					</div>`
+					options: `<div style="padding:20px;font-size:16px;"></div>`
 				}
 			],
 			primary_action_label: __("Done"),
@@ -128,7 +122,7 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 		dialog.show();
 	}
 
-	// =============== CHART OF ACCOUNT DIALOG UNTOUCHED ===============
+	// CHART OF ACCOUNT
 	function openAccountTree(step) {
 		const dialog = new frappe.ui.Dialog({
 			title: __("Chart of Accounts"),
@@ -152,140 +146,18 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 		let wrapper = dialog.get_field("account_tree").$wrapper[0];
 		let company = frappe.defaults.get_default("company");
 
-		let tree = createAccountTree(wrapper, company);
+		createAccountTree(wrapper, company);
 	}
 
 	function createAccountTree(wrapper, company) {
-		let tree = new frappe.ui.Tree({
+		return new frappe.ui.Tree({
 			parent: wrapper,
 			label: __("Accounts"),
 			root_label: __("Accounts"),
 			expandable: true,
 			method: "erpnext.accounts.utils.get_children",
 			args: { doctype: "Account", company: company },
-
-			toolbar: [
-				{
-					label: __("Add Child"),
-					condition(node) { return node.expandable; },
-					click(node) {
-						show_add_child_dialog(node, company, tree);
-					}
-				},
-				{
-					label: __("Rename"),
-					condition(node) { return !node.root; },
-					click(node) {
-						show_rename_dialog(node, tree);
-					}
-				}
-			],
 		});
-
-		return tree;
-	}
-
-	//  ADD CHILD 
-	function show_add_child_dialog(node, company, tree) {
-
-		const d = new frappe.ui.Dialog({
-			title: __("Add Child Account"),
-			fields: [
-				{ fieldtype: "Data", fieldname: "account_name", label: __("Account Name"), reqd: 1 },
-				{ fieldtype: "Check", fieldname: "is_group", label: __("Is Group"), default: 0 },
-			],
-			primary_action_label: __("Create"),
-			primary_action(values) {
-
-				const parent_account = node.data && node.data.value ? node.data.value : null;
-
-				frappe.call({
-					method: "frappe.client.insert",
-					args: {
-						doc: {
-							doctype: "Account",
-							account_name: values.account_name,
-							is_group: values.is_group ? 1 : 0,
-							parent_account: parent_account,
-							company: company
-						}
-					},
-					callback: function (res) {
-
-						if (tree && typeof tree.expand_node === "function") {
-							tree.expand_node(node);
-						}
-						if (tree && typeof tree.load_children === "function") {
-							tree.load_children(node);
-						}
-
-						d.hide();
-
-						frappe.show_alert({
-							message: __("Account created successfully"),
-							indicator: "green"
-						});
-					}
-				});
-			}
-		});
-
-		d.show();
-	}
-
-	// RENAME ACCOUNT
-	function show_rename_dialog(node, tree) {
-		const d = new frappe.ui.Dialog({
-			title: __("Rename Account"),
-			fields: [
-				{
-					fieldtype: "Data",
-					fieldname: "new_name",
-					label: __("New Account Name"),
-					reqd: 1,
-					default: node.label
-				}
-			],
-			primary_action_label: __("Rename"),
-			primary_action(values) {
-
-				const old_name = node.data?.value;
-				const new_name = values.new_name;
-
-				if (!old_name) {
-					frappe.msgprint("Invalid account selected.");
-					return;
-				}
-
-				frappe.call({
-					method: "sccc_theme.sccc_theme.page.main_onboarding.main_onboarding.rename_account",
-					args: {
-						old_name: old_name,
-						new_name: new_name
-					},
-					freeze: true,
-					callback: function () {
-						d.hide();
-
-						const parentNode = node.parent_node;
-
-						setTimeout(() => {
-							if (parentNode) {
-								tree.expand_node(parentNode);
-								tree.load_children(parentNode);
-							}
-						}, 400);
-
-						frappe.show_alert({
-							message: __("Account Renamed Successfully"),
-							indicator: "green"
-						});
-					}
-				});
-			}
-		});
-
-		d.show();
 	}
 
 	// MARK COMPLETE
@@ -295,16 +167,6 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 			args: { step: stepName },
 			callback: function () {
 				dialog.hide();
-
-				const index = steps.findIndex(s => s.step === stepName);
-				const next = steps[index + 1];
-
-				if (!next) {
-					window.location.href = "/app/home";
-					return;
-				}
-
-				currentStep = next;
 				location.reload();
 			}
 		});
@@ -330,10 +192,10 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 		const star = isMandatory ? '<span class="mandatory-star">*</span>' : '';
 
 		return `
-		<div class="step-row ${step.completed ? "done" : ""}"
+		<div class="step-row ${step.completed == 1 ? "done" : ""}"
 			data-step="${step.step}"
 			data-index="${idx}">
-			<div class="checkbox">${step.completed ? "✔" : ""}</div>
+			<div class="checkbox">${step.completed == 1 ? "✔" : ""}</div>
 			<span class="step-number">${idx + 1}.</span>
 			<span class="step-label">${step.step}${star}</span>
 			<span class="step-arrow">&rsaquo;</span>
@@ -343,14 +205,9 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 	function showStep(step) {
 		$("#desc-title").text(step.step);
 		$("#desc-content").text(step.description);
-		$("#step-type-text").text(step.mandatory ? "Required" : "Skip");
 
-		if (step.mandatory) {
-			$("#skip-button").hide();
-			$("#desc-button").text("Continue");
-		} else {
-			$("#skip-button").show();
-			$("#desc-button").text("Continue");
-		}
+		$("#step-type-button").text(step.mandatory == 1 ? "Required" : "Skip");
+
+		$("#desc-button").text("Continue");
 	}
 };

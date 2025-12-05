@@ -1,4 +1,5 @@
 import frappe
+from frappe.model.rename_doc import rename_doc
 
 @frappe.whitelist()
 def get_onboarding_data():
@@ -9,21 +10,22 @@ def get_onboarding_data():
         steps.append({
             "step": row.onboarding_step,
             "description": row.description or "",
-            "mandatory": row.is_mandatory,
-            "completed": row.is_completed,
+            "mandatory": 1 if row.is_mandatory else 0,   # FIXED
+            "completed": 1 if row.is_completed else 0,   # FIXED
             "route": row.route or ""
         })
 
-    mandatory_steps = [s for s in steps if s["mandatory"]]
-    optional_steps = [s for s in steps if not s["mandatory"]]
+    mandatory_steps = [s for s in steps if s["mandatory"] == 1]
+    optional_steps = [s for s in steps if s["mandatory"] == 0]
 
     return {
         "mandatory_steps": mandatory_steps,
         "optional_steps": optional_steps,
         "steps": steps,
         "total_steps": len(steps),
-        "completed_steps": len([x for x in steps if x["completed"]])
+        "completed_steps": len([x for x in steps if x["completed"] == 1])
     }
+
 
 @frappe.whitelist()
 def mark_step_completed(step):
@@ -36,6 +38,7 @@ def mark_step_completed(step):
     settings.save(ignore_permissions=True)
     frappe.db.commit()
     return True
+
 
 @frappe.whitelist()
 def get_onboarding_page():
@@ -50,20 +53,20 @@ def get_onboarding_page():
         steps.append({
             "step": row.onboarding_step,
             "description": row.description or "",
-            "mandatory": row.is_mandatory,
-            "completed": row.is_completed,
+            "mandatory": 1 if row.is_mandatory else 0,
+            "completed": 1 if row.is_completed else 0,
             "route": row.route or ""
         })
 
-    mandatory = [x for x in steps if x["mandatory"]]
-    optional = [x for x in steps if not x["mandatory"]]
+    mandatory = [x for x in steps if x["mandatory"] == 1]
+    optional = [x for x in steps if x["mandatory"] == 0]
 
     html = f"""
         <div class="main-onboard">
             
             <div class="user-header">
                 <a>hello {user}</a>
-                <p><span style="background-color:#F4F4F5; margin-right:10px;">{company_abbr}</span>  {company}</p>
+                <p><span style="background-color:#F4F4F5; margin-right:10px;">{company_abbr}</span> {company}</p>
             </div>
 
             <div class="panel">
@@ -77,10 +80,8 @@ def get_onboarding_page():
                         </div><span id="progress-text"></span>
                     </div>
 
-                    <p id="step-type-text" class="label-head"></p>
+                    <button id="step-type-button" class="label-head step-type-btn"></button>
                 </div>
-
-
 
                 <div class="split">
                     
@@ -122,15 +123,12 @@ def get_onboarding_page():
         "mandatory_steps": mandatory,
         "optional_steps": optional,
         "total_steps": len(steps),
-        "completed_steps": len([x for x in steps if x["completed"]]),
+        "completed_steps": len([x for x in steps if x["completed"] == 1]),
     }
 
 
-from frappe.model.rename_doc import rename_doc
-
 @frappe.whitelist()
 def rename_account(old_name=None, new_name=None):
-    """Rename an Account safely from JS."""
     if not old_name or not new_name:
         frappe.throw("old_name and new_name are required")
 
