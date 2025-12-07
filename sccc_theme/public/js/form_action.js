@@ -3,8 +3,8 @@ console.log("sccc_theme: form_action.js loaded");
   
     function mountSidebarElements() {
         const $pageHeadPrint = $('.page-actions .custom-actions');
-        const $pageHead = $('.frappe-control[data-fieldname="language"]');
-        $pageHeadPrint.prepend($pageHead);
+        // const $pageHead = $('.frappe-control[data-fieldname="language"]');
+        // $pageHeadPrint.prepend($pageHead);
 
         const moveToPageActions = [
             '.form-assignments',

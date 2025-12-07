@@ -5,32 +5,39 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "current_site_plan",
+  "name1",
   "column_break_mtek",
-  "user_limitation"
+  "section_break_azlb",
+  "onboarding_steps"
  ],
  "fields": [
-  {
-   "fieldname": "current_site_plan",
-   "fieldtype": "Link",
-   "label": "Current site plan",
-   "options": "Role Profile"
-  },
   {
    "fieldname": "column_break_mtek",
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "user_limitation",
-   "fieldtype": "Int",
-   "label": "user limitation"
+   "default": "sccc erp",
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "label": "name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_azlb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "onboarding_steps",
+   "fieldtype": "Table",
+   "label": "onboarding steps",
+   "options": "onboarding steps"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-11-05 12:43:42.736720",
+ "modified": "2025-11-28 11:53:27.313716",
  "modified_by": "Administrator",
  "module": "SCCC Theme",
  "name": "sccc theme settings",

@@ -577,3 +577,24 @@ def get_user(key, old_password):
         user = frappe.session.user
         
     return user
+
+def boot_session(bootinfo):
+    user = frappe.session.user
+    bootinfo.sccc_onboarding_required = False
+
+    if user == "Administrator":
+        is_admin_or_client_admin = True
+    else:
+        user_doc = frappe.get_doc("User", user)
+        is_admin_or_client_admin = getattr(user_doc, "is_client_admin", 0) == 1
+
+    if not is_admin_or_client_admin:
+        return
+
+    settings = frappe.get_single("sccc theme settings")
+
+    for step in settings.onboarding_steps:
+        if step.is_mandatory and not step.is_completed:
+            bootinfo.sccc_onboarding_required = True
+            break
+
