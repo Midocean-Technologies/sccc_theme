@@ -31,6 +31,7 @@ app_include_css = [
     "/assets/sccc_theme/css/sidebar.css",
     "/assets/sccc_theme/css/navbar.css",
     "/assets/sccc_theme/css/sccc_theme.css",
+    "/assets/sccc_theme/css/main_onboarding.css"
     # "/assets/sccc_theme/css/bootstrap.css"
 ]
 app_include_js = [
@@ -39,9 +40,14 @@ app_include_js = [
     "/assets/sccc_theme/js/navbar.js",
     "/assets/sccc_theme/js/workspace.js",
     "/assets/sccc_theme/js/form_action.js",
-    "/assets/sccc_theme/js/force_home.js"
+    "/assets/sccc_theme/js/force_home.js",
+    "/assets/sccc_theme/js/print_preview.js",
+    "/assets/sccc_theme/js/onboarding_redirect.js",
+    # "assets/sccc_theme/js/main_onboarding.js"
     # "/assets/sccc_theme/js/gender_disable.js"
 ]
+
+boot_session = "sccc_theme.utils.utils.boot_session"
 
 # default_mail_footer = """
 # 	<span>
