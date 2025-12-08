@@ -526,6 +526,9 @@ def update_website_setting_logo():
     
     if not website_settings.favicon:
         website_settings.favicon = favicon_path
+    
+    if website_settings.show_language_picker == 0:
+        website_settings.show_language_picker = 1
 
     website_settings.save(ignore_permissions=True)
 
