@@ -149,16 +149,147 @@ frappe.pages['main-onboarding'].on_page_load = function (wrapper) {
 		createAccountTree(wrapper, company);
 	}
 
+	// function createAccountTree(wrapper, company) {
+	// 	return new frappe.ui.Tree({
+	// 		parent: wrapper,
+	// 		label: __("Accounts"),
+	// 		root_label: __("Accounts"),
+	// 		expandable: true,
+	// 		method: "erpnext.accounts.utils.get_children",
+	// 		args: { doctype: "Account", company: company },
+	// 	});
+	// }
 	function createAccountTree(wrapper, company) {
-		return new frappe.ui.Tree({
+		let tree = new frappe.ui.Tree({
 			parent: wrapper,
 			label: __("Accounts"),
 			root_label: __("Accounts"),
 			expandable: true,
 			method: "erpnext.accounts.utils.get_children",
 			args: { doctype: "Account", company: company },
+
+			toolbar: [
+				{
+					label: __("Add Child"),
+					condition(node) { return node.expandable; },
+					click(node) {
+						show_add_child_dialog(node, company, tree);
+					}
+				},
+				{
+					label: __("Rename"),
+					condition(node) { return !node.root; },
+					click(node) {
+						show_rename_dialog(node, tree);
+					}
+				}
+			],
 		});
+
+		return tree;
 	}
+	function show_add_child_dialog(node, company, tree) {
+
+		const d = new frappe.ui.Dialog({
+			title: __("Add Child Account"),
+			fields: [
+				{ fieldtype: "Data", fieldname: "account_name", label: __("Account Name"), reqd: 1 },
+				{ fieldtype: "Check", fieldname: "is_group", label: __("Is Group"), default: 0 },
+			],
+			primary_action_label: __("Create"),
+			primary_action(values) {
+
+				const parent_account = node.data && node.data.value ? node.data.value : null;
+
+				frappe.call({
+					method: "frappe.client.insert",
+					args: {
+						doc: {
+							doctype: "Account",
+							account_name: values.account_name,
+							is_group: values.is_group ? 1 : 0,
+							parent_account: parent_account,
+							company: company
+						}
+					},
+					callback: function (res) {
+
+						if (tree && typeof tree.expand_node === "function") {
+							tree.expand_node(node);
+						}
+						if (tree && typeof tree.load_children === "function") {
+							tree.load_children(node);
+						}
+
+						d.hide();
+
+						frappe.show_alert({
+							message: __("Account created successfully"),
+							indicator: "green"
+						});
+					}
+				});
+			}
+		});
+
+		d.show();
+	}
+
+	// RENAME ACCOUNT
+	function show_rename_dialog(node, tree) {
+		const d = new frappe.ui.Dialog({
+			title: __("Rename Account"),
+			fields: [
+				{
+					fieldtype: "Data",
+					fieldname: "new_name",
+					label: __("New Account Name"),
+					reqd: 1,
+					default: node.label
+				}
+			],
+			primary_action_label: __("Rename"),
+			primary_action(values) {
+
+				const old_name = node.data?.value;
+				const new_name = values.new_name;
+
+				if (!old_name) {
+					frappe.msgprint("Invalid account selected.");
+					return;
+				}
+
+				frappe.call({
+					method: "sccc_theme.sccc_theme.page.main_onboarding.main_onboarding.rename_account",
+					args: {
+						old_name: old_name,
+						new_name: new_name
+					},
+					freeze: true,
+					callback: function () {
+						d.hide();
+
+						const parentNode = node.parent_node;
+
+						setTimeout(() => {
+							if (parentNode) {
+								tree.expand_node(parentNode);
+								tree.load_children(parentNode);
+							}
+						}, 400);
+
+						frappe.show_alert({
+							message: __("Account Renamed Successfully"),
+							indicator: "green"
+						});
+					}
+				});
+			}
+		});
+
+		d.show();
+	}
+
 
 	// MARK COMPLETE
 	function complete(stepName, dialog) {
