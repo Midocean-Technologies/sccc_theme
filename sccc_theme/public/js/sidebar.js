@@ -73,8 +73,8 @@
               </span>
 
               <span>
-                <span class="sccc-dashboard-label" style="font-size:14px;">${__("home")}</span>
-                <span class="" style="font-size:14px;">${__("dashboard")}</span>
+                <span class="sccc-dashboard-label" style="font-size:13px; color: var(--sccc-muted); margin-left:-4px;">${__("home")}</span>
+                <span class="" style="font-size:13px; color: var(--sccc-muted);">${__("dashboard")}</span>
               </span>
             </button>
           </div>
@@ -280,7 +280,7 @@ $root.on("click", ".sccc-user", function() {
 
   let items = [], links = [];
   if (selectedPageObj) {
-    const ws = await frappe.call("sccc_theme.utils.utils.get_sidebar_items", { page });
+    const ws = await frappe.call("sccc_theme.utils.workspace.get_sidebar_items", { page });
     items = ws.message[0] || [];
     links = ws.message[1] || [];
   }
@@ -308,7 +308,7 @@ $root.on("click", ".sccc-user", function() {
     const iconHtml = child.icon ? ( (typeof child.icon === 'string' && child.icon.trim().startsWith('<svg')) ? child.icon : frappe.utils.icon(child.icon, "md") ) : frappe.utils.icon('image-view', "md");
 
     // fetch items for this child
-    const childWs = await frappe.call("sccc_theme.utils.utils.get_sidebar_items", { page: child.title });
+    const childWs = await frappe.call("sccc_theme.utils.workspace.get_sidebar_items", { page: child.title });
     const childItems = childWs.message[0] || [];
     const childlinks = childWs.message[1] || [];
     // group child items by type
@@ -352,6 +352,7 @@ $root.on("click", ".sccc-user", function() {
           </div>
           <div id="${collapseId}" class="collapse sccc-collapsible-body">
             ${list.map(i => `
+              ${i.is_below_divider ? '<div class="sccc-hr"></div>' : ''}
               <div class="sccc-tool sccc-collapsible-item" style="border-radius:0; margin-left:17px; border-left:1px solid #424162;" data-route="${i.route}">
                 <span class="sccc-tool-txt">${frappe.utils.escape_html(__(i.label))}</span>
               </div>`).join("")}
@@ -397,10 +398,16 @@ $root.on("click", ".sccc-user", function() {
         return acc;
       }, {});
 
-      Object.entries(links_grouped).forEach(([category, list],j) => {
-        const iconHtml = list[0] && list[0].category_icon ? `<img src="${list[0].category_icon}" style="height:18px; width:18px;" />` : frappe.utils.icon('menu', "sm");
+      Object.entries(links_grouped).forEach(([category, list], j) => {
+        const iconHtml = list[0] && list[0].category_icon
+          ? `<img src="${list[0].category_icon}" style="height:18px; width:18px;" />`
+          : frappe.utils.icon('menu', "sm");
         const collapseId = `collapse-links-${j}`;
-        const link_details = $(`
+        // Only add HR if the first item in this group has is_below_divider
+        const needsDivider = list[0] && list[0].is_below_divider;
+
+        // Build the group HTML
+        const groupHtml = `
           <div class="sccc-tools sccc-collapsible details-child">
             <div class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
@@ -414,8 +421,9 @@ $root.on("click", ".sccc-user", function() {
                 </div>`).join("")}
             </div>
           </div>
-        `);
-        $childWrap.append(link_details);
+          ${needsDivider ? '<div class="sccc-hr"></div>' : ''}
+        `;
+        $childWrap.append(groupHtml);
         $root.find(".sccc-spacer").before($childWrap);
       });
 
@@ -502,7 +510,7 @@ $root.on("click", ".sccc-user", function() {
 
       let items = [], links = [];
       if (selectedPageObj) {
-        const ws = await frappe.call("sccc_theme.utils.utils.get_sidebar_items", { page });
+        const ws = await frappe.call("sccc_theme.utils.workspace.get_sidebar_items", { page });
         items = ws.message[0] || [];
         links = ws.message[1] || [];
       }
@@ -530,7 +538,7 @@ $root.on("click", ".sccc-user", function() {
         const iconHtml = child.icon ? ( (typeof child.icon === 'string' && child.icon.trim().startsWith('<svg')) ? child.icon : frappe.utils.icon(child.icon, "md") ) : frappe.utils.icon('image-view', "md");
 
         // fetch items for this child
-        const childWs = await frappe.call("sccc_theme.utils.utils.get_sidebar_items", { page: child.title });
+        const childWs = await frappe.call("sccc_theme.utils.workspace.get_sidebar_items", { page: child.title });
         const childItems = childWs.message[0] || [];
         const childlinks = childWs.message[1] || [];
         // group child items by type
@@ -571,6 +579,7 @@ $root.on("click", ".sccc-user", function() {
               <div class="ccc-child-header sccc-tools-head">
                 <span class="sccc-tools-icon">${typeIcon}</span> ${frappe.utils.escape_html(__(category))}</span>
                 <span class="sccc-tools-caret">${ICON.chevRight}</span>
+                 ${i.is_below_divider ? '<div class="sccc-hr"></div>' : ''}
               </div>
               <div id="${collapseId}" class="collapse sccc-collapsible-body">
                 ${list.map(i => `
@@ -613,11 +622,17 @@ $root.on("click", ".sccc-user", function() {
         return acc;
       }, {});
 
-      Object.entries(links_grouped).forEach(([category, list],j) => {
-        const iconHtml = list[0] && list[0].category_icon ? `<img src="${list[0].category_icon}" style="height:18px; width:18px;" />` : frappe.utils.icon('menu', "sm");
+      Object.entries(links_grouped).forEach(([category, list], j) => {
+        const iconHtml = list[0] && list[0].category_icon
+          ? `<img src="${list[0].category_icon}" style="height:18px; width:18px;" />`
+          : frappe.utils.icon('menu', "sm");
         const collapseId = `collapse-links-${j}`;
-        const link_details = $(`
-          <div class="sccc-tools sccc-collapsible details-child" '>
+        // Only add HR if the first item in this group has is_below_divider
+        const needsDivider = list[0] && list[0].is_below_divider;
+
+        // Build the group HTML
+        const groupHtml = `
+          <div class="sccc-tools sccc-collapsible details-child">
             <div class="ccc-child-header sccc-tools-head" style="display:flex;align-items:center;gap:8px;margin:4px 0 4px 0;">
               <span class="sccc-tools-icon">${iconHtml}</span>
               <strong style="font-size:13px">${__(category)}</strong>
@@ -630,8 +645,10 @@ $root.on("click", ".sccc-user", function() {
                 </div>`).join("")}
             </div>
           </div>
-        `);
-        $childWrap.append(link_details);
+          ${needsDivider ? '<div class="sccc-hr"></div>' : ''}
+        `;
+        $childWrap.append(groupHtml);
+        $root.find(".sccc-spacer").before($childWrap);
       });
 
       Object.entries(grouped).forEach(([type, list],j) => {
@@ -774,6 +791,12 @@ $root.on("click", ".sccc-user", function() {
 }
 
   function mount() {
+    // Remove sidebar if on main-onboarding
+    if (frappe.get_route && frappe.get_route()[0] === "main-onboarding") {
+      $('.sccc-rail-fixed').remove();
+      return;
+    }
+    // Only mount if not already present and not on main-onboarding
     if (document.getElementById("sccc-rail-fixed")) return;
 
     // Detect if current language is RTL
@@ -796,14 +819,22 @@ $root.on("click", ".sccc-user", function() {
     document.body.appendChild(rail);
     wireRail($(rail));
     loadModules($(rail));
-    // LOG("✅ SCCC fixed rail mounted");
   }
 
   $(document).on("app_ready", mount);
   if (document.readyState !== "loading") setTimeout(mount, 0);
 
   $(document).on('page-change', () => {
-    console.log('<->')
+    // Remove sidebar if on main-onboarding
+    if (frappe.get_route && frappe.get_route()[0] === "main-onboarding") {
+      $('.sccc-rail-fixed').remove();
+      return;
+    }
+    // If sidebar is missing and not on main-onboarding, re-mount it
+    if (!document.getElementById("sccc-rail-fixed")) {
+      mount();
+    }
+    // console.log('<->')
     try {
     // Build a route string comparable to data-route attributes
     let route = "";
@@ -814,7 +845,7 @@ $root.on("click", ".sccc-user", function() {
       route = (location.hash || "").replace(/^#/, "").split("?")[0] || location.pathname.replace(/^\/app\//, "");
     }
     route = route.replace(/^\/+|\/+$/g, "");
-    console.log('>>',route)
+    // console.log('>>',route)
     if (!route) {
       // clear selection if no route
       $('.sccc-collapsible-item').removeClass('selected');
@@ -879,13 +910,13 @@ $root.on("click", ".sccc-user", function() {
       }).first();
     }
 
-    console.log('route lookup', { raw: route, normalized: normalizedRoute, slug: slugRoute, last: lastSeg, doctype: routeDoctype, found: $match.length });
+    // console.log('route lookup', { raw: route, normalized: normalizedRoute, slug: slugRoute, last: lastSeg, doctype: routeDoctype, found: $match.length });
 
     if ($match && $match.length) {
       // clear selection everywhere (collapsible items, module select, tools)
       $('.sccc-collapsible-item').removeClass('selected');
       $match.addClass('selected');
-      console.log('---???????????',$match)
+      // console.log('---???????????',$match)
 
      // also highlight corresponding module select item (if present)
      try {

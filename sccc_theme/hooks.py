@@ -1,8 +1,8 @@
 app_name = "sccc_theme"
 app_title = "SCCC Theme"
-app_publisher = "midocean technologies Pvt LTD"
+app_publisher = "Bhavesh Mahavar"
 app_description = "SCCC Theme"
-app_email = "info@midocean.tech"
+app_email = "bhavesh@gmail.com"
 app_license = "mit"
 
 # Apps
@@ -14,10 +14,9 @@ app_license = "mit"
 # add_to_apps_screen = [
 # 	{
 # 		"name": "sccc_theme",
-# 		"logo": "/assets/sccc_theme/logo.png",
-# 		"title": "SCCC Theme",
-# 		"route": "/sccc_theme",
-# 		"has_permission": "sccc_theme.api.permission.has_app_permission"
+# 		"logo": "/assets/sccc_theme/images/logo.svg",
+# 		"title": "SCCC",
+# 		"route": "/app/home",
 # 	}
 # ]
 
@@ -32,6 +31,7 @@ app_include_css = [
     "/assets/sccc_theme/css/sidebar.css",
     "/assets/sccc_theme/css/navbar.css",
     "/assets/sccc_theme/css/sccc_theme.css",
+    "/assets/sccc_theme/css/main_onboarding.css"
     # "/assets/sccc_theme/css/bootstrap.css"
 ]
 app_include_js = [
@@ -39,9 +39,27 @@ app_include_js = [
     "/assets/sccc_theme/js/sidebar.js",
     "/assets/sccc_theme/js/navbar.js",
     "/assets/sccc_theme/js/workspace.js",
-    "/assets/sccc_theme/js/form_action.js"
+    "/assets/sccc_theme/js/form_action.js",
+    "/assets/sccc_theme/js/force_home.js",
+    "/assets/sccc_theme/js/print_preview.js",
+    "/assets/sccc_theme/js/onboarding_redirect.js",
+    # "assets/sccc_theme/js/main_onboarding.js"
     # "/assets/sccc_theme/js/gender_disable.js"
 ]
+
+boot_session = "sccc_theme.utils.utils.boot_session"
+
+# default_mail_footer = """
+# 	<span>
+# 		Sent via sccc
+# 	</span>
+# """
+# email_brand_image = "assets/sccc_theme/images/logo.svg"
+
+# website_context = {
+# 	"favicon": "/assets/sccc_theme/images/logo.svg",
+# 	"splash_image": "/assets/sccc_theme/images/logo.svg",
+# }
 
 # fixtures
 fixtures = [
@@ -50,7 +68,16 @@ fixtures = [
         "filters": [
             ["name", "not in", ["ZATCA ERPGulf", "Loans"]]
         ]
-    }
+    },
+    # {
+    #     "dt": "Module Profile",
+    # },
+    # {
+    #     "dt": "sccc plan",
+    # },
+    # {
+    #     "dt": "Role Profile",
+    # }
     # {
     #     "dt":"Custom HTML Block"
     # }
@@ -79,6 +106,7 @@ fixtures = [
 
 doctype_js = {
     "User": "public/js/gender_disable.js",
+    "User": "public/js/user.js",
     "Employee": "public/js/gender_disable.js",
     "Contact": "public/js/gender_disable.js",
     "Customer": "public/js/gender_disable.js",
@@ -161,12 +189,13 @@ after_migrate = "sccc_theme.utils.utils.after_migrate"
 # -----------
 # Permissions evaluated in scripted ways
 
-# permission_query_conditions = {
-# 	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
-# }
+permission_query_conditions = {
+    "User":"sccc_theme.utils.permission.user_permission_query_conditions"
+}
 #
 # has_permission = {
-# 	"Event": "frappe.desk.doctype.event.event.has_permission",
+#     "User":"sccc_theme.utils.permission.has_user_permission"
+# 	# "Event": "frappe.desk.doctype.event.event.has_permission",
 # }
 
 # DocType Class
@@ -175,19 +204,25 @@ after_migrate = "sccc_theme.utils.utils.after_migrate"
 
 override_doctype_class = {
 	"User": "sccc_theme.overrides.user.CustomUser",
+    "Module Profile": "sccc_theme.overrides.module_profile.CustomModuleProfile"
 }
 
 # Document Events
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+    "User":{
+        "validate":"sccc_theme.overrides.user.validate_user_from_doc_event",
+        # "after_insert":"sccc_theme.overrides.user.after_insert_user",
+        # "before_insert":"sccc_theme.overrides.user.restrict_user_limitation"
+    },
+
+    "Workspace": {
+        "validate": "sccc_theme.utils.workspace.validate"
+    }
+
+}
 
 # Scheduled Tasks
 # ---------------
@@ -218,9 +253,10 @@ override_doctype_class = {
 # Overriding Methods
 # ------------------------------
 #
-# override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "sccc_theme.event.get_events"
-# }
+# from frappe.frappe.www.login import send_login_link
+override_whitelisted_methods = {
+    "frappe.core.doctype.user.user.get_all_roles": "sccc_theme.overrides.user.get_all_roles"
+}
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,

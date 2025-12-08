@@ -42,7 +42,7 @@
 	<button class="btn btn-sm btn-primary btn-login btn-color" type="submit" style="width: 170px;">
 		{{ _("Sign In") }}</button>  
 		<span class="or-separator">or</span>
-        <button type="button" class="btn btn-outline">{{ _("Login with Email link") }}</button>
+        <a type="button" href="#login-with-email-link" class="btn btn-outline">{{ _("Login with Email link") }}</a>
 	{% endif %}
 	{% if ldap_settings and ldap_settings.enabled %}
 	<button class="btn btn-sm {{ "btn-primary" if disable_user_pass_login else "btn-default" }} btn-block btn-login btn-ldap-login">
@@ -51,7 +51,7 @@
 </div>
 <div class="footer-text">
 	{{ _("By continuing, you acknowledge that you understand and agree to the") }}
-	<a href="#" style="color: palevioletred;">{{ _("Terms & Conditions") }}</a> {{ _("and") }} <a href="#" style="color: palevioletred;" >{{ _("Privacy Policy") }}</a>
+	<a href="/terms-and-conditions" style="color: palevioletred;">{{ _("Terms & Conditions") }}</a> {{ _("and") }} <a href="/privacy-policy" style="color: palevioletred;" >{{ _("Privacy Policy") }}</a>
 </div>
 {% endmacro %}
 
@@ -65,8 +65,8 @@
 	<h4>{{ _(title)}}</h4>
 	{% else %}
 	<h2>
-		{{ _("welcome back") }} <br>
-		<p style="font-size: 14px;">{{ _("sign in to your sccc erp") }}</p>
+		<b>{{ _("welcome back") }} </b><br>
+		<p style="font-size: 14px; font-weight: normal;">{{ _("sign in to your sccc erp") }}</p>
 	</h2>
 
 	{% endif %}
@@ -191,7 +191,7 @@
 					<img width="68px" src="/assets/sccc_theme/images/logo.svg" alt="sccc">
 					</div>
 					<br>
-					<h4 style="color: black !important; margin: 0;">{{ _("forget password?") }}</h4><br>
+					<h4 style="color: black !important; margin: 0;">{{ _("forgot password?") }}</h4><br>
 					<span style="color: black;">{{ _("get a verification email") }}</span>
       				<span style="font-size: 14px;">{{ _("please enter your email address below and we’ll send you a reset password link") }}</span>
 					<br><br>
@@ -214,11 +214,15 @@
 		</div>
 	</section>
 
-	<section class='for-login-with-email-link'>
+	<section class='for-login-with-email-link' style="margin-top:80px;">
 			{{ logo_section(_('Login with Email Link')) }}
+
 		<div class="login-content page-card">
 			<form class="form-signin form-login-with-email-link hide" role="form">
 				<div class="page-card-body">
+					<div style="text-align: center; margin-bottom: 50px;" >
+						<img width="50px" src="/assets/sccc_theme/images/logo.svg" alt="sccc">
+					</div>
 					<div class="email-field">
 						<input type="email" id="login_with_email_link_email" class="form-control"
 							placeholder="{{ _('Email Address') }}" required autofocus autocomplete="username">
@@ -235,7 +239,7 @@
 				</div>
 				<div class="page-card-actions">
 					<button class="btn btn-sm btn-primary btn-block btn-login-with-email-link"
-						type="submit">{{ _("Send login link") }}</button>
+						type="submit" style="background-color:  #FF375E !important;">{{ _("Send login link") }}</button>
 					<p class="text-center sign-up-message">
 						<a href="#login">{{ _("Back to sign in") }}</a>
 					</p>
@@ -250,6 +254,12 @@
     <img src="/assets/sccc_theme/images/SCCC Logo - white.png" alt="sccc">
   </div>
 <style>
+	@font-face {
+		font-family: 'STCForward';
+		src: local('STCForward'), local('STCForward-Regular'),
+			url('/assets/sccc_theme/font/STCForward-Regular.otf') format('opentype');
+	}
+
 	/* force lowercase first letter for headings, labels, buttons, links, etc. */
 	.page-card h1::first-letter,
 	.page-card h2::first-letter,
@@ -281,9 +291,28 @@
 	.footer-text {
 		text-transform: lowercase !important;
 	}
+	.for-login .page-card .page-card-body .field-icon, .for-forgot .page-card .page-card-body .field-icon, .for-login-with-email-link .page-card .page-card-body .field-icon, .for-signup .page-card .page-card-body .field-icon, .for-email-login .page-card .page-card-body .field-icon {
+    left: 9px;
+    top: 5px;
+    position: absolute;
+    z-index: 2;
+	display: none;
+}
+	.btn:not(.btn-md):not(.btn-lg) {
+		border-radius: 0px !important;
+		padding: 10px 10px;
+	}
 
-    body {
-      font-family: "HelveticaNowMTText", "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", sans-serif;
+	.btn btn-sm btn-primary btn-block mt-3{
+		background-color:  #FF375E !important;
+	}
+	body,*{
+	  font-family: 'STCForward';
+    }
+
+    body{
+	  font-family: 'STCForward';
+	  font-weight: bold !important;
       background-color :#4F008C;
     }
     .login-content, input, button{
@@ -324,7 +353,7 @@
 		font-weight: bold;
 	}
 	.btn-color {
-      background-color: rgb(252, 33, 106) !important;
+      background-color: #FF375E !important;
       width: 30%;
       color: white;
 
@@ -352,6 +381,7 @@
       text-align: left;
       font-size: 12px;
       color: #666;
+	  font-weight: normal;
       /* max-width: 340px; */
       margin-top: 20px;
       margin-bottom: -20px;
@@ -363,10 +393,25 @@
 	font-size: var(--text-xl);
 	font-weight: 600;
 	}
-	.navbar {
+	/* .navbar {
 		display: none !important;
-		}
+		} */
 
+	.navbar-light {
+		border-bottom: none !important;
+		background: #4F008C;
+	}
+	.navbar-light .navbar-brand {
+		display: none !important;
+	}
+	.navbar .navbar-nav .nav-item.active {
+		display: none;
+	}
+
+	.mb-0, .my-0 {
+		margin-bottom: -20px !important;
+		margin-top: 15px;
+	}
 
     .footer-text a {
       /* color: #ed1651; */

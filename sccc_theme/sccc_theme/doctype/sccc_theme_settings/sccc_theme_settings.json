@@ -6,29 +6,42 @@
  "engine": "InnoDB",
  "field_order": [
   "name1",
-  "shortcuts"
+  "column_break_mtek",
+  "section_break_azlb",
+  "onboarding_steps"
  ],
  "fields": [
   {
-   "fieldname": "name1",
-   "fieldtype": "Data",
-   "label": "name"
+   "fieldname": "column_break_mtek",
+   "fieldtype": "Column Break"
   },
   {
-   "fieldname": "shortcuts",
+   "default": "sccc erp",
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "label": "name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_azlb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_bulk_edit": 1,
+   "fieldname": "onboarding_steps",
    "fieldtype": "Table",
-   "label": "shortcuts",
-   "options": "shortcuts"
+   "label": "onboarding steps",
+   "options": "onboarding steps"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-10-03 12:18:30.651807",
+ "modified": "2025-12-07 09:21:43.760455",
  "modified_by": "Administrator",
  "module": "SCCC Theme",
- "name": "sccc settings",
+ "name": "sccc theme settings",
  "owner": "Administrator",
  "permissions": [
   {
@@ -37,7 +50,7 @@
    "email": 1,
    "print": 1,
    "read": 1,
-   "role": "System Manager",
+   "role": "Administrator",
    "share": 1,
    "write": 1
   }

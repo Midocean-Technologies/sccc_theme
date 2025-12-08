@@ -1,9 +1,9 @@
-# Copyright (c) 2025, midocean technologies Pvt LTD and contributors
+# Copyright (c) 2025, Bhavesh Mahavar and contributors
 # For license information, please see license.txt
 
 # import frappe
 from frappe.model.document import Document
 
 
-class shortcuts(Document):
+class onboardingsteps(Document):
 	pass

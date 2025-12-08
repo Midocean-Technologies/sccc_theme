@@ -13,13 +13,191 @@ def after_migrate():
     update_system_settings()
     hide_workspace()
     update_currency_in_doctypes()
+    create_custom_fields()
     PropertySetter()
     remove_gender_records()
-    create_custom_fields()
     # remove_reports_from_workspace_custom_link_cards()
-    add_language_permission_for_ar_en()
+    # add_language_permission_for_ar_en()
     # add_translations() // this is commented because ar.csv file added for translation
+    create_translations_for_module_def()
     disable_other_languages()
+    # create_role_profile()
+    delete_old_role_profile()
+    change_workspace_name()
+    setup_planbased_roles()
+
+def setup_planbased_roles():
+    from sccc_theme.utils.api import set_plan_in_role
+    global_defaults = frappe.get_single("Global Defaults")
+
+    # check if field exists
+    if hasattr(global_defaults, "sccc_plan"):
+        # check if field has data
+        if global_defaults.sccc_plan:
+            set_plan_in_role(global_defaults.sccc_plan)
+
+
+def create_translations_for_module_def():
+    translations = {
+        "Buying": "Purchasing",
+        "Selling": "Sales",
+        "Stock": "Inventory",
+        "Workspace Manager":"Report Viewer"
+    }
+
+    for src, target in translations.items():
+        try:
+            if not frappe.db.exists("Translation", {"source_text": src, "language": "en"}):
+                frappe.get_doc({
+                    "doctype": "Translation",
+                    "language": "en",
+                    "source_text": src,
+                    "translated_text": target
+                }).insert(ignore_permissions=True)
+        except Exception:
+            frappe.log_error(frappe.get_traceback(), f"Translation Failed: {src}")
+
+    
+def change_workspace_name():
+    mapping = {
+        "Selling": "Sales",
+        "Stock": "Inventory",
+        "Buying": "Purchasing"
+    }
+
+    for old_name, new_name in mapping.items():
+        if frappe.db.exists("Workspace", new_name):
+            continue
+
+        if frappe.db.exists("Workspace", old_name):
+            frappe.rename_doc("Workspace", old_name, new_name, force=True)
+
+            ws = frappe.get_doc("Workspace", new_name)
+            ws.title = new_name
+            ws.save(ignore_permissions=True)
+
+def delete_old_role_profile():
+    role_profiles = ["Manufacturing"]
+
+    for role in role_profiles:
+        if frappe.db.exists("Role Profile", role):
+            frappe.delete_doc("Role Profile", role, force=1)
+            frappe.db.commit()
+        
+    module_profiles = ["Manufacturing"]
+
+    for module in module_profiles:
+        if frappe.db.exists("Module Profile", module):
+            frappe.delete_doc("Module Profile", module, force=1)
+            frappe.db.commit()
+
+def create_role_profile():
+    if not frappe.db.exists("Role Profile", "Individual"):
+        doc = frappe.get_doc({
+            "doctype": "Role Profile",
+            "role_profile": "Individual",
+            "roles": [
+                {"role": "Sales User"},
+                {"role": "Sales Master Manager"},
+                {"role": "Sales Manager"},
+                {"role": "Item Manager"},
+                {"role": "Stock User"},
+                {"role": "Stock Manager"},
+                {"role": "Customer"},
+                {"role": "Accounts Manager"},
+                {"role": "Accounts User"},
+                {"role":"Auditor"},
+                {"role":"System Manager"}
+            ]
+        })
+        doc.insert()
+
+    if not frappe.db.exists("Role Profile", "Essential"):
+        doc = frappe.get_doc({
+            "doctype": "Role Profile",
+            "role_profile": "Essential",
+            "roles": [
+                {"role": "Sales User"},
+                {"role": "Sales Master Manager"},
+                {"role": "Sales Manager"},
+                {"role": "Accounts Manager"},
+                {"role": "Accounts User"},
+                {"role":"Auditor"},
+                {"role": "Item Manager"},
+                {"role": "Purchase User"},
+                {"role": "Purchase Manager"},
+                {"role": "Purchase Master Manager"},
+                {"role": "Stock User"},
+                {"role": "Stock Manager"},
+                {"role": "Customer"},
+                {"role": "HR Manager"},
+                {"role": "HR User"},
+                {"role":"System Manager"}
+            ]
+        })
+        doc.insert()
+        
+    if not frappe.db.exists("Role Profile", "Pro"):
+        doc = frappe.get_doc({
+            "doctype": "Role Profile",
+            "role_profile": "Pro",
+            "roles": [
+                {"role": "Sales User"},
+                {"role": "Sales Master Manager"},
+                {"role": "Sales Manager"},
+                {"role": "Item Manager"},
+                {"role": "Purchase User"},
+                {"role": "Purchase Manager"},
+                {"role": "Purchase Master Manager"},
+                {"role": "Stock User"},
+                {"role": "Stock Manager"},
+                {"role": "Customer"},
+                {"role": "HR Manager"},
+                {"role": "HR User"},
+                {"role": "Accounts Manager"},
+                {"role":"Auditor"},
+                {"role": "Accounts User"},
+                {"role": "Projects Manager"},
+                {"role": "Projects User"},
+                {"role":"System Manager"}
+            ]
+        })
+        doc.insert()
+    
+    if not frappe.db.exists("Role Profile", "Ultimate"):
+        doc = frappe.get_doc({
+            "doctype": "Role Profile",
+            "role_profile": "Ultimate",
+            "roles": [
+                {"role": "Sales User"},
+                {"role": "Sales Master Manager"},
+                {"role": "Sales Manager"},
+                {"role": "Item Manager"},
+                {"role": "Purchase User"},
+                {"role": "Purchase Manager"},
+                {"role": "Purchase Master Manager"},
+                {"role": "Stock User"},
+                {"role": "Stock Manager"},
+                {"role": "Customer"},
+                {"role": "HR Manager"},
+                {"role": "HR User"},
+                {"role": "Accounts Manager"},
+                {"role": "Accounts User"},
+                {"role": "Projects Manager"},
+                {"role": "Projects User"},
+                {"role": "Support Team"},
+                {"role": "Dashboard Manager"},
+                {"role": "Report Manager"},
+                {"role":"Quality Manager"},
+                {"role":"Manufacturing Manager"},
+                {"role":"Manufacturing User"},
+                {"role":"Auditor"},
+                {"role":"Maintenance Manager"},
+                {"role":"Workspace Manager"},
+                {"role":"System Manager"}
+            ]
+        })
+        doc.insert()
 
 def disable_other_languages():
     keep = ["en", "ar"]
@@ -34,9 +212,14 @@ def update_system_settings():
     system_settings = frappe.get_single("System Settings")
     if system_settings:
         system_settings.disable_standard_email_footer = 1
-        system_settings.hide_footer_in_auto_email_reports =1
-        system_settings.attach_view_link = 1
+        system_settings.hide_footer_in_auto_email_reports = 1
         system_settings.email_footer_address = ""
+        system_settings.allow_consecutive_login_attempts = 1
+        system_settings.allow_login_after_fail = 7200
+        system_settings.otp_issuer_name = "SCCC ERP"
+        system_settings.disable_system_update_notification = 1
+        system_settings.disable_change_log_notification = 1
+        system_settings.flags.ignore_mandatory = True
         system_settings.save(ignore_permissions=True)
 
 def add_translations():
@@ -175,6 +358,56 @@ def create_custom_fields():
             "depends_on":"eval:doc.type == 'Card Break'",
         },
     )
+    # create_custom_field(  
+    #     "Workspace Link",
+    #     {
+    #         "label":_("Is Below Reports Divider"),
+    #         "fieldname": "is_below_reports_divider",
+    #         "fieldtype": "Check",
+    #         "insert_after": "custom_icon",
+    #         "depends_on":"eval:doc.type == 'Card Break'",
+    #     },
+    # )
+    create_custom_field(  
+        "User",
+        {
+            "label":_("Is Client Admin"),
+            "fieldname": "is_client_admin",
+            "fieldtype": "Check",
+            "insert_after": "enabled",
+            "read_only":1,
+        },
+    )
+    create_custom_field(  
+        "Global Defaults",
+        {
+            "label":_("SCCC Plan"),
+            "fieldname": "sccc_plan",
+            "fieldtype": "Link",
+            "insert_after": "default_distance_unit",
+            "options":"sccc plan",
+            "read_only":1
+        },
+    )
+    create_custom_field(  
+        "Global Defaults",
+        {
+            "label":_("User Limitation"),
+            "fieldname": "user_limitation",
+            "fieldtype": "Int",
+            "insert_after": "sccc_plan",
+            "read_only":1
+        },
+    )
+    create_custom_field(  
+        "Role",
+        {
+            "label":_("SCCC Plan"),
+            "fieldname": "sccc_plan",
+            "fieldtype": "Data",
+            "insert_after": "restrict_to_domain",
+        },
+    )
 
 def remove_gender_records():
     gender_list = frappe.get_all(
@@ -188,6 +421,17 @@ def remove_gender_records():
 
 def PropertySetter():
     make_property_setter("Workspace","icon","read_only",0,"Check")
+    make_property_setter("User","role_profile_name","allow_in_quick_entry",0,"Check")
+    make_property_setter("User","modules_html","hidden",0,"Check")
+    make_property_setter("User","module_profile","read_only",0,"Check")
+    make_property_setter("User","roles_html","hidden",0,"Check")
+    make_property_setter("User","is_client_admin","hidden",0,"Check")
+    make_property_setter("User","is_client_admin","read_only",1,"Check")
+    make_property_setter("User","is_client_admin","in_list_view",1,"Check")
+    make_property_setter("User","is_client_admin","in_standard_filter",1,"Check")
+    make_property_setter("User","user_type","in_list_view",0,"Check")
+    make_property_setter("User","user_type","in_standard_filter",0,"Check")
+    make_property_setter("Role","sccc_plan","read_only",0,"Check")
 
 def update_currency_in_doctypes():
     """Update currency in number card to SAR."""
@@ -224,7 +468,17 @@ def hide_workspace():
         "Welcome Workspace",
         "Website",
         "Integrations",
-        "ZATCA ERPGulf"
+        "ZATCA ERPGulf",
+        "Buying",
+        "Stock",
+        "Assets",
+        "Manufacturing",
+        "Quality",
+        "Projects",
+        "Support",
+        "Payroll",
+        "CRM",
+        "Selling",
     ]
 
     # Get all workspace docs that match and are not hidden
@@ -252,14 +506,12 @@ def update_website_setting_logo():
     favicon_path = "/files/logo.svg"
 
     website_settings.app_name = "SCCC"
+    website_settings.home_page = "app"
 
     if not navbar_settings.app_logo:
         navbar_settings.app_logo = logo_path
         navbar_settings.save(ignore_permissions=True)
     
-    if website_settings.home_page != "app":
-        website_settings.home_page = "app"
-
     if not website_settings.banner_image:
         website_settings.banner_image = logo_path
 
@@ -286,101 +538,31 @@ def update_currency_symbol_for_SAR():
         if currency.symbol != html_symbol:
             currency.symbol = html_symbol
         currency.save()
+    else:
+        html_symbol = '<img src="https://www.sama.gov.sa/ar-sa/Currency/Documents/Saudi_Riyal_Symbol-2.svg" style="height: 0.9em; vertical-align: middle;">'
+        if currency.symbol != html_symbol:
+            currency.symbol = html_symbol
+        currency.save()
 
+# def transfer_workspace_shortcuts():
+#     """Transfer all workspace shortcuts to custom_custom__shortcuts table."""
+#     workspaces = frappe.get_all("Workspace", pluck="name")
 
-def transfer_workspace_shortcuts():
-    """Transfer all workspace shortcuts to custom_custom__shortcuts table."""
-    workspaces = frappe.get_all("Workspace", pluck="name")
+#     for ws_name in workspaces:
+#         ws = frappe.get_doc("Workspace", ws_name)
 
-    for ws_name in workspaces:
-        ws = frappe.get_doc("Workspace", ws_name)
+#         if ws.get("shortcuts"):
+#             ws.custom_custom__shortcuts = []
+#             for sc in ws.shortcuts:
+#                 new_row = sc.as_dict()
+#                 new_row["name"] = None 
+#                 ws.append("custom_custom__shortcuts", new_row)
+#             ws.shortcuts = []
+#             ws.links = []
+#         ws.save(ignore_permissions=True)
 
-        if ws.get("shortcuts"):
-            ws.custom_custom__shortcuts = []
-            for sc in ws.shortcuts:
-                new_row = sc.as_dict()
-                new_row["name"] = None 
-                ws.append("custom_custom__shortcuts", new_row)
-            ws.shortcuts = []
-            ws.links = []
-        ws.save(ignore_permissions=True)
+#     frappe.db.commit()
 
-    frappe.db.commit()
-
-
-def slugify_doctype(name: str) -> str:
-    if not name:
-        return ""   # or return "unknown" if you want a default slug
-    return name.strip().lower().replace(" ", "-")
-
-@frappe.whitelist(allow_guest=True)
-def get_sidebar_items(page=None):
-    """Get sidebar items"""
-    try:
-        if not frappe.db.exists('Workspace',{'name':page}):
-            return [],[]
-        workspace = frappe.get_doc("Workspace", page)
-        if workspace.is_hidden:
-            return [], []
-        
-        items = []
-        link_cards = []
-        for sc in workspace.custom_custom__shortcuts:
-            # default
-            route = None
-
-            # if sc.type == "Page":
-            #     route = f"/app/{sc.link_to}"
-            if sc.type == "DocType":
-                route = f"/app/{slugify_doctype(sc.link_to)}"
-                
-            # elif sc.type == "Report":
-            #     route = f"/app/query-report/{sc.link_to}"
-            # elif sc.type == "Dashboard":
-            #     route = f"/app/dashboard-view/{sc.link_to}"
-            
-            if route:
-                items.append({
-                    "label": sc.label,
-                    "icon": sc.icon,
-                    "type": 'Features' if sc.type == 'DocType' else 'Reports',
-                    "link_to": sc.link_to,
-                    "url": sc.url,
-                    "route": route,
-                })
-
-        category = None
-        category_icon = None
-        for lc in workspace.custom_custom_link_cards_:
-            if getattr(lc, "is_below_divider", 0):
-                continue
-            # default
-            route = None
-            if lc.type == "Card Break":
-                category = lc.label
-                category_icon = lc.custom_icon
-                continue
-            if lc.link_type == "DocType":
-                route = f"/app/{slugify_doctype(lc.link_to)}"
-
-            elif lc.link_type == "Report":
-                route = f"/app/query-report/{lc.link_to}"
-
-            if route and lc.type == "Link":
-                link_cards.append({
-                    "label": lc.label,
-                    "icon": lc.custom_icon,
-                    "link_type": lc.link_type,
-                    "category": category,
-                    "category_icon": category_icon,
-                    "link_to": lc.link_to,
-                    "route": route,
-                })
-        # print(link_cards)
-        return items, link_cards
-    except ImportError:
-        frappe.log_error("Could not find get_sidebar_items ", "Error")
-        return []
 
 @frappe.whitelist(allow_guest=True, methods=["GET"])
 def get_user(key, old_password):
@@ -396,67 +578,23 @@ def get_user(key, old_password):
         
     return user
 
-@frappe.whitelist()
-def get_workspace_sidebar_items():
-	"""Get list of sidebar items for desk"""
-	has_access = "Workspace Manager" in frappe.get_roles()
+def boot_session(bootinfo):
+    user = frappe.session.user
+    bootinfo.sccc_onboarding_required = False
 
-	# don't get domain restricted pages
-	blocked_modules = frappe.get_cached_doc("User", frappe.session.user).get_blocked_modules()
-	blocked_modules.append("Dummy Module")
+    if user == "Administrator":
+        is_admin_or_client_admin = True
+    else:
+        user_doc = frappe.get_doc("User", user)
+        is_admin_or_client_admin = getattr(user_doc, "is_client_admin", 0) == 1
 
-	# adding None to allowed_domains to include pages without domain restriction
-	allowed_domains = [None, *frappe.get_active_domains()]
+    if not is_admin_or_client_admin:
+        return
 
-	filters = {
-		"restrict_to_domain": ["in", allowed_domains],
-		"module": ["not in", blocked_modules],
-	}
+    settings = frappe.get_single("sccc theme settings")
 
-	if has_access:
-		filters = []
+    for step in settings.onboarding_steps:
+        if step.is_mandatory and not step.is_completed:
+            bootinfo.sccc_onboarding_required = True
+            break
 
-	# pages sorted based on sequence id
-	order_by = "sequence_id asc"
-	fields = [
-		"name",
-		"title",
-		"for_user",
-		"parent_page",
-		"content",
-		"public",
-		"module",
-		"icon",
-		"indicator_color",
-		"is_hidden",
-	]
-	all_pages = frappe.get_all(
-		"Workspace", fields=fields, filters=filters, order_by=order_by, ignore_permissions=True
-	)
-	pages = []
-	private_pages = []
-
-	# Filter Page based on Permission
-	for page in all_pages:
-		try:
-			workspace = Workspace(page, True)
-			if has_access or workspace.is_permitted():
-				if page.public and (has_access or not page.is_hidden) and page.title != "Welcome Workspace":
-					pages.append(page)
-				elif page.for_user == frappe.session.user:
-					private_pages.append(page)
-				page["label"] = _(page.get("name"))
-		except frappe.PermissionError:
-			pass
-	if private_pages:
-		pages.extend(private_pages)
-
-	if len(pages) == 0:
-		pages = [frappe.get_doc("Workspace", "Welcome Workspace").as_dict()]
-		pages[0]["label"] = _("Welcome Workspace")
-
-	return {
-		"pages": pages,
-		"has_access": has_access,
-		"has_create_access": frappe.has_permission(doctype="Workspace", ptype="create"),
-	}

@@ -16,16 +16,55 @@ from frappe.utils import (
 
 
 class CustomUser(User):
+    def before_insert(self):
+        self.flags.in_insert = True
+        throttle_user_creation()
+        
+        # Add user limitation
+        user_limit = frappe.db.get_single_value('Global Defaults', 'user_limitation')
+
+        user_count = frappe.db.count(
+            "User",
+            filters={
+                "enabled": 1,
+                "name": ("not in", ["Administrator", "Guest"])
+            }
+        )        
+        if user_limit > 0 and user_count >= user_limit:
+            frappe.throw(
+                f"User limit reached as per subscription plan. "
+                f"Max allowed: {user_limit}, Current: {user_count}"
+            )
+
+    def onload(self):
+        modules = self.get_modules_from_all_apps()
+        self.set_onload("all_modules", sorted(m.get("module_name") for m in modules))
+
+    def get_modules_from_all_apps(self):
+        modules_list = []
+        for app in frappe.get_installed_apps():
+            modules_list += self.get_modules_from_app(app)
+        return modules_list
+
+    def get_modules_from_app(self, app):
+        return frappe.get_all(
+            "Module Def",
+            filters={
+                "app_name": app,
+                "module_name": ["in", ["HR", "Accounts", "Stock", "Selling", "Buying"]],
+            },
+            fields=["module_name", "app_name as app"]
+        )
+    
     def password_reset_mail(self, link):
+        # print("password reset method calling from sccc theme")
         from frappe.utils import get_url
 
         subject = _("Password Reset for SCCC ERP")
-        site_url = get_url()
-        logo_url = f"{site_url}/files/logo.png"
-        header_url = f"{site_url}/files/email_tempate_header.png"
+        # site_url = get_url()
+        site_url = get_url().replace('http://', 'https://')
 
         html_template = """
-                {% set user_doc = frappe.get_doc("User", user) %}
                 {% set site_link = "<a href='" + site_url + "'>" + site_url + "</a>" %}
 
                 <!DOCTYPE html>
@@ -53,7 +92,7 @@ class CustomUser(User):
                             <table cellpadding="0" cellspacing="0" role="presentation">
                             <tr>
                                 <td style="padding-right: 10px;">
-                                <img src="{{ logo_url }}" alt="sccc logo" width="40" height="40" style="display: block;">
+                                <img embed="assets/sccc_theme/images/emaillogo.png" alt="sccc logo" width="40" height="40" style="display: block;"/>
                                 </td>
                                 <td style="font-family: Arial, sans-serif;">
                                 <div style="font-size: 16px; font-weight: 600; color: #6C2BD9;">sccc erp</div>
@@ -67,7 +106,7 @@ class CustomUser(User):
                         <!-- Banner -->
                         <tr>
                         <td align="center" bgcolor="#FFFFFF" style="padding: 40px 30px 0px 30px;">
-                            <img src="{{ header_url }}" alt="banner" width="640" style="display: block; max-width: 100%;">
+                            <img embed="assets/sccc_theme/images/emailheader.png" alt="banner" width="640" style="display: block; max-width: 100%;">
                         </td>
                         </tr>
 
@@ -87,10 +126,10 @@ class CustomUser(User):
                             <!-- CTA Button -->
                             <table cellpadding="0" cellspacing="0" role="presentation" style="margin: 15px 0;">
                               <tr>
-                                <td align="center" bgcolor="#EF4444" style="border-radius: 4px;">
+                                <td align="center" bgcolor="#FF375E" style="border-radius: 4px;">
                                   <a href="{{ link }}" 
                                     style="display:inline-block; padding:12px 28px; font-size:15px; font-weight:600;
-                                            color:#FFFFFF; text-decoration:none; background-color:#EF4444; border-radius:4px;">
+                                            color:#FFFFFF; text-decoration:none; background-color:#FF375E; border-radius:4px;">
                                     {{ _("Reset your password") }}
                                   </a>
                                 </td>
@@ -116,7 +155,7 @@ class CustomUser(User):
                                 <table cellpadding="0" cellspacing="0" role="presentation">
                                     <tr>
                                     <td style="padding-right: 10px;">
-                                        <img src="{{ logo_url }}" alt="sccc logo" width="40" height="40" style="display: block;">
+                                        <img embed="assets/sccc_theme/images/emaillogo.png" alt="sccc logo" width="40" height="40" style="display: block;"/>
                                     </td>
                                     <td>
                                         <div style="font-size: 15px; font-weight: 600; color: #6C2BD9;">sccc erp</div>
@@ -146,8 +185,6 @@ class CustomUser(User):
             "user": self.name,
             "link": link,
             "site_url": site_url,
-            "logo_url": logo_url,
-            "header_url": header_url
         }
 
         content = frappe.render_template(html_template, context)
@@ -166,15 +203,14 @@ class CustomUser(User):
         )
         
     def send_welcome_mail_to_user(self):
+        # print("welcome email sent method calling from sccc theme")
         from frappe.utils import get_url
 
         link = self.reset_password()
 
         subject = _("Welcome to SCCC ERP")
-        site_url = get_url()
-        logo_url = f"{site_url}/files/logo.png"
-        header_url = f"{site_url}/files/email_tempate_header.png"
-        # print(logo_url,header_url)
+        # site_url = get_url()
+        site_url = get_url().replace('http://', 'https://')
 
         html_template = """
                 {% set user_doc = frappe.get_doc("User", user) %}
@@ -205,7 +241,7 @@ class CustomUser(User):
                             <table cellpadding="0" cellspacing="0" role="presentation">
                             <tr>
                                 <td style="padding-right: 10px;">
-                                <img src="{{ logo_url }}" alt="sccc logo" width="40" height="40" style="display: block;">
+                                <img embed="assets/sccc_theme/images/emaillogo.png" alt="sccc logo" width="40" height="40" style="display: block;"/>
                                 </td>
                                 <td style="font-family: Arial, sans-serif;">
                                 <div style="font-size: 16px; font-weight: 600; color: #6C2BD9;">sccc erp</div>
@@ -219,7 +255,7 @@ class CustomUser(User):
                         <!-- Banner -->
                         <tr>
                         <td align="center" bgcolor="#FFFFFF" style="padding: 40px 30px 0px 30px;">
-                            <img src="{{ header_url }}" alt="banner" width="640" style="display: block; max-width: 100%;">
+                            <img embed="assets/sccc_theme/images/emailheader.png" alt="banner" width="640" style="display: block; max-width: 100%;">
                         </td>
                         </tr>
 
@@ -247,11 +283,11 @@ class CustomUser(User):
                             <!-- CTA Button -->
                             <table cellpadding="0" cellspacing="0" role="presentation" style="margin: 15px 0;">
                               <tr>
-                                <td align="center" bgcolor="#EF4444" style="border-radius: 4px;">
+                                <td align="center" bgcolor="#FF375E" style="border-radius: 4px;">
                                   <a href="{{ link }}" 
                                     style="display:inline-block; padding:12px 28px; font-size:15px; font-weight:600;
-                                            color:#FFFFFF; text-decoration:none; background-color:#EF4444; border-radius:4px;">
-                                    {{ _("Set your password") }}
+                                            color:#FFFFFF; text-decoration:none; background-color:#FF375E; border-radius:4px;">
+                                    {{ _("Complete Registration") }}
                                   </a>
                                 </td>
                               </tr>
@@ -271,7 +307,7 @@ class CustomUser(User):
                                 <table cellpadding="0" cellspacing="0" role="presentation">
                                     <tr>
                                     <td style="padding-right: 10px;">
-                                        <img src="{{ logo_url }}" alt="sccc logo" width="40" height="40" style="display: block;">
+                                        <img embed="assets/sccc_theme/images/emaillogo.png" alt="sccc logo" width="40" height="40" style="display: block;"/>
                                     </td>
                                     <td>
                                         <div style="font-size: 15px; font-weight: 600; color: #6C2BD9;">sccc erp</div>
@@ -301,8 +337,6 @@ class CustomUser(User):
             "user": self.name,
             "link": link,
             "site_url": site_url,
-            "logo_url": logo_url,
-            "header_url": header_url
         }
 
         content = frappe.render_template(html_template, context)
@@ -320,5 +354,61 @@ class CustomUser(User):
             retry=3,
         )
 
+#below code from doc events
+@frappe.whitelist()
+def validate_user_from_doc_event(doc, method=None):
+    if doc.role_profile_name:
+        if frappe.db.exists("Module Profile", doc.role_profile_name):
+            doc.module_profile = doc.role_profile_name
+            module_profile = frappe.get_doc("Module Profile", doc.role_profile_name)
+            doc.set("block_modules", [])
+            for d in module_profile.get("block_modules"):
+                doc.append("block_modules", {"module": d.module})
 
 
+def after_insert_user(doc,method=None):
+    if not doc.is_client_admin:
+        if not frappe.db.exists(
+            "User Permission",
+            {
+                "user": doc.name,
+                "allow": "User",
+                "for_value": doc.name,
+                "apply_to_all_doctypes":1
+            },
+        ):
+            user_perm = frappe.new_doc("User Permission")
+            user_perm.user = doc.name
+            user_perm.allow = "User"
+            user_perm.for_value = doc.name
+            user_perm.apply_to_all_doctypes = 1
+            user_perm.insert(ignore_permissions=True)
+            
+def throttle_user_creation():
+	if frappe.flags.in_import:
+		return
+
+	if frappe.db.get_creation_count("User", 60) > frappe.local.conf.get("throttle_user_limit", 60):
+		frappe.throw(_("Throttled"))
+          
+
+@frappe.whitelist()
+def get_all_roles():
+    active_domains = frappe.get_active_domains()
+    current_plan = ""
+    global_defaults = frappe.get_single("Global Defaults")
+    if global_defaults.sccc_plan:
+        current_plan = global_defaults.sccc_plan
+
+    roles = frappe.get_all(
+        "Role",
+        filters={
+            "name": ("not in", frappe.permissions.AUTOMATIC_ROLES),
+            "disabled": 0,
+            "sccc_plan":current_plan,
+        },
+        or_filters={"ifnull(restrict_to_domain, '')": "", "restrict_to_domain": ("in", active_domains)},
+        order_by="name",
+    )
+    # print("role list:::::::::;",sorted([role.get("name") for role in roles]))
+    return sorted([role.get("name") for role in roles])
