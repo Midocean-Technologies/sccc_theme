@@ -27,6 +27,7 @@
    "fieldtype": "Section Break"
   },
   {
+   "allow_bulk_edit": 1,
    "fieldname": "onboarding_steps",
    "fieldtype": "Table",
    "label": "onboarding steps",
@@ -37,7 +38,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-11-28 11:53:27.313716",
+ "modified": "2025-12-07 09:21:43.760455",
  "modified_by": "Administrator",
  "module": "SCCC Theme",
  "name": "sccc theme settings",
