@@ -196,4 +196,21 @@ body[data-route="integrations"] button.sccc-icon img[src="/files/integ.svg"] {
     display: none !important;
 }
 
+body[data-route^="setup-wizard"] .sccc-search {
+	display: none !important;
+}
 
+body[data-route^="setup-wizard"] #sccc-topbar.sccc-topbar {
+	width: 100% !important;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: var(--sccc-right);
+	width: var(--sccc-rightwidth);
+	height: var(--sccc-top-h);
+}
+
+body[data-route^="setup-wizard"] #sccc-icon,
+body[data-route^="setup-wizard"] .dropdown.dropdown-notifications.dropdown-mobile {
+	display: none !important;
+}

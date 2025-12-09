@@ -796,6 +796,11 @@ $root.on("click", ".sccc-user", function() {
       $('.sccc-rail-fixed').remove();
       return;
     }
+    if (window.location.pathname.includes("setup-wizard")) {
+      $('.sccc-rail-fixed').remove();
+      return;
+    }
+
     // Only mount if not already present and not on main-onboarding
     if (document.getElementById("sccc-rail-fixed")) return;
 
@@ -827,6 +832,10 @@ $root.on("click", ".sccc-user", function() {
   $(document).on('page-change', () => {
     // Remove sidebar if on main-onboarding
     if (frappe.get_route && frappe.get_route()[0] === "main-onboarding") {
+      $('.sccc-rail-fixed').remove();
+      return;
+    }
+    if (window.location.pathname.includes("setup-wizard")) {
       $('.sccc-rail-fixed').remove();
       return;
     }

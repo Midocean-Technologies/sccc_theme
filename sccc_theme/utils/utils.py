@@ -421,7 +421,7 @@ def remove_gender_records():
 
 def PropertySetter():
     make_property_setter("Workspace","icon","read_only",0,"Check")
-    make_property_setter("User","role_profile_name","allow_in_quick_entry",0,"Check")
+    make_property_setter("User","role_profile_name","allow_in_quick_entry",1,"Check")
     make_property_setter("User","modules_html","hidden",0,"Check")
     make_property_setter("User","module_profile","read_only",0,"Check")
     make_property_setter("User","roles_html","hidden",0,"Check")
