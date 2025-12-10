@@ -43,6 +43,7 @@ app_include_js = [
     "/assets/sccc_theme/js/force_home.js",
     "/assets/sccc_theme/js/print_preview.js",
     "/assets/sccc_theme/js/onboarding_redirect.js",
+    "/assets/sccc_theme/js/onboarding_popup.js",
     # "assets/sccc_theme/js/main_onboarding.js"
     # "/assets/sccc_theme/js/gender_disable.js"
 ]

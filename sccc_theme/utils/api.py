@@ -333,3 +333,18 @@ def create_client_user(email, full_name, plan=None):
     #     return "NA"
     # else:
     #     return "setup completed"
+
+@frappe.whitelist()
+def get_onboarding_checklist():
+    settings = frappe.get_single("sccc theme settings")
+    steps = []
+    for row in settings.onboarding_steps:
+        steps.append({
+            "idx": row.idx,
+            "title": row.onboarding_step,
+            "description": row.description or "",
+            "mandatory": 1 if row.is_mandatory else 0,
+            "completed": 1 if row.is_completed else 0,
+        })
+
+    return steps

@@ -587,7 +587,7 @@ def boot_session(bootinfo):
     else:
         user_doc = frappe.get_doc("User", user)
         is_admin_or_client_admin = getattr(user_doc, "is_client_admin", 0) == 1
-
+    bootinfo.is_admin_or_client_admin = is_admin_or_client_admin
     if not is_admin_or_client_admin:
         return
 
